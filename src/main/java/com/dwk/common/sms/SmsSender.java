@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 /**
  * System sms sender.
  * 
- * @author: xiangping_yu
+ * @author: xp
  * @data : 2014-8-28
  * @since : 1.5
  */

@@ -30,7 +30,7 @@ import com.dwk.util.VerificationUtils;
 /**
  * System auth service. Login,logout and register.
  * 
- * @author: xiangping_yu
+ * @author: xp
  * @data : 2014-8-28
  * @since : 1.5
  */

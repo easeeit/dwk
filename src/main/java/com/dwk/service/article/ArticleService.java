@@ -2,23 +2,18 @@ package com.dwk.service.article;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.dwk.dao.MongodbDao;
 import com.dwk.model.article.Article;
 import com.dwk.model.article.ArticleListResponse;
 
 /**
- * User product deal service.
- * @author: xiangping_yu
+ * Article service.
+ * @author: xp
  * @data : 2014-9-1
  * @since : 1.5
  */
-@Service("ArticleService")
 public class ArticleService {
 
-  @Autowired
   private MongodbDao dao;
   /**
    * @param pn 
@@ -31,4 +26,9 @@ public class ArticleService {
     result.setArticle(articles);
     return result;
   }
+  
+  public void setDao(MongodbDao dao) {
+    this.dao = dao;
+  }
+  
 }

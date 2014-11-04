@@ -17,7 +17,7 @@ import com.dwk.util.HttpUtils.Method;
 /**
  * Emay sms platform
  * 
- * @author: xiangping_yu
+ * @author: xp
  * @data : 2014-4-3
  * @since : 1.5
  */

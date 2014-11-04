@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<sqls>
+	<!-- tag mapping -->
+	<mapping id="tag" class="com.dwk.model.tag.Tag">
+		<property column="_id"    			name="id"/>
+		<property column="name"    			name="name"/>
+	</mapping>
+	
+	<!-- tag relation mapping -->
+	<mapping id="tagRelation" class="com.dwk.model.tag.TagRelation">
+		<property column="_id"    			name="id"/>
+		<property column="tag_id"    		name="tag_id"/>
+		<property column="subject_id"    	name="subject_id"/>
+		<property column="create_time"    	name="create_time"/>
+	</mapping>
+	
+	<select id="getAllTagList" collection="x_tag">
+		<property name="param" class="java.util.Map">
+			<value column="status" value="1" />
+		</property>
+		<property name="result" mapping="tag"/>
+	</select>
+	
+	<insert id="createTagRelation" collection="x_tag_relation">
+		<property name="param"  mapping="tagRelation" />
+	</insert>
+	
+	<select id="getSubjectTagIDList" collection="x_tag_relation">
+	    <property name="param" class="java.util.Map">
+	        <value column="subject_id" name="${value}" />
+	    </property>
+	    <property name="result" >
+			<!-- TODO -->	        
+	    </property>
+	</select>
+	
+	<delete id="deleteTagRelation" collection="x_tag_relation">
+	    <property name="param" class="java.util.Map">
+	        <value column="subject_id" name="subjectID" />
+	    </property>
+	</delete>
+	
+</sqls>

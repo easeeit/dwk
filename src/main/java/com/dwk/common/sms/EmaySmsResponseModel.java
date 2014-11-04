@@ -5,7 +5,7 @@ import com.dwk.common.sms.EmaySmsPlatform.ResponseCode;
 /**
  * Emay sms response model
  * 
- * @author: xiangping_yu
+ * @author: xp
  * @data : 2014-4-4
  * @since : 1.5
  */

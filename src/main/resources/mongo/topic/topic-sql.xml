@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<sqls>
+	<!-- topic mapping -->
+	<mapping id="topic" class="com.dwk.model.topic.Topic">
+		<property column="_id"    			name="id"/>
+		<property column="title"    		name="title"/>
+		<property column="content"    		name="content"/>
+		<property column="platform" 		name="platform"/>
+		<property column="status"    		name="status"/>
+		<property column="user_id"    		name="user_id"/>
+		<property column="nickname"    		name="nickname" />
+		<property column="logo_url" 		name="logo_url" />
+		<property column="laud_count"  		name="laud_count"/>
+		<property column="create_time"   	name="create_time"/>
+	</mapping>
+	
+	<select id="getTopicList" collection="x_topic">
+		<property name="param" class="java.util.Map">
+			<value column="status" value="1" />
+		</property>
+		<property name="result" mapping="topic"/>
+		<property name="order">
+			<value key="create_time"  value="-1"/>
+		</property>
+	</select>
+	
+	<insert id="createTopic" collection="x_topic">
+		<property name="param"  mapping="account" />
+	</insert>
+	
+	<update id="updateTopic" collection="x_topic">
+	    <property name="param" class="java.util.Map">
+	        <value column="_id" name="id" type="objectid"/>
+	    </property>
+	    <property name="action" class="java.util.Map">
+	        <value column="title" operate="$set" name="title"/>
+	        <value column="content" operate="$set" name="content"/>
+	        <value column="create_time" operate="$set" name="create_time"/>
+	    </property>
+	</update>
+	
+	<update id="deleteTopic" collection="x_topic">
+	    <property name="param" class="java.util.Map">
+	        <value column="_id" name="id" type="objectid"/>
+	    </property>
+	    <property name="action" class="java.util.Map">
+	        <value column="status" operate="$set" name="2"/>
+	    </property>
+	</update>
+	
+</sqls>

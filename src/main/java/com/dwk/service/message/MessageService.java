@@ -22,7 +22,6 @@ import com.dwk.model.message.request.ProductProcessRequest;
 import com.dwk.model.message.request.SendMessageRequest;
 import com.dwk.model.message.response.MessageListResponse;
 import com.dwk.model.message.response.ProductProcessListResponse;
-import com.dwk.model.product.ProductInfo;
 import com.dwk.model.user.BasicUserInfo;
 import com.dwk.model.user.LoginUser;
 import com.dwk.service.user.UserService;
@@ -33,7 +32,7 @@ import com.dwk.service.user.UserService;
  * 'system message' or 'user message' or 'product trade message'
  * </ol>
  * 
- * @author: xiangping_yu
+ * @author: xp
  * @data : 2014-8-28
  * @since : 1.5
  */

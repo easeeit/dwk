@@ -50,7 +50,7 @@
     <filter-class>com.dwk.filter.AuthFilter</filter-class>
     <init-param>
 		<param-name>notUrl</param-name>
-		<param-value>/auth/,/support/,/article,/deal</param-value>
+		<param-value>/auth/,/support/,/list,/deal</param-value>
 	</init-param>
   </filter>
   <filter-mapping>

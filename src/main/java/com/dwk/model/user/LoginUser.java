@@ -23,6 +23,7 @@ public class LoginUser implements Serializable {
   private String userPhone;
   private Long lastLoginTime;
   private Long lastOperateTime;
+  private String logoUrl;
   
   private String authToken;
 
@@ -112,6 +113,14 @@ public class LoginUser implements Serializable {
 
   public void setAuthToken(String authToken) {
     this.authToken = authToken;
+  }
+
+  public String getLogoUrl() {
+    return logoUrl;
+  }
+
+  public void setLogoUrl(String logoUrl) {
+    this.logoUrl = logoUrl;
   }
   
 }
