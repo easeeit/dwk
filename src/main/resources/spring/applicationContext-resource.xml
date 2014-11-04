@@ -20,12 +20,12 @@
 	</bean>
 
 	<bean id="cache" class="com.dwk.common.Cache">
-		<property name="nodeList" value="${couchbase.nodelist}" />
-		<property name="bucket" value="${couchbase.bucketname}" />
-		<property name="password" value="${couchbase.pwd}" />
-		<property name="reconnect" value="${couchbase.reconnect}" />
-		<property name="timeout" value="${couchbase.op.timeout}" />
-		<property name="maxBlockTime" value="${couchbase.op.queue.maxblocktime}" />
+		<property name="nodeList" value="${memcached.nodelist}" />
+		<property name="weightList" value="${memcached.weight.list}" />
+		<property name="initConn" value="${memcached.init.conn}" />
+		<property name="maxConn" value="${memcached.max.conn}" />
+		<property name="minConn" value="${memcached.min.conn}" />
+		<property name="name" value="${memcached.name}" />
 	</bean>
 
 	<bean id="smsSender" class="com.dwk.common.sms.SmsSender" />

@@ -2,6 +2,8 @@ package com.dwk.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -35,6 +37,7 @@ public class AuthController extends BaseController {
   @ResponseBody
   public String accountMobileAuth(HttpServletRequest request, @RequestBody MobilAuthRequest parameter) throws Exception {
     try {
+    	
       return outResponse(authService.mobilAuth(parameter));
     } catch (ServiceException sex) {
       return outResponse("accountMobileAuth", sex);

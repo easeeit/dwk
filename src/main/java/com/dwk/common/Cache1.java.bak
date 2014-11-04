@@ -1,0 +1,154 @@
+package com.dwk.common;
+
+import java.io.Serializable;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.DisposableBean;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.Assert;
+
+
+/**
+ * The common cache service.
+ * 
+ * @author: xp
+ * @data : 2014-8-28
+ * @since : 1.5
+ */
+public class Cache1 implements InitializingBean, DisposableBean {
+
+	private static final Logger logger = LoggerFactory.getLogger(Cache1.class);
+
+
+	private String nodeList;
+	private String bucket;
+	private String password;
+
+	@Autowired
+	private Cache cacheClient;
+
+	/**
+	 * Get cache value by key.
+	 * 
+	 * @param key
+	 * @return
+	 */
+	public Object get(String key) {
+		return cacheClient.get(key);
+	}
+
+	/**
+	 * Set cache value.
+	 * 
+	 * @param key
+	 * @param value
+	 * @return
+	 */
+	public boolean set(String key, Object value) {
+		if (!(value instanceof Serializable)) {
+			logger.error("Cache value not serializable to set. Class is "
+					+ value.getClass());
+			throw new RuntimeException("Cache value not serializable to set.");
+		}
+
+		return cacheClient.set(key, (Serializable) value);
+	}
+
+	/**
+	 * Set cache value.
+	 * 
+	 * @param key
+	 * @param value
+	 * @param exp
+	 *            Expire time unit is second.
+	 * @return
+	 */
+	public boolean set(String key, Object value, int exp) {
+		if (!(value instanceof Serializable)) {
+			logger.error("Cache value not serializable to set. Class is "
+					+ value.getClass());
+			throw new RuntimeException("Cache value not serializable to set.");
+		}
+
+		return cacheClient.set(key, (Serializable) value, exp);
+	}
+
+	/**
+	 * Touch cache value.
+	 * 
+	 * @param key
+	 * @param exp
+	 * @return
+	 */
+	// public boolean touch(String key, int exp) {
+	// try {
+	// return cacheClient.touch(key, exp).get();
+	// } catch (InterruptedException e) {
+	// logger.error("Cache service interrupted exception to touch. Cause: " +
+	// e);
+	// } catch (ExecutionException e) {
+	// logger.error("Cache service execution exception to touch. Cause: " + e);
+	// }
+	// return false;
+	// }
+
+	/**
+	 * Delete cache value.
+	 * 
+	 * @param key
+	 * @return
+	 */
+	public boolean delete(String key) {
+		return cacheClient.delete(key);
+	}
+
+	/** Init couchbase service. */
+	private void init() throws Exception {
+	}
+
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		logger.info("Cache service init starting...");
+		long start = System.currentTimeMillis();
+
+		Assert.hasText(nodeList, "Cache 'nodeList' not null.");
+		Assert.hasText(bucket, "Cache 'bucket' not null.");
+		Assert.hasText(password, "Cache 'password' not null.");
+
+		init();
+		logger.info("Cache service is inited, in ["
+				+ (System.currentTimeMillis() - start) + "]ms.");
+	}
+
+	public void setNodeList(String nodeList) {
+		this.nodeList = nodeList;
+	}
+
+	public void setBucket(String bucket) {
+		this.bucket = bucket;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public void setReconnect(Long reconnect) {
+		this.reconnect = reconnect;
+	}
+
+	public void setTimeout(Long timeout) {
+		this.timeout = timeout;
+	}
+
+	public void setMaxBlockTime(Long maxBlockTime) {
+		this.maxBlockTime = maxBlockTime;
+	}
+
+	@Override
+	public void destroy() throws Exception {
+
+	}
+
+}

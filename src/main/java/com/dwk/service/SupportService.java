@@ -2,6 +2,7 @@ package com.dwk.service;
 
 import java.io.ByteArrayInputStream;
 
+import com.dwk.common.Cache;
 import com.dwk.constant.SystemConstant;
 import com.dwk.model.RandomRequest;
 import com.dwk.util.ImageCodeUtils;
@@ -14,7 +15,7 @@ import com.dwk.util.ImageCodeUtils;
  */
 public class SupportService {
 
-//  private Cache cache;
+  private Cache cache;
   
   public ByteArrayInputStream random(RandomRequest request) {
     int width = request.getWidth();
@@ -33,17 +34,16 @@ public class SupportService {
   
   public String getRandomCode(String sessionid) {
     String key = SystemConstant.RANDOM_CODE_CACHE_KEY + sessionid;
-//    return (String)cache.get(key);
-    return null;
+    return (String)cache.get(key);
   }
   
   private void setRandomCode(String sessionid, String code) {
     String key = SystemConstant.RANDOM_CODE_CACHE_KEY + sessionid;
-//    cache.set(key, code);
+    cache.set(key, code);
   }
 
-//  public void setCache(Cache cache) {
-//    this.cache = cache;
-//  }
+  public void setCache(Cache cache) {
+    this.cache = cache;
+  }
   
 }

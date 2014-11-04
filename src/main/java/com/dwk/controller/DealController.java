@@ -31,7 +31,7 @@ public class DealController extends BaseController {
   @ResponseBody
   public String lend(HttpServletRequest request, @RequestBody String productID) throws Exception {
     try {
-      return "";
+      return "111";
     } catch (ServiceException sex) {
       return outResponse("lend", sex);
     } catch (DaoException dex) {

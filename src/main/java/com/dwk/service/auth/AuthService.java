@@ -4,9 +4,9 @@ import java.util.UUID;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.dwk.common.Cache;
 import com.dwk.common.sms.SmsSender;
 import com.dwk.constant.APIConstant;
-import com.dwk.constant.MessageConstant;
 import com.dwk.constant.SystemConstant;
 import com.dwk.model.BasicResponse;
 import com.dwk.model.auth.AuthContext;
@@ -36,7 +36,7 @@ import com.dwk.util.VerificationUtils;
  */
 public class AuthService {
 
-//  private Cache cache;
+  private Cache cache;
 //  private LenovoID lenovoid;
   private AccountService accountService;
   private UserService userService;
@@ -115,7 +115,7 @@ public class AuthService {
     }
 
     String cacheKey = SystemConstant.VERIFICATION_CODE_CACHE_KEY + phone;
-    VerificationCode vc = null;
+    VerificationCode vc = (VerificationCode)cache.get(cacheKey);
     // TOOD(VerificationCode)cache.get(cacheKey);
     if (vc != null && !vc.isTimeOut()) {
       response.setCode(APIConstant.RETURN_CODE_PARAMETER_INVAILD);
@@ -129,7 +129,7 @@ public class AuthService {
     vc.setCode(code);
     vc.setSendTime(System.currentTimeMillis());
     
-//    cache.set(cacheKey, vc, SystemConstant.VERIFICATION_CODE_CACHE_TIME);
+    cache.set(cacheKey, vc, SystemConstant.VERIFICATION_CODE_CACHE_TIME);
     
     return response;
   }
@@ -182,7 +182,7 @@ public class AuthService {
   public BasicResponse logout(String token) {
     BasicResponse response = new BasicResponse();
     String key = SystemConstant.LOGIN_USER_CACHE_KEY + token;
-//    cache.delete(key);
+    cache.delete(key);
     return response;
   }
 
@@ -207,7 +207,7 @@ public class AuthService {
 
     String code = regist.getCode();
     String cacheKey = SystemConstant.VERIFICATION_CODE_CACHE_KEY + phone;
-    VerificationCode vc = null;
+    VerificationCode vc = (VerificationCode)cache.get(cacheKey);
     // TODO (VerificationCode)cache.get(cacheKey);
     if (vc == null || !vc.getCode().equalsIgnoreCase(code)) {
       response.setCode(APIConstant.RETURN_CODE_PARAMETER_INVAILD);
@@ -253,8 +253,7 @@ public class AuthService {
     }
 
     String key = SystemConstant.LOGIN_USER_CACHE_KEY + token;
-//    LoginUser user = (LoginUser) cache.get(key);
-    LoginUser user = null; // TODO
+    LoginUser user = (LoginUser) cache.get(key);
     if (user == null) {
       return null;
     }
@@ -285,7 +284,7 @@ public class AuthService {
     login.setRpValue(user.getRpValue());
     login.setSex(user.getSex());
 
-//    cache.set(key, login);
+    cache.set(key, login);
     return login;
   }
 
@@ -312,9 +311,9 @@ public class AuthService {
     return user;
   }
 
-//  public void setCache(Cache cache) {
-//    this.cache = cache;
-//  }
+  public void setCache(Cache cache) {
+    this.cache = cache;
+  }
 
   public void setAccountService(AccountService accountService) {
     this.accountService = accountService;

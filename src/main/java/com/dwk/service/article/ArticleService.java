@@ -1,12 +1,12 @@
 package com.dwk.service.article;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dwk.dao.MongodbDao;
+import com.dwk.model.article.Article;
 import com.dwk.model.article.ArticleListResponse;
 
 /**
@@ -27,7 +27,8 @@ public class ArticleService {
    */
   public ArticleListResponse list(int pn, int rn) {
     ArticleListResponse result = new ArticleListResponse();
-    dao.selectList("getArticleList", null, rn, (pn -1) * rn);
+    List<Article> articles =dao.selectList("getArticleList", null, rn, (pn -1) * rn);
+    result.setArticle(articles);
     return result;
   }
 }

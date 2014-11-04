@@ -13,7 +13,7 @@
     
 	<bean id="messageService" class="com.dwk.service.message.MessageService">
 	    <property name="dao" ref="dao"/>
-	    <property name="productService" ref="productService"/>
+	    <!-- <property name="productService" ref="productService"/> -->
 	    <property name="userService" ref="userService"/>
 		<property name="factory">
 		    <bean class="com.dwk.service.message.MessageFactory">

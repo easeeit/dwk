@@ -25,9 +25,6 @@
 		<property name="accountService" ref="accountService"/>
 		<property name="userService" ref="userService"/>
 		<property name="friendService" ref="friendService"/>
-		<property name="lenovoid">
-		    <bean class="com.dwk.service.auth.thirdparty.LenovoID"/>
-		</property>
 	</bean>
 	
 </beans>
