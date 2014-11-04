@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<sqls>
+	<!-- account mapping -->
+	<mapping id="article" class="com.dwk.model.article.Article">
+		<property column="_id"    			name="id"/>
+		<property column="title"    		name="title"/>
+		<property column="sub_title"    	name="sub_title"/>
+		<property column="url"    		name="url"/>
+		<property column="hits_count"    		name="hits_count"/>
+		<property column="laud_count"    	name="laud_count"/>
+		<property column="comment_count"    		name="comment_count" />
+		<property column="create_time" 			name="create_time" />
+		<property column="author"  		name="author"/>
+		<property column="source"   	name="source"/>
+		<property column="status" 	name="status"/>
+		<property column="original_url" 	name="original_url"/>
+	</mapping>
+	
+	<select id="getArticleList" collection="Account">
+		<property name="param" class="com.dwk.model.auth.AuthContext">
+			<value column="status" name="type" value="1" type="int"/>
+		</property>
+		<property name="result" mapping="article"/>
+		<property name="order">
+			<value key="create_time"  value="-1"/>
+		</property>
+	</select>
+	
+	<insert id="initAccount" collection="Account">
+		<property name="param"  mapping="account" />
+	</insert>
+	
+	<update id="updateLastLoginTime" collection="Account">
+	    <property name="param" class="com.dwk.model.user.Account">
+	        <value column="_id" name="id" type="objectid"/>
+	    </property>
+	    <property name="action" class="com.dwk.model.user.Account">
+	        <value column="lastLoginTime" operate="$set" name="lastLoginTime"/>
+	    </property>
+	</update>
+	
+	
+</sqls>

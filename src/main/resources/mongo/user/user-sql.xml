@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<sqls>
+	<!-- user info -->
+	<mapping id="user" class="com.dwk.model.user.User">
+		<property column="_id"    		name="id"/>
+		<property column="name"    		name="name"/>
+		<property column="nickName"    	name="nickName"/>
+		<property column="sex"    		name="sex"/>
+		<property column="accountID"    name="accountID" />
+		<property column="avatar"    	name="avatar"/>
+		<property column="rpValue"    	name="rpValue" value="0" type="int"/>
+		<property column="status" 		name="status" value="1" type="int"/>
+		<property column="createTime"   name="createTime"/>
+	</mapping>
+	
+	<!-- basic user info -->
+	<mapping id="basicUser" class="com.dwk.model.user.BasicUserInfo">
+		<property column="_id"    		name="userID"/>
+		<property column="name"    		name="name"/>
+		<property column="nickName"    	name="nickName"/>
+		<property column="avatar"    	name="avatar"/>
+		<property column="rpValue"    	name="rpValue" value="0" type="int"/>
+	</mapping>
+	
+	<select id="getUserByID" collection="User">
+		<property name="param" class="java.lang.String">
+			<value column="_id" type="objectid" name="${value}" value="not exist"/>
+		</property>
+		<property name="result" mapping="user"/>
+	</select>
+	
+	<select id="findBasicUserInfoByIDs" collection="User">
+		<property name="param" class="java.lang.String">
+			<value column="_id" name="${value}" operate="$in" type="objectid" value="not exist"/>
+		</property>
+		<property name="result" mapping="basicUser"/>
+	</select>
+	
+	<select id="getUserByAccountID" collection="User">
+		<property name="param" class="java.lang.String">
+			<value column="accountID" name="${value}" value="not exist"/>
+		</property>
+		<property name="result" mapping="user"/>
+	</select>
+	
+	<select id="getUserByName" collection="User">
+		<property name="param" class="java.lang.String">
+			<value column="name" name="${value}" value="not exist"/>
+		</property>
+		<property name="result" mapping="user"/>
+	</select>
+	
+	<insert id="initUser" collection="User">
+		<property name="param"  mapping="user" />
+	</insert>
+	
+</sqls>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<sqls>
+	<!-- product process mapping -->
+	<mapping id="productProcess" class="com.dwk.model.message.ProductProcess">
+		<property column="_id"   					name="id"/>
+		<property column="fromUserID"   			name="fromUserID"/>
+		<property column="targetUserID"				name="targetUserID"/>
+		<property column="title"   					name="title"/>
+		<property column="subtitle"					name="subtitle"/>
+		<property column="content"   				name="content"/>
+		<property column="status" 					name="status" value="1" type="int"/>
+		<property column="rootID"   				name="rootID"/>
+		<property column="upperID"					name="upperID" value="-1"/>
+		<property column="deepth"					name="deepth" value="1" type="int"/>
+		<property column="sendTime"   				name="sendTime"/>
+		<property column="readTime"   				name="readTime"/>
+		<property column="signal"   				name="signal"/>
+		<property column="productID"   				name="productID"/>
+		<property column="productName"   			name="productName"/>
+		<property column="action"   				name="action">
+		    <value class="com.dwk.model.message.Message$MessageAction">
+		        <property column="url" name="url"/>
+		    </value>
+		</property>
+	</mapping>
+	
+	<select id="getProductProcess" collection="ProductProcess">
+		<property name="param" class="java.util.Map">
+			<value column="targetUserID" name="userID" value="not exists"/>
+			<value column="status" value="1" type="int"/>
+			<value column="upperID" value="-1"/>
+		</property>
+		<property name="result" mapping="productProcess"/>
+	</select>
+	
+	<select id="getProductProcessByID" collection="ProductProcess">
+		<property name="param" class="java.lang.String">
+			<value column="_id" name="${value}" type="objectid" value="not exists"/>
+			<value column="status" value="1" type="int"/>
+		</property>
+		<property name="result" mapping="productProcess"/>
+	</select>
+	
+	<insert id="sendProductProcessMessage" collection="ProductProcess">
+		<property name="param"  mapping="productProcess" />
+	</insert>
+	
+</sqls>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<sqls>
+	<!-- account mapping -->
+	<mapping id="account" class="com.dwk.model.user.Account">
+		<property column="_id"    			name="id"/>
+		<property column="phone"    		name="phone"/>
+		<property column="passwordHash"    	name="passwordHash"/>
+		<property column="account"    		name="account"/>
+		<property column="source"    		name="source"/>
+		<property column="subSource"    	name="subSource"/>
+		<property column="location"    		name="location" />
+		<property column="status" 			name="status" value="1" type="int"/>
+		<property column="createTime"  		name="createTime"/>
+		<property column="lastLoginTime"   	name="lastLoginTime"/>
+		<property column="lastOperateTime" 	name="lastOperateTime"/>
+	</mapping>
+	
+	<select id="getAccountByAuthInfo" collection="Account">
+		<property name="param" class="com.dwk.model.auth.AuthContext">
+			<value column="source" name="type" value="1" type="int"/>
+			<value column="account" name="account" value="not exists"/>
+		</property>
+		<property name="result" mapping="account"/>
+	</select>
+	
+	<select id="getAccountByPhone" collection="Account">
+		<property name="param" class="java.lang.String">
+			<value column="source" name="type" value="0" type="int"/>
+			<value column="phone" name="${value}" value="not exists"/>
+		</property>
+		<property name="result" mapping="account"/>
+	</select>
+	
+	<insert id="initAccount" collection="Account">
+		<property name="param"  mapping="account" />
+	</insert>
+	
+	<update id="updateLastLoginTime" collection="Account">
+	    <property name="param" class="com.dwk.model.user.Account">
+	        <value column="_id" name="id" type="objectid"/>
+	    </property>
+	    <property name="action" class="com.dwk.model.user.Account">
+	        <value column="lastLoginTime" operate="$set" name="lastLoginTime"/>
+	    </property>
+	</update>
+	
+	<update id="updateLastOperateTime" collection="Account">
+	    <property name="param" class="com.dwk.model.user.Account">
+	        <value column="_id" name="id" type="objectid"/>
+	    </property>
+	    <property name="action" class="com.dwk.model.user.Account">
+	        <value column="lastOperateTime" operate="$set" name="lastOperateTime"/>
+	    </property>
+	</update>
+	
+</sqls>

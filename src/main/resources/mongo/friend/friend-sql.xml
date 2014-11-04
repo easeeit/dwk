@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<sqls>
+	<!-- friend mapping -->
+	<mapping id="friendShip" class="com.dwk.model.friend.FriendShip">
+	    <property column="_id"   			name="id"/>
+		<property column="requestUserID"   	name="requestUserID"/>
+		<property column="requestUserPhone"	name="requestUserPhone"/>
+		<property column="requestMessage"	name="requestMessage"/>
+		<property column="targetUserID"    	name="targetUserID"/>
+		<property column="targetUserPhone" 	name="targetUserPhone"/>
+		<property column="status" 			name="status" value="1" type="int"/>
+		<property column="requestTime"  	name="requestTime"/>
+		<property column="acceptionTime"   	name="acceptionTime"/>
+	</mapping>
+	
+	<select id="findFriendUserID" collection="FriendShip">
+		<property name="param" class="java.util.Map">
+			<value column="status" value="2" type="int"/>
+			<value operate="$or" name="userID" type="array">
+			    <property class="java.lang.String">
+					<value column="requestUserID" name="${value}" value="not exists"/>
+					<value column="targetUserID" name="${value}" value="not exists"/>
+			    </property>
+			</value>
+		</property>
+		<property name="result" mapping="friendShip" />
+	</select>
+	
+	<select id="getInviteRecordByPhone" collection="FriendShip">
+		<property name="param" class="java.lang.String">
+			<value column="targetUserPhone" name="${value}" value="not exists"/>
+			<value column="status" value="1" type="int"/>
+			<value column="requestUserID" operate="$exists" value="true" type="boolean"/>
+		</property>
+		<property name="result" mapping="friendShip" />
+	</select>
+	
+	<select id="getFriendShipRelation" collection="FriendShip">
+		<property name="param" class="java.util.Map">
+			<value column="targetUserPhone" name="phone" value="not exists"/>
+			<value column="requestUserID" name="userID" value="not exists"/>
+		</property>
+		<property name="result" mapping="friendShip" />
+	</select>
+	
+	<insert id="addFriendShip" collection="FriendShip">
+		<property name="param"  mapping="friendShip" />
+	</insert>
+	
+	<update id="supplementFriendShip" collection="FriendShip">
+	    <property name="param" class="com.dwk.model.friend.FriendShip">
+	        <value column="_id" name="id" type="objectid" value="not exists"/>
+	    </property>
+	    <property name="action" class="com.dwk.model.friend.FriendShip">
+	        <value column="status" operate="$set" value="2" type="int"/>
+	        <value column="targetUserID" operate="$set" name="targetUserID"/>
+	        <value column="acceptionTime" operate="$set" name="acceptionTime"/>
+	    </property>
+	</update>
+	
+	<!-- unused -->
+	<select id="findFriendRequestList" collection="FriendShip">
+		<property name="param" class="java.lang.String">
+			<value column="targetUserID" name="${value}" value="not exists"/>
+			<value column="status" value="1" type="int"/>
+			<value column="requestUserID" operate="$exists" value="true" type="boolean"/>
+		</property>
+		<property name="result" mapping="friendShip" />
+	</select>
+	<update id="confirmFriend" collection="FriendShip">
+	    <property name="param" class="java.util.Map">
+	        <value column="_id" name="id" type="objectid" value="not exists"/>
+	        <value column="targetUserID" name="userID" value="not exists"/>
+	    </property>
+	    <property name="action" class="java.util.Map">
+	        <value column="status" operate="$set" value="2" type="int"/>
+	        <value column="acceptionTime" operate="$set" name="time"/>
+	    </property>
+	</update>
+	<update id="deleteFriendShip" collection="FriendShip">
+	    <property name="param" class="com.dwk.model.friend.FriendShip">
+	        <value column="requestUserID" name="requestUserID" value="not exists"/>
+	        <value column="targetUserID" name="targetUserID" value="not exists"/>
+	    </property>
+	    <property name="action" class="com.dwk.model.user.Account">
+	        <value column="status" operate="$set" value="0" type="int"/>
+	    </property>
+	</update>
+	
+</sqls>

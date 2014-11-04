@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jee="http://www.springframework.org/schema/jee"
+	xsi:schemaLocation="http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-3.1.xsd
+    http://www.springframework.org/schema/beans 
+    http://www.springframework.org/schema/beans/spring-beans-3.1.xsd 
+    http://www.springframework.org/schema/jee 
+    http://www.springframework.org/schema/jee/spring-jee-2.5.xsd
+    ">
+    
+	<bean id="messageService" class="com.dwk.service.message.MessageService">
+	    <property name="dao" ref="dao"/>
+	    <property name="productService" ref="productService"/>
+	    <property name="userService" ref="userService"/>
+		<property name="factory">
+		    <bean class="com.dwk.service.message.MessageFactory">
+		        <property name="dao" ref="dao"/>
+		        <property name="templates">
+		            <map>
+		                <!-- 申请好友 -->
+		                <entry key="10000">
+		                    <bean class="com.dwk.model.message.Template">
+		                        <property name="configs">
+		                            <list>
+				                        <bean class="com.dwk.model.message.MessageConfig">
+				                            <property name="content" value="{0}申请加您为好友。"/>
+				                        </bean>
+				                    </list>
+		                        </property>
+		                    </bean>
+		                </entry>
+		                <!-- 物品交易 -->
+		                <entry key="20000">
+	                        <bean class="com.dwk.model.message.Template">
+		                        <property name="configs">
+		                            <list>
+				                        <bean class="com.dwk.model.message.MessageConfig">
+				                            <property name="content" value="{0}同意借出{1}。"/>
+				                        </bean>
+				                        <bean class="com.dwk.model.message.MessageConfig">
+				                            <property name="content" value="您借入{1}消耗金币{2}。"/>
+				                        </bean>
+				                        <bean class="com.dwk.model.message.MessageConfig">
+				                            <property name="content" value="您借出{1}收入金币{2}。"/>
+				                        </bean>
+				                    </list>
+		                        </property>
+		                    </bean>
+		                </entry>
+		            </map>
+		        </property>
+		    </bean>
+		</property>
+	</bean>
+	
+</beans>

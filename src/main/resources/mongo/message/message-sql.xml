@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<sqls>
+	<!-- message mapping -->
+	<mapping id="message" class="com.dwk.model.message.Message">
+		<property column="_id"   					name="id"/>
+		<property column="fromUserID"   			name="fromUserID"/>
+		<property column="targetUserID"				name="targetUserID"/>
+		<property column="title"   					name="title"/>
+		<property column="subtitle"					name="subtitle"/>
+		<property column="content"   				name="content"/>
+		<property column="status" 					name="status" value="1" type="int"/>
+		<property column="rootID"   				name="rootID"/>
+		<property column="upperID"					name="upperID" value="-1"/>
+		<property column="deepth"					name="deepth" value="1" type="int"/>
+		<property column="sendTime"   				name="sendTime"/>
+		<property column="readTime"   				name="readTime"/>
+		<property column="action"   				name="action">
+		    <value class="com.dwk.model.message.Message$MessageAction">
+		        <property column="url" name="url"/>
+		    </value>
+		</property>
+	</mapping>
+	
+	<select id="getMessage" collection="Message">
+		<property name="param" class="java.util.Map">
+			<value column="targetUserID" name="userID" value="not exists"/>
+			<value column="status" value="1" type="int"/>
+			<value column="upperID" value="-1"/>
+		</property>
+		<property name="result" mapping="message"/>
+	</select>
+	
+	<select id="getMessageByID" collection="Message">
+		<property name="param" class="java.lang.String">
+			<value column="_id" name="${value}" type="objectid" value="not exists"/>
+			<value column="status" value="1" type="int"/>
+		</property>
+		<property name="result" mapping="message"/>
+	</select>
+	
+	<insert id="sendMessage" collection="Message">
+		<property name="param"  mapping="message" />
+	</insert>
+	
+	<update id="deleteMessage" collection="Message">
+	    <property name="param" class="java.util.Map">
+	        <value column="_id" name="ids" operate="$in" type="objectid" value="not exists"/>
+	        <value column="targetUserID" name="userID" value="not exists"/>
+	    </property>
+	    <property name="action" class="java.util.Map">
+	        <value column="status" operate="$set" value="0" type="int"/>
+	    </property>
+	</update>
+	
+</sqls>

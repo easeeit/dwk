@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<sqls>
+	<!-- 用户信息 -->
+	<mapping id="basicProduct" class="com.dwk.model.product.BasicProductInfo">
+		<property column="_id"    			name="ID"/>
+		<property column="name"    			name="name"/>
+		<property column="summary"    		name="summary"/>
+		<property column="distance"    		name="distance"		type="int"/>
+		<property column="releaseType"    	name="releaseType" 	type="int"/>
+		<property column="previewImages"    name="previewImages"/>
+		<property column="status"    		name="status"  		type="int"/>
+		<property column="ownerName" 		name="ownerName" />
+		<property column="ownerAvatar"   	name="ownerAvatar"/>
+		<property column="pcs"   			name="pcs"			type="int"/>
+		<property column="favorCount"   	name="favorCount"	type="int"/>
+		<property column="fee"   			name="fee"			type="double"/>
+	</mapping>
+	
+	<mapping id="productInfo" class="com.dwk.model.product.ProductInfo">
+		<property column="_id"    			name="ID"/>
+		<property column="name"    			name="name"/>
+		<property column="summary"    		name="summary"/>
+		<property column="distance"    		name="distance"		type="int"/>
+		<property column="releaseType"    	name="releaseType" 	type="int"/>
+		<property column="previewImages"    name="previewImages" />
+		<property column="status"    		name="status"  		type="int"/>
+		<property column="ownerName" 		name="ownerName" />
+		<property column="ownerAvatar"   	name="ownerAvatar"/>
+		<property column="pcs"   			name="pcs"			type="int"/>
+		<property column="favorCount"   	name="favorCount"	type="int"/>
+		<property column="fee"   			name="fee"			type="double"/>
+		<property column="city"    			name="city"/>
+		<property column="cityCode"    		name="cityCode"/>
+		<property column="requirement"    	name="requirement"/>
+		<property column="categoryname"    	name="categoryname"/>
+		<property column="categoryID"    	name="categoryID"/>
+		<property column="viewCount"    	name="viewCount"	type="int"/>
+		<property column="requestCount"    	name="requestCount"	type="int"/>
+		<property column="dealCount"    	name="dealCount"	type="int"/>
+		<property column="releaseDate"    	name="releaseDate"/>
+	</mapping>	
+	
+	<!-- 查询用户信息 -->
+	<select id="getProductByLocation" collection="Product">
+		<property name="param" class="com.dwk.model.product.request.ProductRequest">
+			<value column="location"  name="location" >
+				<property class="com.dwk.model.product.Location">
+					<value column="x"  name="x" />
+					<value column="y"  name="y" />
+				</property>
+			</value>
+			<value column="requestUserID"  name="requestUserID" />
+			<value column="status"  name="status" />
+			<value column="categoryIDs"  name="categoryIDs" />
+			<value column="limited" name="limited" />
+		</property>
+		<property name="result" mapping="basicProduct"/>
+	</select>
+	
+	
+	
+</sqls>

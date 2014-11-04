@@ -51,14 +51,12 @@ public class AuthService {
     String st = auth.getLenovoST();
     if (StringUtils.isBlank(st)) {
       response.setCode(APIConstant.RETURN_CODE_PARAMETER_NOT_FOUND);
-      response.setMessage(String.format(MessageConstant.PARAMETER_NOT_FOUND_FORMAT, "lenovoST"));
       return response;
     }
 
     String realm = auth.getRealm();
     if (StringUtils.isBlank(realm)) {
       response.setCode(APIConstant.RETURN_CODE_PARAMETER_NOT_FOUND);
-      response.setMessage(String.format(MessageConstant.PARAMETER_NOT_FOUND_FORMAT, "realm"));
       return response;
     }
 
@@ -107,14 +105,12 @@ public class AuthService {
     String phone = request.getPhone();
     if (StringUtils.isBlank(phone)) {
       response.setCode(APIConstant.RETURN_CODE_PARAMETER_NOT_FOUND);
-      response.setMessage(String.format(MessageConstant.PARAMETER_NOT_FOUND_FORMAT, "phone"));
       return response;
     }
 
     Account account = accountService.getAccountByPhone(phone);
     if (account != null) {
       response.setCode(APIConstant.RETURN_CODE_PARAMETER_INVAILD);
-      response.setMessage(MessageConstant.PHONE_EXISTS);
       return response;
     }
 
@@ -123,7 +119,6 @@ public class AuthService {
     // TOOD(VerificationCode)cache.get(cacheKey);
     if (vc != null && !vc.isTimeOut()) {
       response.setCode(APIConstant.RETURN_CODE_PARAMETER_INVAILD);
-      response.setMessage(MessageConstant.VERIFICATION_CODE_NOT_TIMEOUT);
       return response;
     }
 
@@ -148,21 +143,18 @@ public class AuthService {
     String userName = login.getUserName();
     if (StringUtils.isBlank(userName)) {
       response.setCode(APIConstant.RETURN_CODE_PARAMETER_NOT_FOUND);
-      response.setMessage(String.format(MessageConstant.PARAMETER_NOT_FOUND_FORMAT, "userName"));
       return response;
     }
 
     String passwordHash = login.getPasswordHash();
     if (StringUtils.isBlank(passwordHash)) {
       response.setCode(APIConstant.RETURN_CODE_PARAMETER_NOT_FOUND);
-      response.setMessage(String.format(MessageConstant.PARAMETER_NOT_FOUND_FORMAT, "passwordHash"));
       return response;
     }
 
     Account account = accountService.getAccountByPhone(userName);
     if (account == null || !account.getPasswordHash().equals(passwordHash)) {
       response.setCode(APIConstant.RETURN_CODE_DATA_NOT_FOUND);
-      response.setMessage(MessageConstant.USER_NOT_FOUND);
       return response;
     }
     
@@ -204,14 +196,12 @@ public class AuthService {
     Account account = accountService.getAccountByPhone(phone);
     if (account != null) {
       response.setCode(APIConstant.RETURN_CODE_PARAMETER_INVAILD);
-      response.setMessage(MessageConstant.PHONE_EXISTS);
       return response;
     }
 
     String passwordHash = regist.getPasswordHash();
     if (StringUtils.isBlank(passwordHash)) {
       response.setCode(APIConstant.RETURN_CODE_PARAMETER_NOT_FOUND);
-      response.setMessage(String.format(MessageConstant.PARAMETER_NOT_FOUND_FORMAT, "passwordHash"));
       return response;
     }
 
@@ -221,7 +211,6 @@ public class AuthService {
     // TODO (VerificationCode)cache.get(cacheKey);
     if (vc == null || !vc.getCode().equalsIgnoreCase(code)) {
       response.setCode(APIConstant.RETURN_CODE_PARAMETER_INVAILD);
-      response.setMessage(MessageConstant.VERIFICATION_CODE_ERROR);
       return response;
     }
 

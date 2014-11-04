@@ -136,7 +136,6 @@ public class FriendService {
     int row = dao.update("confirmFriend", parameter);
     if (row <= 0) {
       response.setCode(APIConstant.RETURN_CODE_DATA_NOT_FOUND);
-      response.setMessage("Friend request not found.");
     }
     return response;
   }

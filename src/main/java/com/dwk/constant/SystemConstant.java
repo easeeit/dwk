@@ -11,7 +11,7 @@ public class SystemConstant {
 
   private SystemConstant() {}
 
-  public static final String SYSTEM_CACHE_ROOT_KEY = "jiejie.cache.root.";
+  public static final String SYSTEM_CACHE_ROOT_KEY = "dwk.cache.root.";
   public static final String LOGIN_USER_CACHE_KEY = SYSTEM_CACHE_ROOT_KEY + "login.";
   public static final String RANDOM_CODE_CACHE_KEY = SYSTEM_CACHE_ROOT_KEY + "random.";
   
@@ -33,6 +33,9 @@ public class SystemConstant {
    */
   public static final int VERIFICATION_CODE_CACHE_TIME = 60 * 3;
   
-  public static final String VERIFICATION_MESSAGE = "【lenovo】您好，您的注册验证码为【%s】。";
+  public static final String VERIFICATION_MESSAGE = "【dwl】您好，您的注册验证码为【%s】。";
+  
+  public static final int PN = 1;
+  public static final int RN = 10;
   
 }
