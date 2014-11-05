@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Jie jie 404 Page</title>
+<title>404 Page</title>
 </head>
 <body>
 	sorry,404!

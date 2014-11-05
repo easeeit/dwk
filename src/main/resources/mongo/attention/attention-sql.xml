@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<sqls>
+	<update id="updateUserAttention" collection="x_attention">
+	    <property name="param" class="java.util.Map">
+	        <value column="user_id" name="userID" />
+	        <value column="product_id" name="productID" />
+	    </property>
+	    <property name="action" class="java.util.Map">
+	        <value column="status" operate="$set" name="status"/>
+	    </property>
+	</update>
+	
+</sqls>

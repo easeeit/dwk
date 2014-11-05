@@ -28,6 +28,10 @@ public class UserService {
     return dao.selectOne("getUserByAccountID", accountID);
   }
   
+  public User getUserByID(String userID) {
+    return dao.selectOne("getUserByID", userID);
+  }
+  
   public User getUserByName(String name) {
     return dao.selectOne("getUserByName", name);
   }

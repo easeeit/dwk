@@ -48,7 +48,7 @@ public class ProductService {
       }
       if (!CollectionUtils.isEmpty(productIDList)) {
         map.put("productIDList", productIDList);
-        List<Product> productList = dao.selectList("getProductLIst", map);
+        List<Product> productList = dao.selectList("getProductList", map);
         Map<String,Product> pMap = new HashMap<String, Product>(productList.size());
         for (Product p : productList) {
           pMap.put(p.getId(), p);

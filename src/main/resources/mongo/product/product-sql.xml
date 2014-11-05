@@ -1,62 +1,61 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <sqls>
 	<!-- 用户信息 -->
-	<mapping id="basicProduct" class="com.dwk.model.product.BasicProductInfo">
-		<property column="_id"    			name="ID"/>
-		<property column="name"    			name="name"/>
-		<property column="summary"    		name="summary"/>
-		<property column="distance"    		name="distance"		type="int"/>
-		<property column="releaseType"    	name="releaseType" 	type="int"/>
-		<property column="previewImages"    name="previewImages"/>
-		<property column="status"    		name="status"  		type="int"/>
-		<property column="ownerName" 		name="ownerName" />
-		<property column="ownerAvatar"   	name="ownerAvatar"/>
-		<property column="pcs"   			name="pcs"			type="int"/>
-		<property column="favorCount"   	name="favorCount"	type="int"/>
-		<property column="fee"   			name="fee"			type="double"/>
+	<mapping id="product" class="com.dwk.model.product.Product">
+		<property column="_id"    			name="id"/>
+		<property column="name_cn"    		name="name_cn"/>
+		<property column="name_en"    		name="name_en"/>
+		<property column="producer"    		name="producer"	/>
+		<property column="publisher"    	name="publisher"/>
+		<property column="platform"    		name="platform"/>
+		<property column="type"    			name="type"/>
+		<property column="attention_count" 	name="attention_count"	type="int" />
+		<property column="score_time"   	name="score_time"	  	type="int"/>
+		<property column="laud_count"   	name="laud_count"		type="int"/>
+		<property column="player_number"   	name="player_number"/>
+		<property column="introduction"   	name="introduction"/>
+		<property column="website"   		name="website"/>
+		<property column="screenshot_list"  name="screenshot_list"/>
+		<property column="create_time"   	name="create_time"		type="long"/>
 	</mapping>
 	
-	<mapping id="productInfo" class="com.dwk.model.product.ProductInfo">
-		<property column="_id"    			name="ID"/>
-		<property column="name"    			name="name"/>
-		<property column="summary"    		name="summary"/>
-		<property column="distance"    		name="distance"		type="int"/>
-		<property column="releaseType"    	name="releaseType" 	type="int"/>
-		<property column="previewImages"    name="previewImages" />
-		<property column="status"    		name="status"  		type="int"/>
-		<property column="ownerName" 		name="ownerName" />
-		<property column="ownerAvatar"   	name="ownerAvatar"/>
-		<property column="pcs"   			name="pcs"			type="int"/>
-		<property column="favorCount"   	name="favorCount"	type="int"/>
-		<property column="fee"   			name="fee"			type="double"/>
-		<property column="city"    			name="city"/>
-		<property column="cityCode"    		name="cityCode"/>
-		<property column="requirement"    	name="requirement"/>
-		<property column="categoryname"    	name="categoryname"/>
-		<property column="categoryID"    	name="categoryID"/>
-		<property column="viewCount"    	name="viewCount"	type="int"/>
-		<property column="requestCount"    	name="requestCount"	type="int"/>
-		<property column="dealCount"    	name="dealCount"	type="int"/>
-		<property column="releaseDate"    	name="releaseDate"/>
+	<mapping id="schedule" class="com.dwk.model.product.Schedule">
+		<property column="_id"    			name="id"/>
+		<property column="product_id"    	name="product_id"/>
+		<property column="area"    			name="area"/>
+		<property column="language"    		name="language"	/>
+		<property column="timetomarket"    	name="timetomarket" />
+		<property column="status"    		name="status" />
+		<property column="create_time"    	name="create_time"  	type="long"/>
+		<property column="name" 			name="name" />
+		<property column="platform"   		name="platform"/>
+		<property column="platformName"   	name="platformName" />
 	</mapping>	
 	
-	<!-- 查询用户信息 -->
-	<select id="getProductByLocation" collection="Product">
-		<property name="param" class="com.dwk.model.product.request.ProductRequest">
-			<value column="location"  name="location" >
-				<property class="com.dwk.model.product.Location">
-					<value column="x"  name="x" />
-					<value column="y"  name="y" />
-				</property>
-			</value>
-			<value column="requestUserID"  name="requestUserID" />
-			<value column="status"  name="status" />
-			<value column="categoryIDs"  name="categoryIDs" />
-			<value column="limited" name="limited" />
+	<select id="getScheduleList" collection="x_schedule">
+		<property name="param" class="java.util.Map">
 		</property>
-		<property name="result" mapping="basicProduct"/>
+		<property name="result" mapping="schedule"/>
+		<property name="order">
+			<value key="create_time"  value="-1"/>
+		</property>
 	</select>
 	
+	<select id="getScheduleListForPlatform" collection="x_schedule">
+		<property name="param" class="java.util.Map">
+			<value column="platform"  name="platform" />
+		</property>
+		<property name="result" mapping="schedule"/>
+		<property name="order">
+			<value key="create_time"  value="-1"/>
+		</property>
+	</select>
 	
+	<select id="getProductList" collection="x_product">
+		<property name="param" class="java.util.Map">
+			<value column="_id" name="productIDList" operate="$in" type="objectid" />
+		</property>
+		<property name="result" mapping="product"/>
+	</select>
 	
 </sqls>

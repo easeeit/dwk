@@ -12,21 +12,21 @@ import com.dwk.constant.APIConstant;
 import com.dwk.constant.SystemConstant;
 import com.dwk.exception.DaoException;
 import com.dwk.exception.ServiceException;
-import com.dwk.service.article.ArticleService;
+import com.dwk.service.product.ProductService;
 
 /**
- * Controller for Article.
+ * Controller for product.
  * 
  * @author: xp
  * @data : 2014-9-1
  * @since : 1.5
  */
 @Controller
-@RequestMapping("/article")
-public class ArticleController extends BaseController {
+@RequestMapping("/schedule")
+public class ScheduleController extends BaseController {
 
   @Autowired
-  private ArticleService articleService;
+  private ProductService productService;
 
   @RequestMapping(value = "/list/{pageNum}/{rowNum}", produces = APIConstant.CONTENT_TYPE_JSON)
   @ResponseBody
@@ -40,15 +40,14 @@ public class ArticleController extends BaseController {
       if (rowNum != null) {
         rn = Integer.parseInt(rowNum);
       }
-      return outResponse(articleService.list(pn, rn));
+      return outResponse(productService.scheduleList(null, pn, rn));
     } catch (ServiceException sex) {
-      return outResponse("accountMobileAuth", sex);
+      return outResponse("schedule list", sex);
     } catch (DaoException dex) {
-      return outResponse("accountMobileAuth", dex);
+      return outResponse("schedule list", dex);
     } catch (Exception ex) {
-      return outResponse("accountMobileAuth", ex);
+      return outResponse("schedule list", ex);
     }
   }
-
 
 }

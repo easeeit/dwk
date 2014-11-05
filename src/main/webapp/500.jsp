@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Jie jie 500 Page</title>
+<title>500 Page</title>
 </head>
 <body>
 	sorry,500!
