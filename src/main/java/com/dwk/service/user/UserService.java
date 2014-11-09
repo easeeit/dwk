@@ -1,22 +1,37 @@
 package com.dwk.service.user;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
+
+import com.dwk.constant.APIConstant;
+import com.dwk.constant.DataConstant;
 import com.dwk.dao.MongodbDao;
+import com.dwk.model.BasicResponse;
+import com.dwk.model.comment.CommentInfo;
+import com.dwk.model.comment.CommentListResponse;
+import com.dwk.model.user.AttentionListResponse;
 import com.dwk.model.user.BasicUserInfo;
+import com.dwk.model.user.LoginUser;
+import com.dwk.model.user.SigninResponse;
 import com.dwk.model.user.User;
+import com.dwk.model.user.UserInfo;
+import com.dwk.service.auth.AuthService;
+import com.dwk.service.product.ScheduleService;
 
 /**
  * User info service.
  * 
  * @author: xp
- * @data : 2014-8-28
- * @since : 1.5
  */
 public class UserService {
 
   private MongodbDao dao;
+  private AuthService authService;
+  private ScheduleService scheduleService;
   
   public String initUser(User user) {
     String id = dao.insert("initUser", user);
@@ -28,6 +43,7 @@ public class UserService {
     return dao.selectOne("getUserByAccountID", accountID);
   }
   
+  // TODO 缓存
   public User getUserByID(String userID) {
     return dao.selectOne("getUserByID", userID);
   }
@@ -44,8 +60,132 @@ public class UserService {
     return dao.selectOne("findBasicUserInfoByIDs", Arrays.asList(id));
   }
   
+  public User login(String source, String openid, String nickname) {
+    UserInfo res = null;
+    if (StringUtils.isBlank(openid)) {
+      res = new UserInfo();
+      res.setCode(APIConstant.RETURN_CODE_PARAMETER_INVAILD);
+      return res;
+    }
+    // 检索用户
+    res = getUserByOpenid(openid);
+    // 检索不到,创建用户
+    if (res == null) {
+      res = new UserInfo();
+      long now = System.currentTimeMillis();
+      res.setCreate_time(now);
+      res.setLast_login_time(now);
+      res.setNickname(nickname);
+      res.setOpenid(openid);
+      res.setScore(0);
+      res.setSource(source);
+      res.setStatus(DataConstant.STATUS_ENABLE);
+      String userID = dao.insert("createUser", res);
+      if (StringUtils.isBlank(userID)) {
+        res.setCode(APIConstant.RETURN_CODE_ERROR);
+        return res;
+      } else {
+        res.setId(userID);
+      }
+    }
+    authService.putSession(res);
+    return res;
+  }  
+  
+  public UserInfo getUserByOpenid(String openid) {
+    return dao.selectOne("getUserByOpenid", openid);
+  }
+  
+  public BasicResponse logout(String token) {
+    BasicResponse res = authService.logout(token);
+    return res;
+  }
+  
+  public SigninResponse signin(LoginUser user) {
+    // TODO 已签到过滤
+    
+    SigninResponse res = new SigninResponse();
+    if (user == null) {
+      res.setCode(APIConstant.RETURN_CODE_OPERATE_PERMISSION_INVAILD);
+      return res;
+    }
+    Map<String,Object> map = new HashMap<String, Object>(2);
+    map.put("userID", user.getId());
+    map.put("score", DataConstant.SIGNIN_SCORE);
+    int count = dao.update("inscreaseUserScore", map);
+    if (count == 1) {
+      res.setScore(user.getScore() + DataConstant.SIGNIN_SCORE);
+    }
+    return res;
+  }
+  
+  // TODO cache
+  public AttentionListResponse getUserAttention(LoginUser user,int pageNum, int rowNum) {
+    AttentionListResponse res = new AttentionListResponse();
+    if (user == null) {
+      res.setCode(APIConstant.RETURN_CODE_OPERATE_PERMISSION_INVAILD);
+      return res;
+    }
+    // search x_attention 
+    List<String> productList = 
+        dao.selectList("getUserAttentionProduct", user.getId(),  rowNum, (pageNum - 1) * rowNum);
+    // search product and schedule
+    res.setGame(scheduleService.getScheduleInfo(productList));
+    return res;
+  }
+  
+  public CommentListResponse getUserComment(LoginUser user, int pageNum, int rowNum) {
+    CommentListResponse res = new CommentListResponse();
+    if (user == null) {
+      res.setCode(APIConstant.RETURN_CODE_OPERATE_PERMISSION_INVAILD);
+      return res;
+    }
+    Map<String, Object> param = new HashMap<String, Object>(1);
+    param.put("user_id", user.getId());
+    List<CommentInfo> result = dao.selectList("getUserComment", param, rowNum, (pageNum - 1) * rowNum);
+    res.setComment(result);
+    return res;
+  }
+
+  public BasicResponse update(LoginUser user, String nickname, String phone, String email, 
+      String signature, String logo_url) {
+    BasicResponse res = new BasicResponse();
+    if (user == null) {
+      res.setCode(APIConstant.RETURN_CODE_OPERATE_PERMISSION_INVAILD);
+      return res;
+    }
+    Map<String, Object> map = new HashMap<String, Object>(6);
+    map.put("id", user.getId());
+    map.put("nickname", nickname);
+    map.put("phone", phone);
+    map.put("email", email);
+    map.put("signature", signature);
+    map.put("logo_url", logo_url);
+    int count = dao.update("updateUser", map);
+    if (count <= 0) {
+      res.setCode(APIConstant.RETURN_CODE_ERROR);
+    }
+    return res;
+  }
+  
+  
+//  public void updateLastOperateTime(String userID) {
+//    Map<String,Object> map = new HashMap<String, Object>(2);
+//    map.put("userID", userID);
+//    map.put("lastLoginTime", System.currentTimeMillis());
+//    dao.update("updateLastLoginTime", map);
+//  }
+  
   public void setDao(MongodbDao dao) {
     this.dao = dao;
+  }
+
+  public void setAuthService(AuthService authService) {
+    this.authService = authService;
+  }
+
+  public void setScheduleService(ScheduleService scheduleService) {
+    this.scheduleService = scheduleService;
   }
   
 }

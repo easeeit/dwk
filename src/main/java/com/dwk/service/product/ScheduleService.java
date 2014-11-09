@@ -1,6 +1,8 @@
 package com.dwk.service.product;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.collections.CollectionUtils;
 
@@ -49,6 +51,20 @@ public class ScheduleService {
     res.setDone(scheduleList);
     return res;
   }
+  
+  public List<ScheduleInfo> getScheduleInfo(List<String> productIDList) {
+    if (CollectionUtils.isEmpty(productIDList)) {
+      return null;
+    }
+    // search schedule
+    Map<String,Object> map = new HashMap<String, Object>(1);
+    map.put("productIDList", productIDList);
+    List<ScheduleInfo> scheduleList = dao.selectList("getScheduleByProductIDList", map);
+    assemblyScheduleInfo(scheduleList);
+    return scheduleList;    
+  }
+  
+//  public 
   
   private void assemblyScheduleInfo(List<ScheduleInfo> list) {
     if (CollectionUtils.isEmpty(list)) {

@@ -31,14 +31,14 @@
 			<value column="subject_id" name="subject_id" />
 			<value column="status" value="1" />
 		</property>
-		<property name="result" mapping="comment"/>
+		<property name="result" mapping="commentInfo"/>
 		<property name="order">
 			<value key="create_time"  value="-1"/>
 		</property>
 	</select>
 	
 	<insert id="createComment" collection="x_comment">
-		<property name="param"  mapping="account" />
+		<property name="param"  mapping="comment" />
 	</insert>
 	
 	<update id="updateComment" collection="x_comment">
@@ -97,5 +97,16 @@
 	        <value column="hot" operate="$inc" value="1" type="int"/>
 	    </property>
 	</update>
+	
+	<select id="getUserComment" collection="x_comment">
+		<property name="param" class="java.util.Map">
+			<value column="user_id" name="user_id" />
+			<value column="status" value="1" />
+		</property>
+		<property name="result" mapping="commentInfo"/>
+		<property name="order">
+			<value key="create_time"  value="-1"/>
+		</property>
+	</select>
 	
 </sqls>

@@ -26,7 +26,7 @@
 		<property column="create_time"   	name="create_time"		type="long"/>
 	</mapping>
 	
-	<mapping id="schedule" class="com.dwk.model.product.Schedule">
+	<mapping id="schedule" class="com.dwk.model.product.ScheduleInfo">
 		<property column="_id"    			name="id"/>
 		<property column="product_id"    	name="product_id"/>
 		<property column="version"    		name="version"/>
@@ -122,6 +122,13 @@
 		<property name="order">
 			<value key="hot"  value="-1"/>
 		</property>
+	</select>
+	
+	<select id="getScheduleByProductIDList" collection="x_schedule">
+		<property name="param" class="java.util.Map">
+			<value column="product_id" name="productIDList" operate="$in"  />
+		</property>
+		<property name="result" mapping="schedule"/>
 	</select>
 	
 </sqls>

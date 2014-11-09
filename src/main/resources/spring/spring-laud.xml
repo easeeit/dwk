@@ -11,9 +11,9 @@
     http://www.springframework.org/schema/jee/spring-jee-2.5.xsd
     ">
     
-	<bean id="TradeService" class="com.dwk.service.trade.TradeService">
+	<bean id="laudService" class="com.dwk.service.laud.LaudService">
 		<property name="dao" ref="dao"/>
-		<property name="userService" ref="userService"/>
 	</bean>
+    
 	
 </beans>

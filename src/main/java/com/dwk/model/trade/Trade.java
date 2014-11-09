@@ -24,6 +24,7 @@ public class Trade {
   private String photo_url;
   private Integer comment_count;
   private Long create_time;
+  private Long update_time;
   
   public static Trade create(LoginUser user, Map<String, Object> map) {
     Trade t = new Trade();
@@ -44,6 +45,28 @@ public class Trade {
     t.haggle = (String)map.get("haggle");
     t.photo_url = (String)map.get("photo_url");
     t.comment_count = 0;
+    return t;
+  }
+  
+  public static Trade update(LoginUser user, Map<String, Object> map) {
+    Trade t = new Trade();
+    t.id = (String)map.get("id");
+    t.area = (String)map.get("area");
+    t.update_time = System.currentTimeMillis();
+    t.description = (String)map.get("description");
+    t.integrity = (String)map.get("integrity");
+    t.language = (String)map.get("language");
+    t.platform = (String)map.get("platform");
+    t.price = Double.parseDouble(String.valueOf(map.get("price")));
+    t.product_name = (String)map.get("product_name");
+    t.remark = (String)map.get("remark");
+    t.status = DataConstant.STATUS_ENABLE;
+    t.user_id = user.getId();
+    t.version = (String)map.get("version");
+    t.contact = (String)map.get("contact");
+    t.exchange = (String)map.get("exchange");
+    t.haggle = (String)map.get("haggle");
+    t.photo_url = (String)map.get("photo_url");
     return t;
   }
   public String getId() {
@@ -153,5 +176,11 @@ public class Trade {
   }
   public void setComment_count(Integer comment_count) {
     this.comment_count = comment_count;
+  }
+  public Long getUpdate_time() {
+    return update_time;
+  }
+  public void setUpdate_time(Long update_time) {
+    this.update_time = update_time;
   }
 }

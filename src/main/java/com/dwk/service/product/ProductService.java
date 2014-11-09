@@ -7,6 +7,7 @@ import java.util.List;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 
+import com.dwk.constant.APIConstant;
 import com.dwk.constant.ArticleType;
 import com.dwk.dao.MongodbDao;
 import com.dwk.model.article.ArticleListResponse;
@@ -31,12 +32,18 @@ public class ProductService {
 
   // TODO 缓存
   public ProductInfo getProduct(String productID) {
+    ProductInfo p = null;
     if (StringUtils.isBlank(productID)) {
-      return null;
+      p = new ProductInfo();
+      p.setCode(APIConstant.RETURN_CODE_PARAMETER_INVAILD);
+      return p;
     }
-    ProductInfo p = dao.selectOne("getProductByID", productID);
+    p = dao.selectOne("getProductByID", productID);
     if (p != null) {
       p.setComment(commentService.getHotComment(productID));
+    } else {
+      p = new ProductInfo();
+      p.setCode(APIConstant.RETURN_CODE_DATA_NOT_FOUND);
     }
     return p;
   }

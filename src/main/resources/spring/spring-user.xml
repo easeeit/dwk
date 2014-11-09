@@ -17,6 +17,8 @@
     
 	<bean id="userService" class="com.dwk.service.user.UserService">
 		<property name="dao" ref="dao"/>
+		<property name="authService" ref="authService"/>
+		<property name="scheduleService" ref="scheduleService"/>
 	</bean>
 	
 	<bean id="authService" class="com.dwk.service.auth.AuthService">
@@ -25,6 +27,10 @@
 		<property name="accountService" ref="accountService"/>
 		<property name="userService" ref="userService"/>
 		<property name="friendService" ref="friendService"/>
+	</bean>
+    
+	<bean id="feedbackService" class="com.dwk.service.user.FeedbackService">
+		<property name="dao" ref="dao"/>
 	</bean>
 	
 </beans>

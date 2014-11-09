@@ -13,5 +13,8 @@ public class DataConstant {
   public static final int SCHEDULE_TOP_COUNT = 8;
   
   public static final int PRODUCT_TOP_COUNT = 3;
+
+  // 签到积分
+  public static final int SIGNIN_SCORE = 5;
   
 }

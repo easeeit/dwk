@@ -20,11 +20,60 @@
 		<property column="comment_count"    name="comment_count" type="int" />
 		<property column="user_id"    		name="user_id"/>
 		<property column="create_time"   	name="create_time" type="long"/>
+		<property column="update_time"   	name="update_time" type="long"/>
 	</mapping>
 		
 	<select id="getTradeList" collection="x_trade">
 		<property name="param" class="java.util.Map">
-			<value column="status" value="1" />
+			<value column="status" value="1" /> <!-- 开启状态的 -->
+		</property>
+		<property name="result" mapping="trade"/>
+		<property name="order">
+			<value key="create_time"  value="-1"/>
+		</property>
+	</select>
+	
+	<insert id="createTrade" collection="x_trade">
+		<property name="param"  mapping="trade" />
+	</insert>
+	
+	<update id="updateTrade" collection="x_trade">
+	    <property name="param" class="com.dwk.model.trade.Trade">
+	        <value column="_id" name="id" type="objectid" value="not exists"/>
+	    </property>
+	    <property name="action" class="com.dwk.model.trade.Trade">
+	        <value column="product_name" operate="$set" name="product_name"/>
+	        <value column="platform" operate="$set" name="platform"/>
+	        <value column="version" operate="$set" name="version"/>
+	        <value column="language" operate="$set" name="language"/>
+	        <value column="integrity" operate="$set" name="integrity"/>
+	        <value column="price" operate="$set" name="price" type="double"/>
+	        <value column="haggle" operate="$set" name="haggle"/>
+	        <value column="exchange" operate="$set" name="exchange"/>
+	        <value column="description" operate="$set" name="description"/>
+	        <value column="remark" operate="$set" name="remark"/>
+	        <value column="contact" operate="$set" name="contact"/>
+	        <value column="area" operate="$set" name="area"/>
+	        <value column="photo_url" operate="$set" name="photo_url"/>
+	        <value column="update_time" operate="$set" name="update_time" type="long"/>
+	    </property>
+	</update>
+	
+	<update id="updateTradeStatus" collection="x_trade">
+	    <property name="param" class="com.dwk.model.trade.Trade">
+	        <value column="_id" name="tradeID" type="objectid"/>
+	        <value column="user_id" name="user_id"  value="not exists"/>
+	    </property>
+	    <property name="action" class="com.dwk.model.trade.Trade">
+	        <value column="status" operate="$set" name="status"/>
+	        <value column="update_time" operate="$set" name="update_time"/>
+	    </property>
+	</update>
+	
+	<select id="getUserTrade" collection="x_trade">
+		<property name="param" class="java.lang.String">
+			<value column="user_id" name="${value}" value="not exists"/>
+			<value column="status" value="1" /> <!-- 开启状态的 -->
 		</property>
 		<property name="result" mapping="trade"/>
 		<property name="order">

@@ -140,15 +140,6 @@ public class FriendService {
     return response;
   }
 
-  public void supplementFriendShip(User user) {
-    FriendShip fs = dao.selectOne("getInviteRecordByPhone", user.getName());
-    if (fs != null) {
-      fs.setTargetUserID(user.getId());
-      fs.setAcceptionTime(System.currentTimeMillis());
-      dao.update("supplementFriendShip", fs);
-    }
-  }
-
   private boolean isNewInvite(LoginUser user, User targetUser, String targetPhone) {
     Map<String, Object> parameter = new HashMap<String, Object>();
     parameter.put("userID", user.getId());

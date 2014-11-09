@@ -2,15 +2,18 @@
 <sqls>
 	<!-- user info -->
 	<mapping id="user" class="com.dwk.model.user.User">
-		<property column="_id"    		name="id"/>
-		<property column="name"    		name="name"/>
-		<property column="nickName"    	name="nickName"/>
-		<property column="sex"    		name="sex"/>
-		<property column="accountID"    name="accountID" />
-		<property column="avatar"    	name="avatar"/>
-		<property column="rpValue"    	name="rpValue" value="0" type="int"/>
-		<property column="status" 		name="status" value="1" type="int"/>
-		<property column="createTime"   name="createTime"/>
+		<property column="_id"    			name="id"/>
+		<property column="openid"    		name="openid" />
+		<property column="nickname"    		name="nickname"/>
+		<property column="source"    		name="source"/>
+		<property column="score"    		name="score" type="int"/>
+		<property column="phone"    		name="phone" />
+		<property column="email"    		name="email" />
+		<property column="signature"    	name="signature" />
+		<property column="logo_url"    		name="logo_url" />
+		<property column="status" 			name="status" value="1" type="int"/>
+		<property column="create_time"  	name="create_time" type="long"/>
+		<property column="last_login_time"  name="last_login_time" type="long"/>
 	</mapping>
 	
 	<!-- basic user info -->
@@ -54,4 +57,52 @@
 		<property name="param"  mapping="user" />
 	</insert>
 	
+	<!-- ================================================================== -->
+	<mapping id="userInfo" class="com.dwk.model.user.UserInfo">
+		<property column="_id"    			name="id"/>
+		<property column="openid"    		name="openid" />
+		<property column="nickname"    		name="nickname"/>
+		<property column="source"    		name="source"/>
+		<property column="score"    		name="score" type="int"/>
+		<property column="phone"    		name="phone" />
+		<property column="email"    		name="email" />
+		<property column="signature"    	name="signature" />
+		<property column="logo_url"    		name="logo_url" />
+		<property column="status" 			name="status" value="1" type="int"/>
+		<property column="create_time"  	name="create_time" type="long"/>
+		<property column="last_login_time"  name="last_login_time" type="long"/>
+	</mapping>
+	
+	<select id="getUserByOpenid" collection="x_user">
+		<property name="param" class="java.lang.String">
+			<value column="openid" name="${value}" value="not exist"/>
+		</property>
+		<property name="result" mapping="userInfo"/>
+	</select>
+		
+	<insert id="createUser" collection="x_user">
+		<property name="param"  mapping="userInfo" />
+	</insert>
+	
+	<update id="inscreaseUserScore" collection="x_user">
+	    <property name="param" class="java.util.Map">
+	        <value column="_id" name="userID" type="objectid"/>
+	    </property>
+	    <property name="action" class="java.util.Map">
+	        <value column="score" operate="$inc" name="score" type="int"/>
+	    </property>
+	</update>	
+	
+	<update id="updateUser" collection="x_user">
+	    <property name="param" class="java.util.Map">
+	        <value column="_id" name="id" type="objectid"/>
+	    </property>
+	    <property name="action" class="java.util.Map">
+	        <value column="nickname" operate="$set" name="nickname"/>
+	        <value column="phone" operate="$set" name="phone"/>
+	        <value column="email" operate="$set" name="email"/>
+	        <value column="signature" operate="$set" name="signature"/>
+	        <value column="logo_url" operate="$set" name="logo_url"/>
+	    </property>
+	</update>	
 </sqls>

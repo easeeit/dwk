@@ -22,12 +22,12 @@ public class TradeService {
   private MongodbDao dao;
   private UserService userService;
   
+  // TODO 缓存
   public TradeListResponse list(int pageNum, int rowNum) {
     TradeListResponse res = new TradeListResponse();
     List<TradeInfo> result = dao.selectList("getTradeList", null, rowNum, (pageNum - 1) * rowNum);
-    // TODO 缓存
     for (TradeInfo t : result) {
-      t.setNickname(userService.getUserByID(t.getUser_id()).getNickName());
+      t.setNickname(userService.getUserByID(t.getUser_id()).getNickname());
     }
     res.setTrade(result);
     return res;
@@ -37,6 +37,7 @@ public class TradeService {
     TradeResponse res = new TradeResponse();
     if (user == null) {
       res.setCode(APIConstant.RETURN_CODE_OPERATE_PERMISSION_INVAILD);
+      return res;
     }
     // TODO 校验参数
     Trade trade = Trade.create(user, param);
@@ -55,9 +56,8 @@ public class TradeService {
       res.setCode(APIConstant.RETURN_CODE_PARAMETER_INVAILD);
       return res;
     }
-    param.put("user_id", user.getId());
-    param.put("update_time", System.currentTimeMillis());
-    int count = dao.update("updateTrade", param);
+    Trade trade = Trade.update(user, param);
+    int count = dao.update("updateTrade", trade);
     if (count <= 0 ) {
       res.setCode(APIConstant.RETURN_CODE_ERROR);
     }
@@ -81,7 +81,22 @@ public class TradeService {
     }
     return res;
   }
-
+  
+  // TODO cache
+  public TradeListResponse getUserTrade(LoginUser user, int pageNum, int rowNum) {
+    TradeListResponse res = new TradeListResponse();
+    if (user == null) {
+      res.setCode(APIConstant.RETURN_CODE_OPERATE_PERMISSION_INVAILD);
+      return res;
+    }
+    List<TradeInfo> result = dao.selectList("getUserTrade", user.getId(), rowNum, (pageNum - 1) * rowNum);
+    for (TradeInfo t : result) {
+      t.setNickname(userService.getUserByID(t.getUser_id()).getNickname());
+    }
+    res.setTrade(result);
+    return res;
+  }
+  
   public void setDao(MongodbDao dao) {
     this.dao = dao;
   }

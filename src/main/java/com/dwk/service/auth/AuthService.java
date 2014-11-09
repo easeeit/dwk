@@ -25,7 +25,6 @@ import com.dwk.service.account.AccountService;
 import com.dwk.service.friend.FriendService;
 import com.dwk.service.user.UserService;
 import com.dwk.util.IDCompress;
-import com.dwk.util.VerificationUtils;
 
 /**
  * System auth service. Login,logout and register.
@@ -76,11 +75,6 @@ public class AuthService {
     } else {
       user = userService.getUserByAccountID(account.getId());
       accountService.updateLastLoginTime(account.getId(), System.currentTimeMillis());
-    }
-
-    // friend ship
-    if(VerificationUtils.isMobile(user.getName())) {
-      friendService.supplementFriendShip(user);
     }
 
     // add to session
@@ -224,14 +218,9 @@ public class AuthService {
 
     // init user
     User user = new User();
-    user.setAccountID(account.getId());
-    user.setName(phone);
     user.setPhone(phone);
     userService.initUser(user);
 
-    // friend ship
-    friendService.supplementFriendShip(user);
-    
     // add to session
     LoginUser loginUser = putSession(user);
     
@@ -258,8 +247,6 @@ public class AuthService {
       return null;
     }
 
-    // update last operate time;
-    accountService.updateLastOperateTime(user.getAccountID(), System.currentTimeMillis());
     return user;
   }
 
@@ -269,20 +256,15 @@ public class AuthService {
   }
 
   // add to session
-  private LoginUser putSession(User user) {
+  public LoginUser putSession(User user) {
     String token = UUID.randomUUID().toString();
     String key = SystemConstant.LOGIN_USER_CACHE_KEY + token;
 
     LoginUser login = new LoginUser();
     login.setId(user.getId());
-    login.setAccountID(user.getAccountID());
     login.setUserPhone(user.getPhone());
     login.setAuthToken(token);
-    login.setAvatar(user.getAvatar());
-    login.setName(user.getName());
-    login.setNickName(user.getNickName());
-    login.setRpValue(user.getRpValue());
-    login.setSex(user.getSex());
+    login.setScore(user.getScore());
 
     cache.set(key, login);
     return login;
@@ -301,11 +283,6 @@ public class AuthService {
 
   private User initUser(AuthContext context, String accountID) {
     User user = new User();
-    user.setAccountID(accountID);
-    user.setName(context.getName());
-    user.setNickName(context.getNickName());
-    user.setSex(context.getSex());
-    user.setCreateTime(System.currentTimeMillis());
 
     userService.initUser(user);
     return user;
