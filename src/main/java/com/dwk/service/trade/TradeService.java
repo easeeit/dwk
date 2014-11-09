@@ -7,14 +7,12 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 
 import com.dwk.constant.APIConstant;
-import com.dwk.constant.SubjectType;
 import com.dwk.constant.TradeStatus;
 import com.dwk.dao.MongodbDao;
 import com.dwk.model.BasicResponse;
 import com.dwk.model.trade.Trade;
 import com.dwk.model.trade.TradeInfo;
 import com.dwk.model.trade.TradeListResponse;
-import com.dwk.model.trade.TradeOverview;
 import com.dwk.model.trade.TradeResponse;
 import com.dwk.model.user.LoginUser;
 import com.dwk.service.user.UserService;
@@ -26,29 +24,12 @@ public class TradeService {
   
   public TradeListResponse list(int pageNum, int rowNum) {
     TradeListResponse res = new TradeListResponse();
-    List<TradeOverview> result = dao.selectList("getTradeList", null, rowNum, (pageNum - 1) * rowNum);
+    List<TradeInfo> result = dao.selectList("getTradeList", null, rowNum, (pageNum - 1) * rowNum);
     // TODO 缓存
-    for (TradeOverview t : result) {
+    for (TradeInfo t : result) {
       t.setNickname(userService.getUserByID(t.getUser_id()).getNickName());
     }
     res.setTrade(result);
-    return res;
-  }
-  
-  public TradeInfo info(String tradeID) {
-    TradeInfo res = null;
-    if (StringUtils.isBlank(tradeID)) {
-      res = new TradeInfo();
-      res.setCode(APIConstant.RETURN_CODE_PARAMETER_INVAILD);
-      return res;
-    }
-    Map<String, Object> map = new HashMap<String, Object>(1);
-    map.put("tradeID", tradeID);
-    res = dao.selectOne("getTradeInfo", map);
-    if (res == null) {
-      res = new TradeInfo();
-      res.setCode(APIConstant.RETURN_CODE_DATA_NOT_FOUND);
-    }
     return res;
   }
   
@@ -58,10 +39,6 @@ public class TradeService {
       res.setCode(APIConstant.RETURN_CODE_OPERATE_PERMISSION_INVAILD);
     }
     // TODO 校验参数
-//    if (StringUtils.isBlank(subjectType) || !SubjectType.valid(subjectType) || StringUtils.isBlank(subjectID) || StringUtils.isBlank(content)) {
-//      res.setCode(APIConstant.RETURN_CODE_PARAMETER_INVAILD);
-//      return res;
-//    }
     Trade trade = Trade.create(user, param);
     String tradeID = dao.insert("createTrade", trade);
     if (StringUtils.isBlank(tradeID)) {

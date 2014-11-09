@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.dwk.constant.APIConstant;
-import com.dwk.constant.SystemConstant;
+import com.dwk.constant.DataConstant;
 import com.dwk.exception.DaoException;
 import com.dwk.exception.ServiceException;
 import com.dwk.model.user.LoginUser;
@@ -34,8 +34,8 @@ public class TopicController extends BaseController {
   @ResponseBody
   public String list(HttpServletRequest request, @PathVariable String pageNum, @PathVariable String rowNum) throws Exception {
     try {
-      Integer pn = SystemConstant.PN;
-      Integer rn = SystemConstant.RN;
+      Integer pn = DataConstant.PN;
+      Integer rn = DataConstant.RN;
       if (pageNum != null && !"0".equals(pageNum)) {
         pn = Integer.parseInt(pageNum);
       }

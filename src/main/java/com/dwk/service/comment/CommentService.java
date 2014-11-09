@@ -7,10 +7,12 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 
 import com.dwk.constant.APIConstant;
+import com.dwk.constant.DataConstant;
 import com.dwk.constant.SubjectType;
 import com.dwk.dao.MongodbDao;
 import com.dwk.model.BasicResponse;
 import com.dwk.model.comment.Comment;
+import com.dwk.model.comment.CommentInfo;
 import com.dwk.model.comment.CommentListResponse;
 import com.dwk.model.comment.CommentResponse;
 import com.dwk.model.user.LoginUser;
@@ -34,23 +36,34 @@ public class CommentService {
     }
     Map<String, Object> param = new HashMap<String, Object>(1);
     param.put("subject_id", subjectID);
-    List<Comment> result = dao.selectList("getCommentList", param, rowNum, (pageNum - 1) * rowNum);
+    List<CommentInfo> result = dao.selectList("getCommentList", param, rowNum, (pageNum - 1) * rowNum);
     res.setComment(result);
     return res;
   }
   
-  public CommentResponse create(LoginUser user, String subjectType, String subjectID, String content, String parentID) {
+  // TOTO 缓存
+  public List<CommentInfo> getHotComment(String subjectID) {
+    if (StringUtils.isBlank(subjectID)) {
+      return null;
+    }
+    return dao.selectList("getHotComment", subjectID, DataConstant.HOT_COMMENT_COUNT, 0);
+  }
+  
+  public CommentResponse create(LoginUser user, String subjectType, String subjectID, String content, Long cluster) {
     CommentResponse res = new CommentResponse();
     if (StringUtils.isBlank(subjectType) || !SubjectType.valid(subjectType) || StringUtils.isBlank(subjectID) || StringUtils.isBlank(content)) {
       res.setCode(APIConstant.RETURN_CODE_PARAMETER_INVAILD);
       return res;
     }
-    Comment comment = Comment.create(user, subjectID, subjectType, content, parentID);
+    Comment comment = Comment.create(user, subjectID, subjectType, content, cluster);
     String commentID = dao.insert("createComment", comment);
     if (StringUtils.isBlank(commentID)) {
       res.setCode(APIConstant.RETURN_CODE_ERROR);
     } else {
       res.setId(commentID);
+      res.setCluster(comment.getCluster());
+      // TODO 增加评论数/热度
+      
     }
     return res;
   }
@@ -85,6 +98,35 @@ public class CommentService {
       res.setCode(APIConstant.RETURN_CODE_ERROR);
     }
     return res;
+  }
+  
+  /**
+   * 更新评论数
+   * @param subjectType
+   * @param subjectID
+   */
+  public void updateCommentCount(String subjectType, String subjectID) {
+    if (subjectID == null || subjectType == null) {
+      return ;
+    }
+    String sql = null;
+    if (SubjectType.article.getValue().equals(subjectType)) { // 文章
+      sql = "updateArticleCommentCount";
+    } else if (SubjectType.topic.getValue().equals(subjectType)) { // 话题
+      sql = null;
+    } else if (SubjectType.trade.getValue().equals(subjectType)) { // 交易
+      sql = "updateTradeCommentCount";
+    } else if (SubjectType.comment.getValue().equals(subjectType)) { // 评论
+      sql = null;
+    } else if (SubjectType.product.getValue().equals(subjectType)) { // 产品
+      sql = "updateProductCommentCount";
+    } else if (SubjectType.user.getValue().equals(subjectType)){ // 用户
+      sql = null;
+    }
+    if (sql != null) {
+      dao.update(sql, subjectID);
+    }
+    return;
   }
   
   public void setDao(MongodbDao dao) {

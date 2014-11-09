@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.dwk.constant.APIConstant;
-import com.dwk.constant.SystemConstant;
+import com.dwk.constant.DataConstant;
 import com.dwk.exception.DaoException;
 import com.dwk.exception.ServiceException;
 import com.dwk.model.user.LoginUser;
@@ -36,8 +36,8 @@ public class CommentController extends BaseController {
   public String list(HttpServletRequest request, @RequestBody String subjectID, 
       @PathVariable String pageNum, @PathVariable String rowNum) throws Exception {
     try {
-      Integer pn = SystemConstant.PN;
-      Integer rn = SystemConstant.RN;
+      Integer pn = DataConstant.PN;
+      Integer rn = DataConstant.RN;
       if (pageNum != null && !"0".equals(pageNum)) {
         pn = Integer.parseInt(pageNum);
       }
@@ -57,10 +57,14 @@ public class CommentController extends BaseController {
   @RequestMapping(value = "/create", produces = APIConstant.CONTENT_TYPE_JSON)
   @ResponseBody
   public String create(HttpServletRequest request, @RequestParam String subject_type,
-      @RequestParam String subject_id, @RequestParam String content , @RequestParam String parent_id ) throws Exception {
+      @RequestParam String subject_id, @RequestParam String content , @RequestParam String strCluster ) throws Exception {
     try {
       LoginUser user = getUser();
-      return outResponse(commentService.create(user, subject_type, subject_id, content, parent_id));
+      Long cluster = null;
+      if (strCluster != null) {
+        cluster = Long.parseLong(strCluster);
+      }
+      return outResponse(commentService.create(user, subject_type, subject_id, content, cluster));
     } catch (ServiceException sex) {
       return outResponse("comment create", sex);
     } catch (DaoException dex) {

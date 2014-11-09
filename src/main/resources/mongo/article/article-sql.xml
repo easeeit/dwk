@@ -3,21 +3,26 @@
 	<!-- article mapping -->
 	<mapping id="article" class="com.dwk.model.article.Article">
 		<property column="_id"    			name="id"/>
+		<property column="product_id"    	name="product_id"/>
 		<property column="title"    		name="title"/>
-		<property column="sub_title"    	name="sub_title"/>
+		<property column="summary"    		name="summary"/>
+		<property column="content"    		name="content"/>
+		<property column="type"    			name="type"/>
+		<property column="style"    		name="style"/>
+		<property column="res"    			name="res"/>
 		<property column="url"    			name="url"/>
-		<property column="hits_count"    	name="hits_count"/>
-		<property column="laud_count"    	name="laud_count"/>
-		<property column="create_time" 		name="create_time" />
+		<property column="comment_count"    name="comment_count" type="int" />
+		<property column="laud_count"    	name="laud_count" type="int" />
 		<property column="author"  			name="author"/>
 		<property column="source"   		name="source"/>
 		<property column="status" 			name="status"/>
 		<property column="original_url" 	name="original_url"/>
+		<property column="create_time" 		name="create_time" type="long" />
 	</mapping>
 	
 	<select id="getArticleList" collection="x_article">
 		<property name="param" class="java.util.Map">
-			<value column="status" name="type" value="1" />
+			<value column="status" name="type" value="1" /> <!-- 资讯类 -->
 		</property>
 		<property name="result" mapping="article"/>
 		<property name="order">

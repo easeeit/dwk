@@ -1,11 +1,11 @@
-package com.dwk.model.comment;
+package com.dwk.model.product;
 
 import java.util.List;
 
-import com.dwk.model.BasicResponse;
+import com.dwk.model.comment.CommentInfo;
 
-public class CommentListResponse extends BasicResponse {
-  private List<CommentInfo> comment;
+public class ProductInfo extends Product {
+  List<CommentInfo> comment;
 
   public List<CommentInfo> getComment() {
     return comment;
@@ -14,6 +14,4 @@ public class CommentListResponse extends BasicResponse {
   public void setComment(List<CommentInfo> comment) {
     this.comment = comment;
   }
-
-  
 }

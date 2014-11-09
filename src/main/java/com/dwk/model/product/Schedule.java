@@ -3,15 +3,11 @@ package com.dwk.model.product;
 public class Schedule {
   private String id;
   private String product_id;
-  private String area;
-  private String language;
+  private String version;
   private String timetomarket;
   private String status;
+  private String delay_status;
   private String create_time;
-  
-  private String name;
-  private String platform;
-  private String platformName;
   
   public String getId() {
     return id;
@@ -24,18 +20,6 @@ public class Schedule {
   }
   public void setProduct_id(String product_id) {
     this.product_id = product_id;
-  }
-  public String getArea() {
-    return area;
-  }
-  public void setArea(String area) {
-    this.area = area;
-  }
-  public String getLanguage() {
-    return language;
-  }
-  public void setLanguage(String language) {
-    this.language = language;
   }
   public String getTimetomarket() {
     return timetomarket;
@@ -55,22 +39,16 @@ public class Schedule {
   public void setCreate_time(String create_time) {
     this.create_time = create_time;
   }
-  public String getName() {
-    return name;
+  public String getVersion() {
+    return version;
   }
-  public void setName(String name) {
-    this.name = name;
+  public void setVersion(String version) {
+    this.version = version;
   }
-  public String getPlatform() {
-    return platform;
+  public String getDelay_status() {
+    return delay_status;
   }
-  public void setPlatform(String platform) {
-    this.platform = platform;
-  }
-  public String getPlatformName() {
-    return platformName;
-  }
-  public void setPlatformName(String platformName) {
-    this.platformName = platformName;
+  public void setDelay_status(String delay_status) {
+    this.delay_status = delay_status;
   }
 }

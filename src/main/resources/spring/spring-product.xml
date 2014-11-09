@@ -11,13 +11,15 @@
     http://www.springframework.org/schema/jee/spring-jee-2.5.xsd
     ">
     
-	<bean id="commentService" class="com.dwk.service.comment.CommentService">
-		<property name="dao" ref="dao"/>
-	</bean>
-    
-	<bean id="articleService" class="com.dwk.service.article.ArticleService">
+	<bean id="productService" class="com.dwk.service.product.ProductService">
 		<property name="dao" ref="dao"/>
 		<property name="commentService" ref="commentService"/>
+		<property name="articleService" ref="articleService"/>
+	</bean>
+    
+	<bean id="scheduleService" class="com.dwk.service.product.ScheduleService">
+		<property name="dao" ref="dao"/>
+		<property name="productService" ref="productService"/>
 	</bean>
 	
 </beans>

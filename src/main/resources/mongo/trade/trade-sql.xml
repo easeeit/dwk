@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<sqls>
+	<!-- topic mapping -->
+	<mapping id="trade" class="com.dwk.model.trade.TradeInfo">
+		<property column="_id"    			name="id"/>
+		<property column="product_name"    	name="product_name"/>
+		<property column="status"    		name="status"/>
+		<property column="platform" 		name="platform"/>
+		<property column="version"    		name="version"/>
+		<property column="language"    		name="language" />
+		<property column="integrity" 		name="integrity" />
+		<property column="price"  			name="price" type="double" />
+		<property column="haggle"    		name="haggle"/>
+		<property column="exchange"    		name="exchange"/>
+		<property column="description"    	name="description"/>
+		<property column="remark"    		name="remark"/>
+		<property column="contact"    		name="contact"/>
+		<property column="area"    			name="area"/>
+		<property column="photo_url"    	name="photo_url"/>
+		<property column="comment_count"    name="comment_count" type="int" />
+		<property column="user_id"    		name="user_id"/>
+		<property column="create_time"   	name="create_time" type="long"/>
+	</mapping>
+		
+	<select id="getTradeList" collection="x_trade">
+		<property name="param" class="java.util.Map">
+			<value column="status" value="1" />
+		</property>
+		<property name="result" mapping="trade"/>
+		<property name="order">
+			<value key="create_time"  value="-1"/>
+		</property>
+	</select>
+</sqls>

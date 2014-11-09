@@ -3,17 +3,20 @@ package com.dwk.service.product;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 
-import com.dwk.constant.APIConstant;
-import com.dwk.constant.Platform;
+import com.dwk.constant.ArticleType;
 import com.dwk.dao.MongodbDao;
+import com.dwk.model.article.ArticleListResponse;
 import com.dwk.model.product.Product;
-import com.dwk.model.product.Schedule;
-import com.dwk.model.product.ScheduleListResponse;
+import com.dwk.model.product.ProductInfo;
+import com.dwk.model.product.commend.Commend;
+import com.dwk.model.product.commend.CommendListResponse;
+import com.dwk.model.product.commend.CommendProduct;
+import com.dwk.service.article.ArticleService;
+import com.dwk.service.comment.CommentService;
 
 /**
  * Product  service.
@@ -23,52 +26,78 @@ import com.dwk.model.product.ScheduleListResponse;
 public class ProductService {
 
   private MongodbDao dao;
+  private CommentService commentService;
+  private ArticleService articleService;
+
+  // TODO 缓存
+  public ProductInfo getProduct(String productID) {
+    if (StringUtils.isBlank(productID)) {
+      return null;
+    }
+    ProductInfo p = dao.selectOne("getProductByID", productID);
+    if (p != null) {
+      p.setComment(commentService.getHotComment(productID));
+    }
+    return p;
+  }
+
+  // TODO 缓存
+  public ArticleListResponse getNewsList(String productID, int pn, int rn) {
+    ArticleListResponse res = new ArticleListResponse();
+    res.setArticle(articleService.getListByProductID(productID, ArticleType.news, pn, rn));
+    return res;
+  }
+
+  // TODO 缓存
+  public ArticleListResponse getTipList(String productID, int pn, int rn) {
+    ArticleListResponse res = new ArticleListResponse();
+    res.setArticle(articleService.getListByProductID(productID, ArticleType.tip, pn, rn));
+    return res;
+  }
   
-  public ScheduleListResponse scheduleList(String platform, int pageNum, int rowNum) {
-    ScheduleListResponse res = new ScheduleListResponse();
-    if (!StringUtils.isBlank(platform) && !Platform.valid(platform)) {
-      res.setCode(APIConstant.RETURN_CODE_PARAMETER_INVAILD);
-      return res;
-    }
-    List<Schedule> scheduleList = null;
-    Map<String, Object> map = new HashMap<String, Object>(1);
-    if (StringUtils.isBlank(platform)) {
-      scheduleList = dao.selectList("getScheduleList", map, rowNum, (pageNum - 1) * rowNum);
-    } else {
-      map.put("platform", platform);
-      scheduleList = dao.selectList("getScheduleListForPlatform", map, rowNum, (pageNum - 1) * rowNum);
-    }
-    // 检索产品信息
-    if (!CollectionUtils.isEmpty(scheduleList)) {
-      List<String> productIDList = new ArrayList<String>(scheduleList.size());
-      for (Schedule schedule : scheduleList) {
-        if (schedule != null) {
-          productIDList.add(schedule.getProduct_id());
-        }
-      }
-      if (!CollectionUtils.isEmpty(productIDList)) {
-        map.put("productIDList", productIDList);
-        List<Product> productList = dao.selectList("getProductList", map);
-        Map<String,Product> pMap = new HashMap<String, Product>(productList.size());
-        for (Product p : productList) {
-          pMap.put(p.getId(), p);
-        }
-        for (Schedule schedule : scheduleList) {
-          if (schedule != null) {
-            Product p = pMap.get(schedule.getProduct_id());
-            schedule.setName(String.format("%s(%s)", p.getName_cn(), p.getName_en()));
-            schedule.setPlatform(p.getPlatform());
-            schedule.setPlatformName(Platform.valueToName(p.getPlatform()));
-          }
+  /**
+   * 周推荐
+   * @return
+   */
+  public CommendListResponse getCommend() {
+    CommendListResponse res = new CommendListResponse();
+    List<Commend> list = dao.selectList("getCommendProduct", null, 1, 0);
+    if (!CollectionUtils.isEmpty(list)) {
+      List<CommendProduct> info = new ArrayList<CommendProduct>(list.size());
+      for (Commend commend : list) {
+        if (commend != null) {
+          ProductInfo p = getProduct(commend.getProduct_id());
+          info.add(CommendProduct.parse(p));
         }
       }
     }
-    res.setSchedule(scheduleList);
+    return res;
+  }
+  
+  public CommendListResponse getHotTopN(int n) {
+    CommendListResponse res = new CommendListResponse();
+    List<Product> list = dao.selectList("getHotTopProduct", new HashMap<String,Object>(0), n, 0);
+    if (!CollectionUtils.isEmpty(list)) {
+      List<CommendProduct> info = new ArrayList<CommendProduct>(list.size());
+      for (Product p : list) {
+        if (p != null) {
+          info.add(CommendProduct.parse(p));
+        }
+      }
+    }
     return res;
   }
   
   public void setDao(MongodbDao dao) {
     this.dao = dao;
+  }
+
+  public void setCommentService(CommentService commentService) {
+    this.commentService = commentService;
+  }
+
+  public void setArticleService(ArticleService articleService) {
+    this.articleService = articleService;
   }
 
 }
