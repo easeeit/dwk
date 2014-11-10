@@ -23,6 +23,7 @@ public class Product {
   private String gurl;
   private String surl;
   private Long create_time;
+  private String status;
   public String getId() {
     return id;
   }
@@ -154,6 +155,12 @@ public class Product {
   }
   public void setHot(Integer hot) {
     this.hot = hot;
+  }
+  public String getStatus() {
+    return status;
+  }
+  public void setStatus(String status) {
+    this.status = status;
   }
   
 }

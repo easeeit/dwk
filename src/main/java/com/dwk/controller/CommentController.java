@@ -1,13 +1,16 @@
 package com.dwk.controller;
 
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.HandlerMapping;
 
 import com.dwk.constant.APIConstant;
 import com.dwk.constant.DataConstant;
@@ -25,25 +28,38 @@ import com.dwk.service.comment.CommentService;
  */
 @Controller
 @RequestMapping("/comment")
+@SuppressWarnings("rawtypes")
 public class CommentController extends BaseController {
 
   @Autowired
   private CommentService commentService;
 
-  @RequestMapping(value = "/list/{subjectID}/{pageNum}/{rowNum}", produces = APIConstant.CONTENT_TYPE_JSON)
+  @RequestMapping(value = {"/list/{subjectID}/{pageNum}/{rowNum}",
+          "/list/{subjectID}/{pageNum}",
+          "/list/{subjectID}",
+          "/list"
+  }, produces = APIConstant.CONTENT_TYPE_JSON)
   @ResponseBody
-  public String list(HttpServletRequest request, @RequestParam String subjectID, 
-      @PathVariable String pageNum, @PathVariable String rowNum) throws Exception {
+  public String list(HttpServletRequest request) throws Exception {
     try {
-      Integer pn = DataConstant.PN;
-      Integer rn = DataConstant.RN;
-      if (pageNum != null && !"0".equals(pageNum)) {
-        pn = Integer.parseInt(pageNum);
+      Integer pageNum = DataConstant.PN;
+      Integer rowNum= DataConstant.RN;
+      String subjectID = null;
+      Map pathVariables = (Map) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
+      if (pathVariables != null) {
+        if (pathVariables.containsKey("pageNum")) {
+          pageNum = NumberUtils.toInt("" + pathVariables.get("pageNum"), pageNum);
+          pageNum = pageNum > 0 ? pageNum : DataConstant.PN;
+        }
+        if (pathVariables.containsKey("rowNum")) {
+          rowNum = NumberUtils.toInt("" + pathVariables.get("rowNum"), rowNum);
+          rowNum = rowNum > 0 ? rowNum : DataConstant.RN;
+        }
+        if (pathVariables.containsKey("subjectID")) {
+          subjectID = "" + pathVariables.get("subjectID");
+        }
       }
-      if (rowNum != null) {
-        rn = Integer.parseInt(rowNum);
-      }
-      return outResponse(commentService.list(subjectID, pn, rn));
+      return outResponse(commentService.list(subjectID, pageNum, rowNum));
     } catch (ServiceException sex) {
       return outResponse("comment list", sex);
     } catch (DaoException dex) {
@@ -55,14 +71,11 @@ public class CommentController extends BaseController {
 
   @RequestMapping(value = "/create", produces = APIConstant.CONTENT_TYPE_JSON)
   @ResponseBody
-  public String create(HttpServletRequest request, @RequestParam String subject_type,
-      @RequestParam String subject_id, @RequestParam String content , @RequestParam String strCluster ) throws Exception {
+  public String create(HttpServletRequest request, @RequestParam(required = false) String subject_type, 
+          @RequestParam(required = false) String subject_id, @RequestParam(required = false) String content, 
+          @RequestParam(required = false) Long cluster) throws Exception {
     try {
       LoginUser user = getUser();
-      Long cluster = null;
-      if (strCluster != null) {
-        cluster = Long.parseLong(strCluster);
-      }
       return outResponse(commentService.create(user, subject_type, subject_id, content, cluster));
     } catch (ServiceException sex) {
       return outResponse("comment create", sex);
@@ -75,7 +88,8 @@ public class CommentController extends BaseController {
 
   @RequestMapping(value = "/update", produces = APIConstant.CONTENT_TYPE_JSON)
   @ResponseBody
-  public String update(HttpServletRequest request, @RequestParam String id, @RequestParam String content ) throws Exception {
+  public String update(HttpServletRequest request, @RequestParam(required = false) String id, 
+          @RequestParam(required = false) String content) throws Exception {
     try {
       LoginUser user = getUser();
       return outResponse(commentService.update(user, id, content));
@@ -90,7 +104,7 @@ public class CommentController extends BaseController {
 
   @RequestMapping(value = "/delete", produces = APIConstant.CONTENT_TYPE_JSON)
   @ResponseBody
-  public String delete(HttpServletRequest request, @RequestParam String id) throws Exception {
+  public String delete(HttpServletRequest request, @RequestParam(required = false) String id) throws Exception {
     try {
       LoginUser user = getUser();
       return outResponse(commentService.delete(user, id));
@@ -103,6 +117,6 @@ public class CommentController extends BaseController {
     }
   }
 
- 
+
 
 }

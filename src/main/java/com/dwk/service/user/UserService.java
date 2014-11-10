@@ -88,7 +88,8 @@ public class UserService {
         res.setId(userID);
       }
     }
-    authService.putSession(res);
+    LoginUser user = authService.putSession(res);
+    res.setToken(user.getAuthToken());
     return res;
   }  
   

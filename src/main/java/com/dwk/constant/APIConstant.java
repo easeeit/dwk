@@ -29,7 +29,7 @@ public class APIConstant {
   public static final int RETURN_CODE_OPERATE_PERMISSION_INVAILD = 201;
   public static final int RETURN_CODE_PARAMETER_INVAILD = 512;
   
-  public static final String HEADER_TOKEN_KEY = "AuthToken";
+  public static final String HEADER_TOKEN_KEY = "token";
   public static final String HEADER_KEY_KEY = "key";
   public static final String HEADER_KEYSECRET_KEY = "keySecret";
   

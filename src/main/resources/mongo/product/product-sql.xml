@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <sqls>
 	<!-- 用户信息 -->
-	<mapping id="product" class="com.dwk.model.product.Product">
+	<mapping id="product" class="com.dwk.model.product.ProductInfo">
 		<property column="_id"    			name="id"/>
 		<property column="name_cn"    		name="name_cn"/>
 		<property column="name_en"    		name="name_en"/>
@@ -24,6 +24,7 @@
 		<property column="gurl" 			name="gurl"/>
 		<property column="surl" 			name="surl"/>
 		<property column="create_time"   	name="create_time"		type="long"/>
+		<property column="status" 			name="status"/>
 	</mapping>
 	
 	<mapping id="schedule" class="com.dwk.model.product.ScheduleInfo">
@@ -44,7 +45,7 @@
 	
 	<select id="getWillScheduleListOrderByTime" collection="x_schedule">
 		<property name="param" class="java.util.Map">
-			<value column="status"  name="1" />
+			<value column="status"  value="1" />
 		</property>
 		<property name="result" mapping="schedule"/>
 		<property name="order">
@@ -54,7 +55,7 @@
 	
 	<select id="getWillScheduleListOrderByHot" collection="x_schedule">
 		<property name="param" class="java.util.Map">
-			<value column="status"  name="1" />
+			<value column="status"  value="1" />
 		</property>
 		<property name="result" mapping="schedule"/>
 		<property name="order">
@@ -64,7 +65,7 @@
 	
 	<select id="getDoneScheduleListOrderByTime" collection="x_schedule">
 		<property name="param" class="java.util.Map">
-			<value column="status"  name="2" />
+			<value column="status"  value="2" />
 		</property>
 		<property name="result" mapping="schedule"/>
 		<property name="order">
@@ -74,7 +75,7 @@
 	
 	<select id="getDoneScheduleListOrderByHot" collection="x_schedule">
 		<property name="param" class="java.util.Map">
-			<value column="status"  name="2" />
+			<value column="status"  value="2" />
 		</property>
 		<property name="result" mapping="schedule"/>
 		<property name="order">

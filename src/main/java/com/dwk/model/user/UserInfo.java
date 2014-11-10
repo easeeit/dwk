@@ -4,12 +4,18 @@ import com.dwk.constant.APIConstant;
 
 public class UserInfo extends User {
   private Integer code = APIConstant.RETURN_CODE_OK;
-
-  public int getCode() {
-    return code;
+  private String token;
+  
+  public String getToken() {
+    return token;
   }
-
-  public void setCode(int code) {
+  public void setToken(String token) {
+    this.token = token;
+  }
+  public void setCode(Integer code) {
     this.code = code;
+  }
+  public Integer getCode() {
+    return code;
   }
 }

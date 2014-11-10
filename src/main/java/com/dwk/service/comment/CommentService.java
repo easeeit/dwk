@@ -93,6 +93,7 @@ public class CommentService {
     }
     Map<String , Object> param = new HashMap<String, Object>(1);
     param.put("id", commentID);
+    param.put("userID", user.getId());
     int count = dao.update("deleteComment", param);
     if (count <= 0 ) {
       res.setCode(APIConstant.RETURN_CODE_ERROR);

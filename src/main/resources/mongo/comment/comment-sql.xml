@@ -53,10 +53,11 @@
 	
 	<update id="deleteComment" collection="x_comment">
 	    <property name="param" class="java.util.Map">
-	        <value column="_id" name="id" type="objectid"/>
+	        <value column="_id" name="id" type="objectid" value="not exists"/>
+	        <value column="user_id" name="userID" value="not exists"/>
 	    </property>
 	    <property name="action" class="java.util.Map">
-	        <value column="status" operate="$set" name="2"/>
+	        <value column="status" operate="$set" value="2"/>
 	    </property>
 	</update>	
 	
