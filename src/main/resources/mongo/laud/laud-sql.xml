@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<sqls>
+	<mapping id="laud" class="com.dwk.model.user.Laud">
+		<property column="_id"    		name="userID"/>
+		<property column="user_id"    	name="user_id"/>
+		<property column="subject_id"   name="subject_id"/>
+		<property column="subject_type" name="subject_type"/>
+	</mapping>
+	
+	<insert id="createLaud" collection="x_laud">
+		<property name="param"  mapping="praise" />
+	</insert>
+	
+	<delete id="deleteLaud" collection="x_laud">
+	    <property name="param" class="com.dwk.model.user.Laud">
+	        <value column="subject_id" name="subject_id" />
+	        <value column="user_id" name="user_id" />
+	    </property>
+	</delete>
+	
+	<update id="incArticleLaudCount" collection="x_article">
+	    <property name="param" class="java.util.Map">
+	        <value column="_id" name="articleID" type="objectid"/>
+	    </property>
+	    <property name="action" class="java.util.Map">
+	        <value column="laud_count" operate="$inc" name="count" type="int"/>
+	    </property>
+	</update>	
+	
+	<update id="incTopicLaudCount" collection="x_topic">
+	    <property name="param" class="java.util.Map">
+	        <value column="_id" name="topicID" type="objectid"/>
+	    </property>
+	    <property name="action" class="java.util.Map">
+	        <value column="laud_count" operate="$inc" name="count" type="int"/>
+	    </property>
+	</update>	
+	
+	<update id="incCommentLaudCount" collection="x_comment">
+	    <property name="param" class="java.util.Map">
+	        <value column="_id" name="commentID" type="objectid"/>
+	    </property>
+	    <property name="action" class="java.util.Map">
+	        <value column="laud_count" operate="$inc" name="count" type="int"/>
+	    </property>
+	</update>	
+	
+	<update id="incProductLaudCount" collection="x_product">
+	    <property name="param" class="java.util.Map">
+	        <value column="_id" name="productID" type="objectid"/>
+	    </property>
+	    <property name="action" class="java.util.Map">
+	        <value column="laud_count" operate="$inc" name="count" type="int"/>
+	    </property>
+	</update>	
+	
+</sqls>

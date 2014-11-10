@@ -34,8 +34,6 @@ public class SystemConstant {
   public static final int VERIFICATION_CODE_CACHE_TIME = 60 * 3;
   
   public static final String VERIFICATION_MESSAGE = "【dwl】您好，您的注册验证码为【%s】。";
-  
-  public static final int PN = 1;
-  public static final int RN = 10;
+
   
 }

@@ -26,12 +26,10 @@
 	</insert>
 	
 	<select id="getSubjectTagIDList" collection="x_tag_relation">
-	    <property name="param" class="java.util.Map">
+	    <property name="param" class="java.lang.String">
 	        <value column="subject_id" name="${value}" />
 	    </property>
-	    <property name="result" >
-			<!-- TODO -->	        
-	    </property>
+		<property name="result" mapping="tagRelation"/>
 	</select>
 	
 	<delete id="deleteTagRelation" collection="x_tag_relation">

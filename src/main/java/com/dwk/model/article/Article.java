@@ -1,19 +1,29 @@
 package com.dwk.model.article;
 
+import java.util.List;
+
+import com.dwk.model.comment.CommentInfo;
+
 public class Article {
   private String id;
+  private String product_id;
   private String title;
-  private String sub_title;
+  private String summary;
   private String content;
   private String source;
   private String type;
+  private String style;
+  private String res;
   private String author;
   private String status;
-  private Integer hits_count;
   private Integer laud_count;
+  private Integer comment_count;
   private String url;
   private String original_url;
   private Long create_time;
+  
+  private List<CommentInfo> comment;
+  
   public String getId() {
     return id;
   }
@@ -25,12 +35,6 @@ public class Article {
   }
   public void setTitle(String title) {
     this.title = title;
-  }
-  public String getSub_title() {
-    return sub_title;
-  }
-  public void setSub_title(String sub_title) {
-    this.sub_title = sub_title;
   }
   public String getContent() {
     return content;
@@ -62,12 +66,6 @@ public class Article {
   public void setStatus(String status) {
     this.status = status;
   }
-  public Integer getHits_count() {
-    return hits_count;
-  }
-  public void setHits_count(Integer hits_count) {
-    this.hits_count = hits_count;
-  }
   public Integer getLaud_count() {
     return laud_count;
   }
@@ -91,5 +89,41 @@ public class Article {
   }
   public void setCreate_time(Long create_time) {
     this.create_time = create_time;
+  }
+  public List<CommentInfo> getComment() {
+    return comment;
+  }
+  public void setComment(List<CommentInfo> comment) {
+    this.comment = comment;
+  }
+  public String getProduct_id() {
+    return product_id;
+  }
+  public void setProduct_id(String product_id) {
+    this.product_id = product_id;
+  }
+  public String getSummary() {
+    return summary;
+  }
+  public void setSummary(String summary) {
+    this.summary = summary;
+  }
+  public String getStyle() {
+    return style;
+  }
+  public void setStyle(String style) {
+    this.style = style;
+  }
+  public String getRes() {
+    return res;
+  }
+  public void setRes(String res) {
+    this.res = res;
+  }
+  public Integer getComment_count() {
+    return comment_count;
+  }
+  public void setComment_count(Integer comment_count) {
+    this.comment_count = comment_count;
   }
 }

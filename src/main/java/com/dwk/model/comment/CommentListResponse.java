@@ -5,14 +5,15 @@ import java.util.List;
 import com.dwk.model.BasicResponse;
 
 public class CommentListResponse extends BasicResponse {
-  private List<Comment> comment;
+  private List<CommentInfo> comment;
 
-  public List<Comment> getComment() {
+  public List<CommentInfo> getComment() {
     return comment;
   }
 
-  public void setComment(List<Comment> comment) {
+  public void setComment(List<CommentInfo> comment) {
     this.comment = comment;
   }
+
   
 }

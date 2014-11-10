@@ -14,5 +14,5 @@ public class ArticleListResponse extends BasicResponse {
   public void setArticle(List<Article> article) {
     this.article = article;
   }
-  
+
 }

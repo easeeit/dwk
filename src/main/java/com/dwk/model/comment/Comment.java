@@ -13,25 +13,28 @@ public class Comment {
   private String nickname ;
   private String logo_url ;
   private Integer laud_count ;
+  private Integer hot ;
   private Long create_time ;
-  private String parent_id ;
-  private String user_ip ;
-  private String user_location ;
+  private Long cluster ;
   
-  public static Comment create(LoginUser user, String subjectID, String subjectType, String content, String parentID) {
+  public static Comment create(LoginUser user, String subjectID, String subjectType, String content, Long cluster) {
+    long now = System.currentTimeMillis();
     Comment c = new Comment();
     c.subject_id = subjectID;
     c.subject_type = subjectType;
     c.content = content;
     c.status = DataConstant.STATUS_ENABLE;
-    c.parent_id = parentID;
     c.laud_count = 0;
-    c.create_time = System.currentTimeMillis();
+    c.hot = 0;
+    c.create_time = now;
     c.user_id = user.getId();
     c.nickname = user.getNickName();
     c.logo_url = user.getLogoUrl();
-    c.user_ip = null; //TODO
-    c.user_location = null; // TODO
+    if (cluster != null && cluster > 0) {
+      c.cluster = cluster;
+    } else {
+      c.cluster = now;
+    }
     return c;
   }
   
@@ -115,28 +118,20 @@ public class Comment {
     this.create_time = create_time;
   }
 
-  public String getParent_id() {
-    return parent_id;
+  public Long getCluster() {
+    return cluster;
   }
 
-  public void setParent_id(String parent_id) {
-    this.parent_id = parent_id;
+  public void setCluster(Long cluster) {
+    this.cluster = cluster;
   }
 
-  public String getUser_ip() {
-    return user_ip;
+  public Integer getHot() {
+    return hot;
   }
 
-  public void setUser_ip(String user_ip) {
-    this.user_ip = user_ip;
-  }
-
-  public String getUser_location() {
-    return user_location;
-  }
-
-  public void setUser_location(String user_location) {
-    this.user_location = user_location;
+  public void setHot(Integer hot) {
+    this.hot = hot;
   }
   
 }

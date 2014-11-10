@@ -5,14 +5,12 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.dwk.constant.APIConstant;
-import com.dwk.constant.SystemConstant;
+import com.dwk.constant.DataConstant;
 import com.dwk.exception.DaoException;
 import com.dwk.exception.ServiceException;
 import com.dwk.model.user.LoginUser;
@@ -34,17 +32,15 @@ public class TradeController extends BaseController {
 
   @RequestMapping(value = "/list/{pageNum}/{rowNum}", produces = APIConstant.CONTENT_TYPE_JSON)
   @ResponseBody
-  public String list(HttpServletRequest request, @PathVariable String pageNum, @PathVariable String rowNum) throws Exception {
+  public String list(HttpServletRequest request, @PathVariable Integer pageNum, @PathVariable Integer rowNum) throws Exception {
     try {
-      Integer pn = SystemConstant.PN;
-      Integer rn = SystemConstant.RN;
-      if (pageNum != null && !"0".equals(pageNum)) {
-        pn = Integer.parseInt(pageNum);
+      if (pageNum <= 0) {
+        pageNum = DataConstant.PN;
       }
-      if (rowNum != null) {
-        rn = Integer.parseInt(rowNum);
+      if (rowNum <= 0) {
+        rowNum = DataConstant.RN;
       }
-      return outResponse(tradeService.list(pn, rn));
+      return outResponse(tradeService.list(pageNum, rowNum));
     } catch (ServiceException sex) {
       return outResponse("trade list", sex);
     } catch (DaoException dex) {
@@ -54,21 +50,6 @@ public class TradeController extends BaseController {
     }
   }
 
-  @RequestMapping(value = "/info/{tradeID}", produces = APIConstant.CONTENT_TYPE_JSON)
-  @ResponseBody
-  public String info(HttpServletRequest request, @PathVariable String tradeID) throws Exception {
-    try {
-      LoginUser user = getUser();
-      return outResponse(tradeService.info(tradeID));
-    } catch (ServiceException sex) {
-      return outResponse("trade info", sex);
-    } catch (DaoException dex) {
-      return outResponse("trade info", dex);
-    } catch (Exception ex) {
-      return outResponse("trade info", ex);
-    }
-  }
-  
   @RequestMapping(value = "/create", produces = APIConstant.CONTENT_TYPE_JSON)
   @ResponseBody
   public String create(HttpServletRequest request ) throws Exception {

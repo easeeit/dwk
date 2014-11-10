@@ -5,13 +5,13 @@ import java.util.List;
 import com.dwk.model.BasicResponse;
 
 public class TradeListResponse extends BasicResponse {
-  private List<TradeOverview> trade;
+  private List<TradeInfo> trade;
 
-  public List<TradeOverview> getTrade() {
+  public List<TradeInfo> getTrade() {
     return trade;
   }
 
-  public void setTrade(List<TradeOverview> trade) {
+  public void setTrade(List<TradeInfo> trade) {
     this.trade = trade;
   }
 

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<sqls>
+	<!-- user info -->
+	<mapping id="feedback" class="com.dwk.model.user.Feedback">
+		<property column="_id"    		name="id"/>
+		<property column="user_id"    	name="user_id"/>
+		<property column="contact"    	name="contact"/>
+		<property column="content"    	name="content"/>
+	</mapping>
+	
+	<insert id="createFeedback" collection="x_feedback">
+		<property name="param"  mapping="feedback" />
+	</insert>
+	
+</sqls>

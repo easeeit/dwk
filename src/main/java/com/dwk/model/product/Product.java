@@ -8,14 +8,20 @@ public class Product {
   private String publisher;
   private String platform;
   private String type;
+  private String kinect;
   private Integer attention_count;
+  private Integer comment_count;
   private Double score;
   private Integer score_time;
   private Integer laud_count;
+  private Integer hot;
   private String player_number;
   private String introduction;
   private String website;
   private String screenshot_list;
+  private String video_list;
+  private String gurl;
+  private String surl;
   private Long create_time;
   public String getId() {
     return id;
@@ -112,6 +118,42 @@ public class Product {
   }
   public void setCreate_time(Long create_time) {
     this.create_time = create_time;
+  }
+  public String getKinect() {
+    return kinect;
+  }
+  public void setKinect(String kinect) {
+    this.kinect = kinect;
+  }
+  public Integer getComment_count() {
+    return comment_count;
+  }
+  public void setComment_count(Integer comment_count) {
+    this.comment_count = comment_count;
+  }
+  public String getVideo_list() {
+    return video_list;
+  }
+  public void setVideo_list(String video_list) {
+    this.video_list = video_list;
+  }
+  public String getGurl() {
+    return gurl;
+  }
+  public void setGurl(String gurl) {
+    this.gurl = gurl;
+  }
+  public String getSurl() {
+    return surl;
+  }
+  public void setSurl(String surl) {
+    this.surl = surl;
+  }
+  public Integer getHot() {
+    return hot;
+  }
+  public void setHot(Integer hot) {
+    this.hot = hot;
   }
   
 }

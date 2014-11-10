@@ -43,8 +43,14 @@
 	<bean id="dbClientBeanFactory" class="com.lenovo.supernote.orm.DBClientBeanFactory">
 		<property name="configLocations">
 			<list>
-				<value>classpath:mongo/user/user-sql.xml</value>
 				<value>classpath:mongo/article/article-sql.xml</value>
+				<value>classpath:mongo/attention/attention-sql.xml</value>
+				<value>classpath:mongo/comment/comment-sql.xml</value>
+				<value>classpath:mongo/product/product-sql.xml</value>
+				<value>classpath:mongo/tag/tag-sql.xml</value>
+				<value>classpath:mongo/topic/topic-sql.xml</value>
+				<value>classpath:mongo/trade/trade-sql.xml</value>
+				<value>classpath:mongo/user/user-sql.xml</value>
 				<value>classpath:mongo/account/account-sql.xml</value>
 				<value>classpath:mongo/friend/friend-sql.xml</value>
 				<value>classpath:mongo/message/message-sql.xml</value>

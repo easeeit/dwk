@@ -13,6 +13,7 @@
     
 	<bean id="TradeService" class="com.dwk.service.trade.TradeService">
 		<property name="dao" ref="dao"/>
+		<property name="userService" ref="userService"/>
 	</bean>
 	
 </beans>

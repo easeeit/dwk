@@ -3,7 +3,10 @@ package com.dwk.constant;
 public enum SubjectType {
   article("1"),
   topic("2"),
-  trade("3");
+  trade("3"),
+  comment("4"),
+  product("5"),
+  user("6");
   
   private String v;
   

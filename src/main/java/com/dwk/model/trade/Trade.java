@@ -8,21 +8,23 @@ import com.dwk.model.user.LoginUser;
 public class Trade {
   private String id;
   private String product_name;
-  private String mode;
   private String status;
-  private Double price;
   private String platform;
   private String version;
   private String language;
-  private String quality;
   private String integrity;
-  private String attachment;
+  private Double price;
+  private String haggle;
+  private String exchange;
   private String description;
   private String remark;
   private String user_id;
-  private String phone;
+  private String contact ;
   private String area;
+  private String photo_url;
+  private Integer comment_count;
   private Long create_time;
+  private Long update_time;
   
   public static Trade create(LoginUser user, Map<String, Object> map) {
     Trade t = new Trade();
@@ -31,16 +33,40 @@ public class Trade {
     t.description = (String)map.get("description");
     t.integrity = (String)map.get("integrity");
     t.language = (String)map.get("language");
-    t.mode = (String)map.get("mode");
-    t.phone = (String)map.get("phone");
     t.platform = (String)map.get("platform");
     t.price = Double.parseDouble(String.valueOf(map.get("price")));
     t.product_name = (String)map.get("product_name");
-    t.quality = (String)map.get("quality");
     t.remark = (String)map.get("remark");
     t.status = DataConstant.STATUS_ENABLE;
     t.user_id = user.getId();
     t.version = (String)map.get("version");
+    t.contact = (String)map.get("contact");
+    t.exchange = (String)map.get("exchange");
+    t.haggle = (String)map.get("haggle");
+    t.photo_url = (String)map.get("photo_url");
+    t.comment_count = 0;
+    return t;
+  }
+  
+  public static Trade update(LoginUser user, Map<String, Object> map) {
+    Trade t = new Trade();
+    t.id = (String)map.get("id");
+    t.area = (String)map.get("area");
+    t.update_time = System.currentTimeMillis();
+    t.description = (String)map.get("description");
+    t.integrity = (String)map.get("integrity");
+    t.language = (String)map.get("language");
+    t.platform = (String)map.get("platform");
+    t.price = Double.parseDouble(String.valueOf(map.get("price")));
+    t.product_name = (String)map.get("product_name");
+    t.remark = (String)map.get("remark");
+    t.status = DataConstant.STATUS_ENABLE;
+    t.user_id = user.getId();
+    t.version = (String)map.get("version");
+    t.contact = (String)map.get("contact");
+    t.exchange = (String)map.get("exchange");
+    t.haggle = (String)map.get("haggle");
+    t.photo_url = (String)map.get("photo_url");
     return t;
   }
   public String getId() {
@@ -54,12 +80,6 @@ public class Trade {
   }
   public void setProduct_name(String product_name) {
     this.product_name = product_name;
-  }
-  public String getMode() {
-    return mode;
-  }
-  public void setMode(String mode) {
-    this.mode = mode;
   }
   public String getStatus() {
     return status;
@@ -91,23 +111,11 @@ public class Trade {
   public void setLanguage(String language) {
     this.language = language;
   }
-  public String getQuality() {
-    return quality;
-  }
-  public void setQuality(String quality) {
-    this.quality = quality;
-  }
   public String getIntegrity() {
     return integrity;
   }
   public void setIntegrity(String integrity) {
     this.integrity = integrity;
-  }
-  public String getAttachment() {
-    return attachment;
-  }
-  public void setAttachment(String attachment) {
-    this.attachment = attachment;
   }
   public String getDescription() {
     return description;
@@ -127,12 +135,6 @@ public class Trade {
   public void setUser_id(String user_id) {
     this.user_id = user_id;
   }
-  public String getPhone() {
-    return phone;
-  }
-  public void setPhone(String phone) {
-    this.phone = phone;
-  }
   public String getArea() {
     return area;
   }
@@ -144,5 +146,41 @@ public class Trade {
   }
   public void setCreate_time(Long create_time) {
     this.create_time = create_time;
+  }
+  public String getHaggle() {
+    return haggle;
+  }
+  public void setHaggle(String haggle) {
+    this.haggle = haggle;
+  }
+  public String getExchange() {
+    return exchange;
+  }
+  public void setExchange(String exchange) {
+    this.exchange = exchange;
+  }
+  public String getContact() {
+    return contact;
+  }
+  public void setContact(String contact) {
+    this.contact = contact;
+  }
+  public String getPhoto_url() {
+    return photo_url;
+  }
+  public void setPhoto_url(String photo_url) {
+    this.photo_url = photo_url;
+  }
+  public Integer getComment_count() {
+    return comment_count;
+  }
+  public void setComment_count(Integer comment_count) {
+    this.comment_count = comment_count;
+  }
+  public Long getUpdate_time() {
+    return update_time;
+  }
+  public void setUpdate_time(Long update_time) {
+    this.update_time = update_time;
   }
 }

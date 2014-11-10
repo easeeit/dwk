@@ -26,6 +26,7 @@ public class LoginUser implements Serializable {
   private String logoUrl;
   
   private String authToken;
+  private Integer score;
 
   public String getId() {
     return id;
@@ -121,6 +122,14 @@ public class LoginUser implements Serializable {
 
   public void setLogoUrl(String logoUrl) {
     this.logoUrl = logoUrl;
+  }
+
+  public Integer getScore() {
+    return score;
+  }
+
+  public void setScore(Integer score) {
+    this.score = score;
   }
   
 }

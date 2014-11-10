@@ -10,11 +10,20 @@
 		<property column="user_id"    		name="user_id"/>
 		<property column="nickname"    		name="nickname" />
 		<property column="logo_url" 		name="logo_url" />
-		<property column="laud_count"  		name="laud_count"/>
-		<property column="create_time"   	name="create_time"/>
-		<property column="parent_id" 		name="parent_id"/>
-		<property column="user_ip" 			name="user_ip"/>
-		<property column="user_location" 	name="user_location"/>
+		<property column="laud_count"  		name="laud_count" type="int" />
+		<property column="hot"  			name="hot" type="int" />
+		<property column="create_time"   	name="create_time" type="long" />
+		<property column="cluster" 			name="cluster" type="long" />
+	</mapping>
+	<mapping id="commentInfo" class="com.dwk.model.comment.CommentInfo">
+		<property column="_id"    			name="id"/>
+		<property column="content"    		name="content"/>
+		<property column="user_id"    		name="user_id"/>
+		<property column="nickname"    		name="nickname" />
+		<property column="logo_url" 		name="logo_url" />
+		<property column="laud_count"  		name="laud_count" type="int" />
+		<property column="create_time"   	name="create_time" type="long" />
+		<property column="cluster" 			name="cluster" type="long" />
 	</mapping>
 	
 	<select id="getCommentList" collection="x_comment">
@@ -22,14 +31,14 @@
 			<value column="subject_id" name="subject_id" />
 			<value column="status" value="1" />
 		</property>
-		<property name="result" mapping="comment"/>
+		<property name="result" mapping="commentInfo"/>
 		<property name="order">
 			<value key="create_time"  value="-1"/>
 		</property>
 	</select>
 	
 	<insert id="createComment" collection="x_comment">
-		<property name="param"  mapping="account" />
+		<property name="param"  mapping="comment" />
 	</insert>
 	
 	<update id="updateComment" collection="x_comment">
@@ -49,6 +58,55 @@
 	    <property name="action" class="java.util.Map">
 	        <value column="status" operate="$set" name="2"/>
 	    </property>
+	</update>	
+	
+	<select id="getHotComment" collection="x_comment">
+		<property name="param" class="java.lang.String">
+			<value column="subject_id" name="${value}" />
+			<value column="status" value="1" />
+		</property>
+		<property name="result" mapping="commentInfo"/>
+		<property name="order">
+			<value key="hot"  value="-1"/>
+		</property>
+	</select>
+	
+	<!-- 增加记录评论数 -->
+	<update id="updateArticleCommentCount" collection="x_article">
+	    <property name="param" class="java.lang.String">
+	        <value column="_id" name="${value}" type="objectid" value="not exists"/>
+	    </property>
+	    <property name="action">
+	        <value column="comment_count" operate="$inc" value="1" type="int"/>
+	    </property>
 	</update>
+	<update id="updateTradeCommentCount" collection="x_trade">
+	    <property name="param" class="java.lang.String">
+	        <value column="_id" name="${value}" type="objectid" value="not exists"/>
+	    </property>
+	    <property name="action">
+	        <value column="comment_count" operate="$inc" value="1" type="int"/>
+	    </property>
+	</update>
+	<update id="updateProductCommentCount" collection="x_product">
+	    <property name="param" class="java.lang.String">
+	        <value column="_id" name="${value}" type="objectid" value="not exists"/>
+	    </property>
+	    <property name="action">
+	        <value column="comment_count" operate="$inc" value="1" type="int"/>
+	        <value column="hot" operate="$inc" value="1" type="int"/>
+	    </property>
+	</update>
+	
+	<select id="getUserComment" collection="x_comment">
+		<property name="param" class="java.util.Map">
+			<value column="user_id" name="user_id" />
+			<value column="status" value="1" />
+		</property>
+		<property name="result" mapping="commentInfo"/>
+		<property name="order">
+			<value key="create_time"  value="-1"/>
+		</property>
+	</select>
 	
 </sqls>
