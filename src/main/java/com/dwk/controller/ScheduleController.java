@@ -36,51 +36,61 @@ public class ScheduleController extends BaseController {
   @Autowired
   private ScheduleService scheduleService;
 
-  @RequestMapping(value = "/will/{pageNum}/{rowNum}", produces = APIConstant.CONTENT_TYPE_JSON)
+  @RequestMapping(value = {"/will/{pageNum}/{rowNum}", "/will/{pageNum}", "/will"}, produces = APIConstant.CONTENT_TYPE_JSON)
   @ResponseBody
-  public String will(HttpServletRequest request, @PathVariable String pageNum, @PathVariable String rowNum,
-      @RequestParam String order) throws Exception {
+  public String will(HttpServletRequest request, @RequestParam(required=false) String order) throws Exception {
     try {
-      Integer pn = DataConstant.PN;
-      Integer rn = DataConstant.RN;
-      if (pageNum != null && !"0".equals(pageNum)) {
-        pn = Integer.parseInt(pageNum);
-      }
-      if (rowNum != null) {
-        rn = Integer.parseInt(rowNum);
-      }
       OrderBy ob = OrderBy.parse(order);
-      return outResponse(scheduleService.willList(pn, rn, ob)); 
+
+      Integer pageNum = DataConstant.PN;
+      Integer rowNum = DataConstant.RN;
+      Map pathVariables = (Map) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
+      if (pathVariables != null) {
+        if (pathVariables.containsKey("pageNum")) {
+          pageNum = NumberUtils.toInt("" + pathVariables.get("pageNum"), pageNum);
+          pageNum = pageNum > 0 ? pageNum : DataConstant.PN;
+        }
+        if (pathVariables.containsKey("rowNum")) {
+          rowNum = NumberUtils.toInt("" + pathVariables.get("rowNum"), rowNum);
+          rowNum = rowNum > 0 ? rowNum : DataConstant.RN;
+        }
+      }
+      return outResponse(scheduleService.willList(pageNum, rowNum, ob)); 
     } catch (ServiceException sex) {
-      return outResponse("schedule list", sex);
+      return outResponse("schedule will", sex);
     } catch (DaoException dex) {
-      return outResponse("schedule list", dex);
+      return outResponse("schedule will", dex);
     } catch (Exception ex) {
-      return outResponse("schedule list", ex);
+      return outResponse("schedule will", ex);
     }
   }
   
-  @RequestMapping(value = "/done/{pageNum}/{rowNum}", produces = APIConstant.CONTENT_TYPE_JSON)
+  @RequestMapping(value = {"/done/{pageNum}/{rowNum}", "/done/{pageNum}", "/done"}, produces = APIConstant.CONTENT_TYPE_JSON)
   @ResponseBody
-  public String done(HttpServletRequest request, @PathVariable String pageNum, @PathVariable String rowNum,
-      @RequestParam String order) throws Exception {
+  public String done(HttpServletRequest request, @RequestParam(required=false) String order) throws Exception {
     try {
-      Integer pn = DataConstant.PN;
-      Integer rn = DataConstant.RN;
-      if (pageNum != null && !"0".equals(pageNum)) {
-        pn = Integer.parseInt(pageNum);
-      }
-      if (rowNum != null) {
-        rn = Integer.parseInt(rowNum);
-      }
       OrderBy ob = OrderBy.parse(order);
-      return outResponse(scheduleService.doneList(pn, rn, ob)); 
+
+      Integer pageNum = DataConstant.PN;
+      Integer rowNum = DataConstant.RN;
+      Map pathVariables = (Map) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
+      if (pathVariables != null) {
+        if (pathVariables.containsKey("pageNum")) {
+          pageNum = NumberUtils.toInt("" + pathVariables.get("pageNum"), pageNum);
+          pageNum = pageNum > 0 ? pageNum : DataConstant.PN;
+        }
+        if (pathVariables.containsKey("rowNum")) {
+          rowNum = NumberUtils.toInt("" + pathVariables.get("rowNum"), rowNum);
+          rowNum = rowNum > 0 ? rowNum : DataConstant.RN;
+        }
+      }
+      return outResponse(scheduleService.doneList(pageNum, rowNum, ob)); 
     } catch (ServiceException sex) {
-      return outResponse("schedule list", sex);
+      return outResponse("schedule done", sex);
     } catch (DaoException dex) {
-      return outResponse("schedule list", dex);
+      return outResponse("schedule done", dex);
     } catch (Exception ex) {
-      return outResponse("schedule list", ex);
+      return outResponse("schedule done", ex);
     }
   }
   
@@ -92,7 +102,7 @@ public class ScheduleController extends BaseController {
       Map pathVariables = (Map) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
       if (pathVariables != null) {
         if (pathVariables.containsKey("topNum")) {
-          topNum = NumberUtils.toInt("" + pathVariables.get("pageNum"), topNum);
+          topNum = NumberUtils.toInt("" + pathVariables.get("topNum"), topNum);
           topNum = topNum > 0 ? topNum : DataConstant.SCHEDULE_TOP_COUNT;
         }
       }

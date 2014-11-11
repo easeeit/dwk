@@ -77,7 +77,7 @@
 	    <property name="param" class="java.lang.String">
 	        <value column="_id" name="${value}" type="objectid" value="not exists"/>
 	    </property>
-	    <property name="action">
+	    <property name="action" class="java.lang.String">
 	        <value column="comment_count" operate="$inc" value="1" type="int"/>
 	    </property>
 	</update>
@@ -85,15 +85,15 @@
 	    <property name="param" class="java.lang.String">
 	        <value column="_id" name="${value}" type="objectid" value="not exists"/>
 	    </property>
-	    <property name="action">
+	    <property name="action" class="java.lang.String">
 	        <value column="comment_count" operate="$inc" value="1" type="int"/>
 	    </property>
 	</update>
 	<update id="updateProductCommentCount" collection="x_product">
 	    <property name="param" class="java.lang.String">
-	        <value column="_id" name="${value}" type="objectid" value="not exists"/>
+	        <value column="_id" name="${value}" type="objectid" />
 	    </property>
-	    <property name="action">
+	    <property name="action" class="java.lang.String">
 	        <value column="comment_count" operate="$inc" value="1" type="int"/>
 	        <value column="hot" operate="$inc" value="1" type="int"/>
 	    </property>

@@ -1,5 +1,14 @@
 package com.dwk.model.product;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import com.dwk.constant.DataConstant;
+import com.dwk.constant.DelayStatus;
+import com.dwk.constant.Platform;
+import com.dwk.constant.ScheduleStatus;
+import com.dwk.constant.Version;
+
 public class ScheduleInfo extends Schedule {
   private String name;
   private String platform;
@@ -8,10 +17,15 @@ public class ScheduleInfo extends Schedule {
   private Integer attention_count;
   private Integer laud_count;
   private Integer comment_count;
+  private String sellTime;
   
   public void copyInfo(Product p) {
     this.name = p.getName_cn();
-    this.platform = p.getPlatform();
+    this.platform = Platform.valueToName(p.getPlatform());
+    setStatus(ScheduleStatus.valueToName(getStatus()));
+    setDelay_status(DelayStatus.valueToName(getDelay_status()));
+    this.sellTime = new SimpleDateFormat(DataConstant.DATE_FORMAT).format(new Date(getTimetomarket()));
+    setVersion(Version.valueToName(getVersion()));
     this.surl = p.getSurl();
     this.score = p.getScore();
     this.attention_count = p.getAttention_count();
@@ -59,5 +73,11 @@ public class ScheduleInfo extends Schedule {
   }
   public void setComment_count(Integer comment_count) {
     this.comment_count = comment_count;
+  }
+  public String getSellTime() {
+    return sellTime;
+  }
+  public void setSellTime(String sellTime) {
+    this.sellTime = sellTime;
   }
 }

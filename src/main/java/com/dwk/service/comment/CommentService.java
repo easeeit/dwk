@@ -63,7 +63,7 @@ public class CommentService {
       res.setId(commentID);
       res.setCluster(comment.getCluster());
       // TODO 增加评论数/热度
-      
+      updateCommentCount(subjectType, subjectID);
     }
     return res;
   }
