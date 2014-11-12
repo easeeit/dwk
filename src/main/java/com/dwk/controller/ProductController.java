@@ -1,12 +1,16 @@
 package com.dwk.controller;
 
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.HandlerMapping;
 
 import com.dwk.constant.APIConstant;
 import com.dwk.constant.DataConstant;
@@ -23,15 +27,23 @@ import com.dwk.service.product.ProductService;
  */
 @Controller
 @RequestMapping("/product")
+@SuppressWarnings("rawtypes")
 public class ProductController extends BaseController {
 
   @Autowired
   private ProductService productService;
 
-  @RequestMapping(value = "/info/{productID}", produces = APIConstant.CONTENT_TYPE_JSON)
+  @RequestMapping(value = {"/info/{productID}", "/info"}, produces = APIConstant.CONTENT_TYPE_JSON)
   @ResponseBody
-  public String info(HttpServletRequest request, @PathVariable String productID) throws Exception {
+  public String info(HttpServletRequest request) throws Exception {
     try {
+      String productID = null;
+      Map pathVariables = (Map) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
+      if (pathVariables != null) {
+        if (pathVariables.containsKey("productID")) {
+          productID = "" + pathVariables.get("productID") ;
+        }
+      }
       return outResponse(productService.getProduct(productID)); 
     } catch (ServiceException sex) {
       return outResponse("product info", sex);
@@ -42,20 +54,28 @@ public class ProductController extends BaseController {
     }
   }
   
-  @RequestMapping(value = "/news/{productID}/{pageNum}/{rowNum}", produces = APIConstant.CONTENT_TYPE_JSON)
+  @RequestMapping(value = {"/news/{productID}/{pageNum}/{rowNum}" ,"/news/{productID}/{pageNum}", "/news/{productID}", "/news"}, produces = APIConstant.CONTENT_TYPE_JSON)
   @ResponseBody
-  public String news(HttpServletRequest request, @PathVariable String productID, 
-      @PathVariable String pageNum, @PathVariable String rowNum) throws Exception {
+  public String news(HttpServletRequest request) throws Exception {
     try {
-      Integer pn = DataConstant.PN;
-      Integer rn = DataConstant.RN;
-      if (pageNum != null && !"0".equals(pageNum)) {
-        pn = Integer.parseInt(pageNum);
+      Integer pageNum = DataConstant.PN;
+      Integer rowNum = DataConstant.RN;
+      String productID = null;
+      Map pathVariables = (Map) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
+      if (pathVariables != null) {
+        if (pathVariables.containsKey("productID")) {
+          productID = "" + pathVariables.get("productID") ;
+        }
+        if (pathVariables.containsKey("pageNum")) {
+          pageNum = NumberUtils.toInt("" + pathVariables.get("pageNum"), pageNum);
+          pageNum = pageNum > 0 ? pageNum : DataConstant.PN;
+        }
+        if (pathVariables.containsKey("rowNum")) {
+          rowNum = NumberUtils.toInt("" + pathVariables.get("rowNum"), rowNum);
+          rowNum = rowNum > 0 ? rowNum : DataConstant.RN;
+        }
       }
-      if (rowNum != null) {
-        rn = Integer.parseInt(rowNum);
-      }
-      return outResponse(productService.getNewsList(productID, pn, rn)); 
+      return outResponse(productService.getNewsList(productID, pageNum, rowNum)); 
     } catch (ServiceException sex) {
       return outResponse("product news list", sex);
     } catch (DaoException dex) {
@@ -65,20 +85,28 @@ public class ProductController extends BaseController {
     }
   }
   
-  @RequestMapping(value = "/tip/{productID}/{pageNum}/{rowNum}", produces = APIConstant.CONTENT_TYPE_JSON)
+  @RequestMapping(value = {"/tip/{productID}/{pageNum}/{rowNum}" ,"/tip/{productID}/{pageNum}", "/tip/{productID}", "/tip"}, produces = APIConstant.CONTENT_TYPE_JSON)
   @ResponseBody
-  public String tip(HttpServletRequest request, @PathVariable String productID, 
-      @PathVariable String pageNum, @PathVariable String rowNum) throws Exception {
+  public String tip(HttpServletRequest request) throws Exception {
     try {
-      Integer pn = DataConstant.PN;
-      Integer rn = DataConstant.RN;
-      if (pageNum != null && !"0".equals(pageNum)) {
-        pn = Integer.parseInt(pageNum);
+      Integer pageNum = DataConstant.PN;
+      Integer rowNum = DataConstant.RN;
+      String productID = null;
+      Map pathVariables = (Map) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
+      if (pathVariables != null) {
+        if (pathVariables.containsKey("productID")) {
+          productID = "" + pathVariables.get("productID") ;
+        }
+        if (pathVariables.containsKey("pageNum")) {
+          pageNum = NumberUtils.toInt("" + pathVariables.get("pageNum"), pageNum);
+          pageNum = pageNum > 0 ? pageNum : DataConstant.PN;
+        }
+        if (pathVariables.containsKey("rowNum")) {
+          rowNum = NumberUtils.toInt("" + pathVariables.get("rowNum"), rowNum);
+          rowNum = rowNum > 0 ? rowNum : DataConstant.RN;
+        }
       }
-      if (rowNum != null) {
-        rn = Integer.parseInt(rowNum);
-      }
-      return outResponse(productService.getTipList(productID, pn, rn)); 
+      return outResponse(productService.getTipList(productID, pageNum, rowNum)); 
     } catch (ServiceException sex) {
       return outResponse("product news list", sex);
     } catch (DaoException dex) {
@@ -102,12 +130,17 @@ public class ProductController extends BaseController {
     }
   }
   
-  @RequestMapping(value = "/top/{n}", produces = APIConstant.CONTENT_TYPE_JSON)
+  @RequestMapping(value = {"/top/{n}", "/top"}, produces = APIConstant.CONTENT_TYPE_JSON)
   @ResponseBody
-  public String top(HttpServletRequest request, @PathVariable Integer n) throws Exception {
+  public String top(HttpServletRequest request) throws Exception {
     try {
-      if (n <= 0 ) {
-        n = DataConstant.PRODUCT_TOP_COUNT;
+      Integer n = DataConstant.PRODUCT_TOP_COUNT;
+      Map pathVariables = (Map) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
+      if (pathVariables != null) {
+        if (pathVariables.containsKey("n")) {
+          n = NumberUtils.toInt("" + pathVariables.get("n"), n);
+          n = n > 0 ? n : DataConstant.PRODUCT_TOP_COUNT;
+        }
       }
       return outResponse(productService.getHotTopN(n)); 
     } catch (ServiceException sex) {

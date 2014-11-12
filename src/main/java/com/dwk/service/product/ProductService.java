@@ -77,6 +77,7 @@ public class ProductService {
           info.add(CommendProduct.parse(p));
         }
       }
+      res.setProduct(info);
     }
     return res;
   }
@@ -91,6 +92,7 @@ public class ProductService {
           info.add(CommendProduct.parse(p));
         }
       }
+      res.setProduct(info);
     }
     return res;
   }

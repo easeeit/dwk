@@ -24,6 +24,7 @@
 	    </property>
 	    <property name="action" class="java.util.Map">
 	        <value column="laud_count" operate="$inc" name="count" type="int"/>
+	        <value column="hot" operate="$inc" name="count" type="int"/>
 	    </property>
 	</update>	
 	
@@ -33,6 +34,7 @@
 	    </property>
 	    <property name="action" class="java.util.Map">
 	        <value column="laud_count" operate="$inc" name="count" type="int"/>
+	        <value column="hot" operate="$inc" name="count" type="int"/>
 	    </property>
 	</update>	
 	
@@ -42,6 +44,7 @@
 	    </property>
 	    <property name="action" class="java.util.Map">
 	        <value column="laud_count" operate="$inc" name="count" type="int"/>
+	        <value column="hot" operate="$inc" name="count" type="int"/>
 	    </property>
 	</update>	
 	
@@ -51,6 +54,7 @@
 	    </property>
 	    <property name="action" class="java.util.Map">
 	        <value column="laud_count" operate="$inc" name="count" type="int"/>
+	        <value column="hot" operate="$inc" name="count" type="int"/>
 	    </property>
 	</update>	
 	

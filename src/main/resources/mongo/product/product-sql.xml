@@ -35,6 +35,7 @@
 		<property column="status"    		name="status" />
 		<property column="delay_status" 	name="delay_status" />
 		<property column="create_time"    	name="create_time"  	type="long"/>
+		<property column="hot"		    	name="hot"  	type="int"/>
 	</mapping>	
 	
 	<mapping id="commend" class="com.dwk.model.product.commend.Commend">
@@ -60,6 +61,7 @@
 		<property name="result" mapping="schedule"/>
 		<property name="order">
 			<value key="hot"  value="-1"/>
+			<value key="timetomarket"  value="-1"/>
 		</property>
 	</select>
 	
@@ -80,6 +82,7 @@
 		<property name="result" mapping="schedule"/>
 		<property name="order">
 			<value key="hot"  value="-1"/>
+			<value key="timetomarket"  value="-1"/>
 		</property>
 	</select>
 	
@@ -110,7 +113,7 @@
 	<select id="getCommendProduct" collection="x_commend">
 		<property name="param" class="java.util.Map">
 		</property>
-		<property name="result" mapping="product"/>
+		<property name="result" mapping="commend"/>
 		<property name="order">
 			<value key="create_time"  value="-1"/>
 		</property>
@@ -132,4 +135,12 @@
 		<property name="result" mapping="schedule"/>
 	</select>
 	
+	<update id="updateScheduleHot" collection="x_schedule">
+	    <property name="param" class="java.util.Map">
+	        <value column="product_id" name="productID" value="not exists" />
+	    </property>
+	    <property name="action" class="java.util.Map">
+	        <value column="hot" operate="$set" name="hot" type="int"/>
+	    </property>
+	</update>
 </sqls>

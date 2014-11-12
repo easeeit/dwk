@@ -10,6 +10,7 @@ import com.dwk.dao.MongodbDao;
 import com.dwk.model.BasicResponse;
 import com.dwk.model.attention.Attention;
 import com.dwk.model.user.LoginUser;
+import com.dwk.service.product.ScheduleService;
 
 /**
  * Attention service.
@@ -19,6 +20,7 @@ import com.dwk.model.user.LoginUser;
 public class AttentionService {
 
   private MongodbDao dao;
+  private ScheduleService scheduleService;
   
   public BasicResponse create(LoginUser user, String productID) {
     BasicResponse res = new BasicResponse();
@@ -37,6 +39,8 @@ public class AttentionService {
     String id = dao.insert("createUserAttention", att);
     if (StringUtils.isBlank(id)) {
       res.setCode(APIConstant.RETURN_CODE_ERROR);
+    } else {
+      scheduleService.updateScheduleHot(productID);
     }
     return res;
   }
@@ -63,6 +67,10 @@ public class AttentionService {
   
   public void setDao(MongodbDao dao) {
     this.dao = dao;
+  }
+
+  public void setScheduleService(ScheduleService scheduleService) {
+    this.scheduleService = scheduleService;
   }
 
 }

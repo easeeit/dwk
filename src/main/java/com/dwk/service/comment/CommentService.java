@@ -16,6 +16,7 @@ import com.dwk.model.comment.CommentInfo;
 import com.dwk.model.comment.CommentListResponse;
 import com.dwk.model.comment.CommentResponse;
 import com.dwk.model.user.LoginUser;
+import com.dwk.service.product.ScheduleService;
 
 /**
  * User product deal service.
@@ -27,6 +28,7 @@ import com.dwk.model.user.LoginUser;
 public class CommentService {
 
   private MongodbDao dao;
+  private ScheduleService scheduleService;
   
   public CommentListResponse list(String subjectID, int pageNum, int rowNum) {
     CommentListResponse res = new CommentListResponse();
@@ -63,7 +65,7 @@ public class CommentService {
       res.setId(commentID);
       res.setCluster(comment.getCluster());
       // TODO 增加评论数/热度
-      updateCommentCount(subjectType, subjectID);
+      updateCommentCount(subjectType, subjectID, 1);
     }
     return res;
   }
@@ -97,6 +99,9 @@ public class CommentService {
     int count = dao.update("deleteComment", param);
     if (count <= 0 ) {
       res.setCode(APIConstant.RETURN_CODE_ERROR);
+    } else {
+      // 减少数量
+      //updateCommentCount(subjectType, subjectID, count)
     }
     return res;
   }
@@ -106,11 +111,14 @@ public class CommentService {
    * @param subjectType
    * @param subjectID
    */
-  public void updateCommentCount(String subjectType, String subjectID) {
+  public void updateCommentCount(String subjectType, String subjectID, int count) {
     if (subjectID == null || subjectType == null) {
       return ;
     }
     String sql = null;
+    Map<String, Object> map = new HashMap<String, Object>(2);
+    map.put("subjectID", subjectID);
+    map.put("count", count);
     if (SubjectType.article.getValue().equals(subjectType)) { // 文章
       sql = "updateArticleCommentCount";
     } else if (SubjectType.topic.getValue().equals(subjectType)) { // 话题
@@ -118,20 +126,27 @@ public class CommentService {
     } else if (SubjectType.trade.getValue().equals(subjectType)) { // 交易
       sql = "updateTradeCommentCount";
     } else if (SubjectType.comment.getValue().equals(subjectType)) { // 评论
-      sql = null;
+      sql = "updateCommentCommentCount";
     } else if (SubjectType.product.getValue().equals(subjectType)) { // 产品
       sql = "updateProductCommentCount";
     } else if (SubjectType.user.getValue().equals(subjectType)){ // 用户
       sql = null;
     }
     if (sql != null) {
-      dao.update(sql, subjectID);
+      dao.update(sql, map);
+     if (SubjectType.product.getValue().equals(subjectType)) { // 产品
+       scheduleService.updateScheduleHot(subjectID);
+     }
     }
     return;
   }
   
   public void setDao(MongodbDao dao) {
     this.dao = dao;
+  }
+
+  public void setScheduleService(ScheduleService scheduleService) {
+    this.scheduleService = scheduleService;
   }
 
 }

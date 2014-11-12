@@ -8,6 +8,7 @@ public class Schedule {
   private String status;
   private String delay_status;
   private Long create_time;
+  private Integer hot; // 冗余的product.hot,与之同步
   
   public String getId() {
     return id;
@@ -50,5 +51,11 @@ public class Schedule {
   }
   public void setDelay_status(String delay_status) {
     this.delay_status = delay_status;
+  }
+  public Integer getHot() {
+    return hot;
+  }
+  public void setHot(Integer hot) {
+    this.hot = hot;
   }
 }

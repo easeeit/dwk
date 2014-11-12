@@ -18,6 +18,8 @@ public class Topic {
   private String nickname;
   private String logo_url;
   private Integer laud_count;
+  private Integer comment_count;
+  private Integer hot;
   private Long create_time;
   
   public static Topic create(LoginUser user, String title, String platform, String content) {
@@ -92,5 +94,17 @@ public class Topic {
   }
   public void setLogo_url(String logo_url) {
     this.logo_url = logo_url;
+  }
+  public Integer getComment_count() {
+    return comment_count;
+  }
+  public void setComment_count(Integer comment_count) {
+    this.comment_count = comment_count;
+  }
+  public Integer getHot() {
+    return hot;
+  }
+  public void setHot(Integer hot) {
+    this.hot = hot;
   }
 }
