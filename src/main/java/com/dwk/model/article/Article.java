@@ -18,6 +18,7 @@ public class Article {
   private String status;
   private Integer laud_count;
   private Integer comment_count;
+  private Integer hot;
   private String url;
   private String original_url;
   private Long create_time;
@@ -125,5 +126,11 @@ public class Article {
   }
   public void setComment_count(Integer comment_count) {
     this.comment_count = comment_count;
+  }
+  public Integer getHot() {
+    return hot;
+  }
+  public void setHot(Integer hot) {
+    this.hot = hot;
   }
 }

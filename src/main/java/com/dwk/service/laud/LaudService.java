@@ -12,6 +12,7 @@ import com.dwk.dao.MongodbDao;
 import com.dwk.model.BasicResponse;
 import com.dwk.model.laud.Laud;
 import com.dwk.model.user.LoginUser;
+import com.dwk.service.product.ScheduleService;
 
 /**
  * User info service.
@@ -21,6 +22,7 @@ import com.dwk.model.user.LoginUser;
 public class LaudService {
 
   private MongodbDao dao;
+  private ScheduleService scheduleService;
   
   public BasicResponse update(LoginUser user, String subjectType, String subjectID, String status) {
     BasicResponse res = new BasicResponse();
@@ -86,11 +88,17 @@ public class LaudService {
     Map<String, Object> map = new HashMap<String, Object>(2);
     map.put("productID", productID);
     map.put("count", count);
-    dao.update("incProductLaudCount", map);
+    if (dao.update("incProductLaudCount", map) > 0) {
+      scheduleService.updateScheduleHot(productID);
+    };
   }
   
   public void setDao(MongodbDao dao) {
     this.dao = dao;
+  }
+
+  public void setScheduleService(ScheduleService scheduleService) {
+    this.scheduleService = scheduleService;
   }
   
 }

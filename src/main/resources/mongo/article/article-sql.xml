@@ -13,6 +13,7 @@
 		<property column="url"    			name="url"/>
 		<property column="comment_count"    name="comment_count" type="int" />
 		<property column="laud_count"    	name="laud_count" type="int" />
+		<property column="hot"    			name="hot" type="int" />
 		<property column="author"  			name="author"/>
 		<property column="source"   		name="source"/>
 		<property column="status" 			name="status"/>
@@ -20,9 +21,21 @@
 		<property column="create_time" 		name="create_time" type="long" />
 	</mapping>
 	
-	<select id="getArticleList" collection="x_article">
+	<select id="getArticlelist" collection="x_article">
 		<property name="param" class="java.util.Map">
-			<value column="status" name="type" value="1" /> <!-- 资讯类 -->
+			<value column="status" value="1" /> <!-- 资讯类 -->
+		</property>
+		<property name="result" mapping="article"/>
+		<property name="order">
+			<value key="create_time"  value="-1"/>
+		</property>
+	</select>
+	
+	<select id="getArticleListByProductID" collection="x_article">
+		<property name="param" class="java.util.Map">
+			<value column="status"  value="1" />
+			<value column="type" name="type" value="1" />
+			<value column="product_id" name="productID" value="not exists" />
 		</property>
 		<property name="result" mapping="article"/>
 		<property name="order">

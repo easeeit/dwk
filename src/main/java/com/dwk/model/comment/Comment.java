@@ -13,6 +13,7 @@ public class Comment {
   private String nickname ;
   private String logo_url ;
   private Integer laud_count ;
+  private Integer comment_count ;
   private Integer hot ;
   private Long create_time ;
   private Long cluster ;
@@ -25,6 +26,7 @@ public class Comment {
     c.content = content;
     c.status = DataConstant.STATUS_ENABLE;
     c.laud_count = 0;
+    c.comment_count = 0;
     c.hot = 0;
     c.create_time = now;
     c.user_id = user.getId();
@@ -132,6 +134,14 @@ public class Comment {
 
   public void setHot(Integer hot) {
     this.hot = hot;
+  }
+
+  public Integer getComment_count() {
+    return comment_count;
+  }
+
+  public void setComment_count(Integer comment_count) {
+    this.comment_count = comment_count;
   }
   
 }

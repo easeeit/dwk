@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <sqls>
 	<!-- 用户信息 -->
-	<mapping id="product" class="com.dwk.model.product.Product">
+	<mapping id="product" class="com.dwk.model.product.ProductInfo">
 		<property column="_id"    			name="id"/>
 		<property column="name_cn"    		name="name_cn"/>
 		<property column="name_en"    		name="name_en"/>
@@ -24,6 +24,7 @@
 		<property column="gurl" 			name="gurl"/>
 		<property column="surl" 			name="surl"/>
 		<property column="create_time"   	name="create_time"		type="long"/>
+		<property column="status" 			name="status"/>
 	</mapping>
 	
 	<mapping id="schedule" class="com.dwk.model.product.ScheduleInfo">
@@ -34,6 +35,7 @@
 		<property column="status"    		name="status" />
 		<property column="delay_status" 	name="delay_status" />
 		<property column="create_time"    	name="create_time"  	type="long"/>
+		<property column="hot"		    	name="hot"  	type="int"/>
 	</mapping>	
 	
 	<mapping id="commend" class="com.dwk.model.product.commend.Commend">
@@ -44,7 +46,7 @@
 	
 	<select id="getWillScheduleListOrderByTime" collection="x_schedule">
 		<property name="param" class="java.util.Map">
-			<value column="status"  name="1" />
+			<value column="status"  value="1" />
 		</property>
 		<property name="result" mapping="schedule"/>
 		<property name="order">
@@ -54,17 +56,18 @@
 	
 	<select id="getWillScheduleListOrderByHot" collection="x_schedule">
 		<property name="param" class="java.util.Map">
-			<value column="status"  name="1" />
+			<value column="status"  value="1" />
 		</property>
 		<property name="result" mapping="schedule"/>
 		<property name="order">
 			<value key="hot"  value="-1"/>
+			<value key="timetomarket"  value="-1"/>
 		</property>
 	</select>
 	
 	<select id="getDoneScheduleListOrderByTime" collection="x_schedule">
 		<property name="param" class="java.util.Map">
-			<value column="status"  name="2" />
+			<value column="status"  value="2" />
 		</property>
 		<property name="result" mapping="schedule"/>
 		<property name="order">
@@ -74,11 +77,12 @@
 	
 	<select id="getDoneScheduleListOrderByHot" collection="x_schedule">
 		<property name="param" class="java.util.Map">
-			<value column="status"  name="2" />
+			<value column="status"  value="2" />
 		</property>
 		<property name="result" mapping="schedule"/>
 		<property name="order">
 			<value key="hot"  value="-1"/>
+			<value key="timetomarket"  value="-1"/>
 		</property>
 	</select>
 	
@@ -109,7 +113,7 @@
 	<select id="getCommendProduct" collection="x_commend">
 		<property name="param" class="java.util.Map">
 		</property>
-		<property name="result" mapping="product"/>
+		<property name="result" mapping="commend"/>
 		<property name="order">
 			<value key="create_time"  value="-1"/>
 		</property>
@@ -131,4 +135,12 @@
 		<property name="result" mapping="schedule"/>
 	</select>
 	
+	<update id="updateScheduleHot" collection="x_schedule">
+	    <property name="param" class="java.util.Map">
+	        <value column="product_id" name="productID" value="not exists" />
+	    </property>
+	    <property name="action" class="java.util.Map">
+	        <value column="hot" operate="$set" name="hot" type="int"/>
+	    </property>
+	</update>
 </sqls>

@@ -1,12 +1,15 @@
 package com.dwk.controller;
 
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.HandlerMapping;
 
 import com.dwk.constant.APIConstant;
 import com.dwk.constant.DataConstant;
@@ -23,24 +26,30 @@ import com.dwk.service.article.ArticleService;
  */
 @Controller
 @RequestMapping("/article")
+@SuppressWarnings("rawtypes")
 public class ArticleController extends BaseController {
 
   @Autowired
   private ArticleService articleService;
 
-  @RequestMapping(value = "/list/{pageNum}/{rowNum}", produces = APIConstant.CONTENT_TYPE_JSON)
+  @RequestMapping(value = {"/list/{pageNum}/{rowNum}", "/list/{pageNum}", "/list"}, produces = APIConstant.CONTENT_TYPE_JSON)
   @ResponseBody
-  public String list(HttpServletRequest request, @PathVariable String pageNum, @PathVariable String rowNum) throws Exception {
+  public String list(HttpServletRequest request) throws Exception {
     try {
-      Integer pn = DataConstant.PN;
-      Integer rn = DataConstant.RN;
-      if (pageNum != null && !"0".equals(pageNum)) {
-        pn = Integer.parseInt(pageNum);
+      Integer pageNum = DataConstant.PN;
+      Integer rowNum = DataConstant.RN;
+      Map pathVariables = (Map) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
+      if (pathVariables != null) {
+        if (pathVariables.containsKey("pageNum")) {
+          pageNum = NumberUtils.toInt("" + pathVariables.get("pageNum"), pageNum);
+          pageNum = pageNum > 0 ? pageNum : DataConstant.PN;
+        }
+        if (pathVariables.containsKey("rowNum")) {
+          rowNum = NumberUtils.toInt("" + pathVariables.get("rowNum"), rowNum);
+          rowNum = rowNum > 0 ? rowNum : DataConstant.RN;
+        }
       }
-      if (rowNum != null) {
-        rn = Integer.parseInt(rowNum);
-      }
-      return outResponse(articleService.list(pn, rn));
+      return outResponse(articleService.list(pageNum, rowNum));
     } catch (ServiceException sex) {
       return outResponse("accountMobileAuth", sex);
     } catch (DaoException dex) {

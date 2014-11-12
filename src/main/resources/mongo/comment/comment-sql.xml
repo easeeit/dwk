@@ -10,6 +10,7 @@
 		<property column="user_id"    		name="user_id"/>
 		<property column="nickname"    		name="nickname" />
 		<property column="logo_url" 		name="logo_url" />
+		<property column="comment_count"	name="comment_count" type="int" />
 		<property column="laud_count"  		name="laud_count" type="int" />
 		<property column="hot"  			name="hot" type="int" />
 		<property column="create_time"   	name="create_time" type="long" />
@@ -53,10 +54,11 @@
 	
 	<update id="deleteComment" collection="x_comment">
 	    <property name="param" class="java.util.Map">
-	        <value column="_id" name="id" type="objectid"/>
+	        <value column="_id" name="id" type="objectid" value="not exists"/>
+	        <value column="user_id" name="userID" value="not exists"/>
 	    </property>
 	    <property name="action" class="java.util.Map">
-	        <value column="status" operate="$set" name="2"/>
+	        <value column="status" operate="$set" value="2"/>
 	    </property>
 	</update>	
 	
@@ -73,28 +75,38 @@
 	
 	<!-- 增加记录评论数 -->
 	<update id="updateArticleCommentCount" collection="x_article">
-	    <property name="param" class="java.lang.String">
-	        <value column="_id" name="${value}" type="objectid" value="not exists"/>
+	    <property name="param" class="java.util.Map">
+	        <value column="_id" name="subjectID" type="objectid" value="not exists"/>
 	    </property>
-	    <property name="action">
-	        <value column="comment_count" operate="$inc" value="1" type="int"/>
+	    <property name="action" class="java.util.Map">
+	        <value column="comment_count" operate="$inc" name="count" type="int"/>
+	        <value column="hot" operate="$inc" name="count" type="int"/>
 	    </property>
 	</update>
 	<update id="updateTradeCommentCount" collection="x_trade">
-	    <property name="param" class="java.lang.String">
-	        <value column="_id" name="${value}" type="objectid" value="not exists"/>
+	    <property name="param" class="java.util.Map">
+	        <value column="_id" name="subjectID" type="objectid" value="not exists"/>
 	    </property>
-	    <property name="action">
-	        <value column="comment_count" operate="$inc" value="1" type="int"/>
+	    <property name="action" class="java.util.Map">
+	        <value column="comment_count" operate="$inc" name="count" type="int"/>
 	    </property>
 	</update>
 	<update id="updateProductCommentCount" collection="x_product">
-	    <property name="param" class="java.lang.String">
-	        <value column="_id" name="${value}" type="objectid" value="not exists"/>
+	    <property name="param" class="java.util.Map">
+	        <value column="_id" name="subjectID" type="objectid" />
 	    </property>
-	    <property name="action">
-	        <value column="comment_count" operate="$inc" value="1" type="int"/>
-	        <value column="hot" operate="$inc" value="1" type="int"/>
+	    <property name="action" class="java.util.Map">
+	        <value column="comment_count" operate="$inc" name="count" type="int"/>
+	        <value column="hot" operate="$inc" name="count" type="int"/>
+	    </property>
+	</update>
+	<update id="updateCommentCommentCount" collection="x_comment">
+	    <property name="param" class="java.util.Map">
+	        <value column="_id" name="subjectID" type="objectid" />
+	    </property>
+	    <property name="action" class="java.util.Map">
+	        <value column="comment_count" operate="$inc" name="count" type="int"/>
+	        <value column="hot" operate="$inc" name="count" type="int"/>
 	    </property>
 	</update>
 	

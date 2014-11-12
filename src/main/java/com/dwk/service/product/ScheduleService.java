@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 
 import com.dwk.constant.OrderBy;
 import com.dwk.dao.MongodbDao;
@@ -64,8 +65,6 @@ public class ScheduleService {
     return scheduleList;    
   }
   
-//  public 
-  
   private void assemblyScheduleInfo(List<ScheduleInfo> list) {
     if (CollectionUtils.isEmpty(list)) {
       return;
@@ -75,6 +74,17 @@ public class ScheduleService {
         s.copyInfo(productService.getProduct(s.getProduct_id()));
       }
     }
+  }
+  
+  public void updateScheduleHot(String productID ) {
+    if (StringUtils.isBlank(productID)) {
+      return;
+    }
+    int hot = productService.getProduct(productID).getHot();
+    Map<String, Object> map = new HashMap<String, Object>(2);
+    map.put("productID", productID);
+    map.put("hot", hot);
+    dao.update("updateScheduleHot", map);
   }
   
   public void setDao(MongodbDao dao) {

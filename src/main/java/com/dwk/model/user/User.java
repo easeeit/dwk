@@ -85,7 +85,7 @@ public class User {
   public void setLast_login_time(Long last_login_time) {
     this.last_login_time = last_login_time;
   }
-  public String gStatus() {
+  public String getStatus() {
     return status;
   }
   public void setStatus(String status) {

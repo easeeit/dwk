@@ -266,7 +266,7 @@ public class AuthService {
     login.setAuthToken(token);
     login.setScore(user.getScore());
 
-    cache.set(key, login);
+    boolean b = cache.set(key, login);
     return login;
   }
 

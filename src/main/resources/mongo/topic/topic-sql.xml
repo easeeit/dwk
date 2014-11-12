@@ -10,8 +10,10 @@
 		<property column="user_id"    		name="user_id"/>
 		<property column="nickname"    		name="nickname" />
 		<property column="logo_url" 		name="logo_url" />
-		<property column="laud_count"  		name="laud_count"/>
-		<property column="create_time"   	name="create_time"/>
+		<property column="laud_count"  		name="laud_count" type="int"/>
+		<property column="comment_count"  	name="comment_count" type="int"/>
+		<property column="hot"  			name="hot" type="int"/>
+		<property column="create_time"   	name="create_time" type="long"/>
 	</mapping>
 	
 	<select id="getTopicList" collection="x_topic">
