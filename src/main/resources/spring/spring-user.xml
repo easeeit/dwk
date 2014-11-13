@@ -19,6 +19,7 @@
 		<property name="dao" ref="dao"/>
 		<property name="authService" ref="authService"/>
 		<property name="scheduleService" ref="scheduleService"/>
+		<property name="cache" ref="cache"/>
 	</bean>
 	
 	<bean id="authService" class="com.dwk.service.auth.AuthService">

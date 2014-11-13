@@ -40,6 +40,7 @@
 	<update id="updateTrade" collection="x_trade">
 	    <property name="param" class="com.dwk.model.trade.Trade">
 	        <value column="_id" name="id" type="objectid" value="not exists"/>
+	        <value column="user_id" name="user_id" value="not exists"/>
 	    </property>
 	    <property name="action" class="com.dwk.model.trade.Trade">
 	        <value column="product_name" operate="$set" name="product_name"/>

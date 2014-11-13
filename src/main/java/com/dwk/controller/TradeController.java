@@ -93,7 +93,7 @@ public class TradeController extends BaseController {
 
   @RequestMapping(value = "/update_status", produces = APIConstant.CONTENT_TYPE_JSON)
   @ResponseBody
-  public String updateStatus(HttpServletRequest request, @RequestParam String id, @RequestParam String status)
+  public String updateStatus(HttpServletRequest request, @RequestParam(required=false) String id, @RequestParam(required=false) String status)
       throws Exception {
     try {
       LoginUser user = getUser();

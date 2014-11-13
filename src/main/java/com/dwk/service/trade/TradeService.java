@@ -15,6 +15,7 @@ import com.dwk.model.trade.TradeInfo;
 import com.dwk.model.trade.TradeListResponse;
 import com.dwk.model.trade.TradeResponse;
 import com.dwk.model.user.LoginUser;
+import com.dwk.model.user.User;
 import com.dwk.service.user.UserService;
 
 public class TradeService {
@@ -27,12 +28,17 @@ public class TradeService {
     TradeListResponse res = new TradeListResponse();
     List<TradeInfo> result = dao.selectList("getTradeList", null, rowNum, (pageNum - 1) * rowNum);
     for (TradeInfo t : result) {
-      t.setNickname(userService.getUserByID(t.getUser_id()).getNickname());
+      User u = userService.getUserByID(t.getUser_id());
+      if (u != null) {
+        t.setNickname(u.getNickname());
+      }
+      t.beautifyData();
     }
     res.setTrade(result);
     return res;
   }
   
+  // TODO 清缓存
   public TradeResponse create(LoginUser user, Map<String, Object> param) {
     TradeResponse res = new TradeResponse();
     if (user == null) {
@@ -52,6 +58,10 @@ public class TradeService {
   
   public BasicResponse update(LoginUser user, Map<String, Object> param) {
     BasicResponse res = new BasicResponse();
+    if (user == null) {
+      res.setCode(APIConstant.RETURN_CODE_OPERATE_PERMISSION_INVAILD);
+      return res;
+    }
     if (param.get("id") == null ){
       res.setCode(APIConstant.RETURN_CODE_PARAMETER_INVAILD);
       return res;
@@ -66,6 +76,10 @@ public class TradeService {
   
   public BasicResponse updateTradeStatus(LoginUser user, String tradeID, String status) {
     BasicResponse res = new BasicResponse();
+    if (user == null) {
+      res.setCode(APIConstant.RETURN_CODE_OPERATE_PERMISSION_INVAILD);
+      return res;
+    }
     if (StringUtils.isBlank(tradeID) || !TradeStatus.valid(status)){
       res.setCode(APIConstant.RETURN_CODE_PARAMETER_INVAILD);
       return res;

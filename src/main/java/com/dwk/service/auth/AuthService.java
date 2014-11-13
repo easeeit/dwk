@@ -270,6 +270,12 @@ public class AuthService {
     return login;
   }
 
+  public LoginUser resetSession(LoginUser login) {
+    String key = SystemConstant.LOGIN_USER_CACHE_KEY + login.getAuthToken();
+    cache.set(key, login);
+    return login;
+  }
+  
   private Account initAccount(AuthContext context) {
     Account account = new Account();
     account.setAccount(context.getAccount());

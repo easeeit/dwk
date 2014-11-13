@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <sqls>
-	<mapping id="laud" class="com.dwk.model.user.Laud">
-		<property column="_id"    		name="userID"/>
+	<mapping id="laud" class="com.dwk.model.laud.Laud">
+		<property column="_id"    		name="id"/>
 		<property column="user_id"    	name="user_id"/>
 		<property column="subject_id"   name="subject_id"/>
 		<property column="subject_type" name="subject_type"/>
 	</mapping>
 	
 	<insert id="createLaud" collection="x_laud">
-		<property name="param"  mapping="praise" />
+		<property name="param"  mapping="laud" />
 	</insert>
 	
 	<delete id="deleteLaud" collection="x_laud">
-	    <property name="param" class="com.dwk.model.user.Laud">
+	    <property name="param" class="com.dwk.model.laud.Laud">
 	        <value column="subject_id" name="subject_id" />
 	        <value column="user_id" name="user_id" />
 	    </property>

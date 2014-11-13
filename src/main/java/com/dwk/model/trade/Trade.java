@@ -28,45 +28,98 @@ public class Trade {
   
   public static Trade create(LoginUser user, Map<String, Object> map) {
     Trade t = new Trade();
-    t.area = (String)map.get("area");
     t.create_time = System.currentTimeMillis();
-    t.description = (String)map.get("description");
-    t.integrity = (String)map.get("integrity");
-    t.language = (String)map.get("language");
-    t.platform = (String)map.get("platform");
-    t.price = Double.parseDouble(String.valueOf(map.get("price")));
-    t.product_name = (String)map.get("product_name");
-    t.remark = (String)map.get("remark");
+    if (map.containsKey("area")) {
+      t.area = ((String[])map.get("area"))[0];
+    }
+    if (map.containsKey("description")) {
+      t.description = ((String[])map.get("description"))[0];
+    }
+    if (map.containsKey("integrity")) {
+      t.integrity = ((String[])map.get("integrity"))[0];
+    }
+    if (map.containsKey("language")) {
+      t.language = ((String[])map.get("language"))[0];
+    }
+    if (map.containsKey("platform")) {
+      t.platform = ((String[])map.get("platform"))[0];
+    }
+    if (map.containsKey("price")) {
+      t.price = Double.parseDouble(((String[])map.get("price"))[0]);
+    }
+    if (map.containsKey("product_name")) {
+      t.product_name = ((String[])map.get("product_name"))[0];
+    }
+    if (map.containsKey("remark")) {
+      t.remark = ((String[])map.get("remark"))[0];
+    }
+    if (map.containsKey("version")) {
+      t.version = ((String[])map.get("version"))[0];
+    }
+    if (map.containsKey("contact")) {
+      t.contact = ((String[])map.get("contact"))[0];
+    }
+    if (map.containsKey("exchange")) {
+      t.exchange = ((String[])map.get("exchange"))[0];
+    }
+    if (map.containsKey("haggle")) {
+      t.haggle = ((String[])map.get("haggle"))[0];
+    }
+    if (map.containsKey("photo_url")) {
+      t.photo_url = ((String[])map.get("photo_url"))[0];
+    }
     t.status = DataConstant.STATUS_ENABLE;
     t.user_id = user.getId();
-    t.version = (String)map.get("version");
-    t.contact = (String)map.get("contact");
-    t.exchange = (String)map.get("exchange");
-    t.haggle = (String)map.get("haggle");
-    t.photo_url = (String)map.get("photo_url");
     t.comment_count = 0;
     return t;
   }
   
   public static Trade update(LoginUser user, Map<String, Object> map) {
     Trade t = new Trade();
-    t.id = (String)map.get("id");
-    t.area = (String)map.get("area");
     t.update_time = System.currentTimeMillis();
-    t.description = (String)map.get("description");
-    t.integrity = (String)map.get("integrity");
-    t.language = (String)map.get("language");
-    t.platform = (String)map.get("platform");
-    t.price = Double.parseDouble(String.valueOf(map.get("price")));
-    t.product_name = (String)map.get("product_name");
-    t.remark = (String)map.get("remark");
-    t.status = DataConstant.STATUS_ENABLE;
+    if (map.containsKey("id")) {
+      t.id = ((String[])map.get("id"))[0];
+    }
+    if (map.containsKey("area")) {
+      t.area = ((String[])map.get("area"))[0];
+    }
+    if (map.containsKey("description")) {
+      t.description = ((String[])map.get("description"))[0];
+    }
+    if (map.containsKey("integrity")) {
+      t.integrity = ((String[])map.get("integrity"))[0];
+    }
+    if (map.containsKey("language")) {
+      t.language = ((String[])map.get("language"))[0];
+    }
+    if (map.containsKey("platform")) {
+      t.platform = ((String[])map.get("platform"))[0];
+    }
+    if (map.containsKey("price")) {
+      t.price = Double.parseDouble(((String[])map.get("price"))[0]);
+    }
+    if (map.containsKey("product_name")) {
+      t.product_name = ((String[])map.get("product_name"))[0];
+    }
+    if (map.containsKey("remark")) {
+      t.remark = ((String[])map.get("remark"))[0];
+    }
+    if (map.containsKey("version")) {
+      t.version = ((String[])map.get("version"))[0];
+    }
+    if (map.containsKey("contact")) {
+      t.contact = ((String[])map.get("contact"))[0];
+    }
+    if (map.containsKey("exchange")) {
+      t.exchange = ((String[])map.get("exchange"))[0];
+    }
+    if (map.containsKey("haggle")) {
+      t.haggle = ((String[])map.get("haggle"))[0];
+    }
+    if (map.containsKey("photo_url")) {
+      t.photo_url = ((String[])map.get("photo_url"))[0];
+    }
     t.user_id = user.getId();
-    t.version = (String)map.get("version");
-    t.contact = (String)map.get("contact");
-    t.exchange = (String)map.get("exchange");
-    t.haggle = (String)map.get("haggle");
-    t.photo_url = (String)map.get("photo_url");
     return t;
   }
   public String getId() {

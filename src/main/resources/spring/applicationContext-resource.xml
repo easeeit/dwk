@@ -50,7 +50,9 @@
 				<value>classpath:mongo/tag/tag-sql.xml</value>
 				<value>classpath:mongo/topic/topic-sql.xml</value>
 				<value>classpath:mongo/trade/trade-sql.xml</value>
+				<value>classpath:mongo/laud/laud-sql.xml</value>
 				<value>classpath:mongo/user/user-sql.xml</value>
+				<value>classpath:mongo/user/feedback-sql.xml</value>
 				<value>classpath:mongo/account/account-sql.xml</value>
 				<value>classpath:mongo/friend/friend-sql.xml</value>
 				<value>classpath:mongo/message/message-sql.xml</value>

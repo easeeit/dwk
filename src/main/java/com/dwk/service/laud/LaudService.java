@@ -7,6 +7,7 @@ import org.apache.commons.lang.StringUtils;
 
 import com.dwk.constant.APIConstant;
 import com.dwk.constant.DataConstant;
+import com.dwk.constant.LaudStatus;
 import com.dwk.constant.SubjectType;
 import com.dwk.dao.MongodbDao;
 import com.dwk.model.BasicResponse;
@@ -24,25 +25,34 @@ public class LaudService {
   private MongodbDao dao;
   private ScheduleService scheduleService;
   
-  public BasicResponse update(LoginUser user, String subjectType, String subjectID, String status) {
+  public BasicResponse update(LoginUser user, String subjectType, String subjectID, LaudStatus status) {
     BasicResponse res = new BasicResponse();
     if (StringUtils.isBlank(subjectType) || !SubjectType.valid(subjectType) 
-        || StringUtils.isBlank(subjectID)) {
+        || StringUtils.isBlank(subjectID) || status == null) {
       res.setCode(APIConstant.RETURN_CODE_PARAMETER_INVAILD);
       return res;
     }
-    Laud p = new Laud();
-    p.setSubject_id(subjectID);
-    p.setSubject_type(subjectType);
-    p.setUser_id(user.getId());
     boolean flag = false;
+    Laud p = null;
+    if (user == null) {
+      flag = true; // 未登录用户点赞不记录x_laud表
+    } else {
+      p = new Laud();
+      p.setSubject_id(subjectID);
+      p.setSubject_type(subjectType);
+      p.setUser_id(user.getId());
+    }
     int laudCount = 0;
-    if (DataConstant.STATUS_ENABLE.equals(status)) {
-      flag = !StringUtils.isBlank(dao.insert("createLaud", p));
-      laudCount = 1;
-    } else if(DataConstant.STATUS_DELETE.equals(status)) {
-      flag = dao.delete("deleteLaud", p) != 0;
-      laudCount = -1;
+    switch (status) {
+      case on:
+        flag = flag ? flag : (!StringUtils.isBlank(dao.insert("createLaud", p)));
+        laudCount = 1;
+        break;
+      case off:
+        flag = flag ? flag : ((laudCount = -1 * dao.delete("deleteLaud", p)) != 0);
+        break;
+      default:
+        break;
     }
     if (!flag) {
       res.setCode(APIConstant.RETURN_CODE_ERROR);

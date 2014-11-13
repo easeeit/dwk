@@ -30,4 +30,13 @@
 		</property>
 	</select>
 	
+	<update id="updateProductAttentionCount" collection="x_product">
+	    <property name="param" class="java.util.Map">
+	        <value column="_id" name="productID" type="objectid" />
+	    </property>
+	    <property name="action" class="java.util.Map">
+	        <value column="attention_count" operate="$inc" name="count" type="int"/>
+	        <value column="hot" operate="$inc" name="count" type="int"/>
+	    </property>
+	</update>
 </sqls>

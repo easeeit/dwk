@@ -64,17 +64,26 @@ public class Cache implements InitializingBean {
 	 * 
 	 * @return
 	 */
-	public Date getExpiry(int seconds) {
+	public static Date getExpiry(int seconds) {
 		Calendar expiry = Calendar.getInstance();
 		expiry.add(Calendar.SECOND, seconds);
 		return expiry.getTime();
 	}
 	
-	public long getExpiryLongFromNow(int seconds) {
+	public static long getExpiryLongFromNow(int seconds) {
 		Calendar expiry = Calendar.getInstance();
 		expiry.add(Calendar.SECOND, seconds);
 		return expiry.getTimeInMillis();
 	}
+	
+	public static Date getEndTime(){  
+    Calendar todayEnd = Calendar.getInstance();  
+    todayEnd.set(Calendar.HOUR, 23);  
+    todayEnd.set(Calendar.MINUTE, 59);  
+    todayEnd.set(Calendar.SECOND, 59);  
+    todayEnd.set(Calendar.MILLISECOND, 999);  
+    return todayEnd.getTime();  
+}  
 	
 	/**
 	 * 获得当前时间的long值
@@ -89,6 +98,10 @@ public class Cache implements InitializingBean {
 
 	public boolean set(String k, Serializable v, long time) {
 		return getMemCachedClient().set(k, v, new Date(time));
+	}
+	
+	public boolean setToday(String k, Serializable v) {
+	  return getMemCachedClient().set(k, v, getEndTime());
 	}
 	
 	public Serializable get(String k) {

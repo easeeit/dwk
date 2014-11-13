@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 
 import com.dwk.constant.APIConstant;
+import com.dwk.constant.AttentionStatus;
 import com.dwk.dao.MongodbDao;
 import com.dwk.model.BasicResponse;
 import com.dwk.model.attention.Attention;
@@ -22,16 +23,29 @@ public class AttentionService {
   private MongodbDao dao;
   private ScheduleService scheduleService;
   
-  public BasicResponse create(LoginUser user, String productID) {
+  // TODO 清产品缓存
+  public BasicResponse update(LoginUser user, String productID, AttentionStatus status) {
     BasicResponse res = new BasicResponse();
     if (user == null) {
       res.setCode(APIConstant.RETURN_CODE_OPERATE_PERMISSION_INVAILD);
       return res;
     }
-    if (!StringUtils.isBlank(productID)) {
+    if (StringUtils.isBlank(productID) || status == null) {
       res.setCode(APIConstant.RETURN_CODE_PARAMETER_INVAILD);
       return res;
     }
+    switch (status) {
+      case on:
+        return create(user, productID);
+      case off:
+        return delete(user, productID);
+      default:
+        return null;
+    }
+  }
+  
+  public BasicResponse create(LoginUser user, String productID) {
+    BasicResponse res = new BasicResponse();
     Attention att = new Attention();
     att.setCreate_time(System.currentTimeMillis());
     att.setUser_id(user.getId());
@@ -40,6 +54,7 @@ public class AttentionService {
     if (StringUtils.isBlank(id)) {
       res.setCode(APIConstant.RETURN_CODE_ERROR);
     } else {
+      updateProductAttentionCount(productID, 1);
       scheduleService.updateScheduleHot(productID);
     }
     return res;
@@ -47,22 +62,24 @@ public class AttentionService {
   
   public BasicResponse delete(LoginUser user, String productID) {
     BasicResponse res = new BasicResponse();
-    if (user == null) {
-      res.setCode(APIConstant.RETURN_CODE_OPERATE_PERMISSION_INVAILD);
-      return res;
-    }
-    if (!StringUtils.isBlank(productID)) {
-      res.setCode(APIConstant.RETURN_CODE_PARAMETER_INVAILD);
-      return res;
-    }
     Map<String, Object> map = new HashMap<String, Object>(3);
     map.put("userID", user.getId());
     map.put("productID", productID);
     int count = dao.delete("deleteUserAttention", map);
     if (count <= 0 ) {
       res.setCode(APIConstant.RETURN_CODE_ERROR);
+    } else {
+      updateProductAttentionCount(productID, -1 * count);
+      scheduleService.updateScheduleHot(productID);
     }
     return res;
+  }
+  
+  private void updateProductAttentionCount(String productID, int count) {
+    Map<String,Object> map = new HashMap<String, Object>(2);
+    map.put("productID", productID);
+    map.put("count", count);
+    dao.update("updateProductAttentionCount", map);
   }
   
   public void setDao(MongodbDao dao) {

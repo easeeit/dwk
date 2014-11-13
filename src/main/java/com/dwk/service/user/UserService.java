@@ -7,8 +7,10 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.dwk.common.Cache;
 import com.dwk.constant.APIConstant;
 import com.dwk.constant.DataConstant;
+import com.dwk.constant.SystemConstant;
 import com.dwk.dao.MongodbDao;
 import com.dwk.model.BasicResponse;
 import com.dwk.model.comment.CommentInfo;
@@ -29,6 +31,7 @@ import com.dwk.service.product.ScheduleService;
  */
 public class UserService {
 
+  private Cache cache;
   private MongodbDao dao;
   private AuthService authService;
   private ScheduleService scheduleService;
@@ -103,11 +106,16 @@ public class UserService {
   }
   
   public SigninResponse signin(LoginUser user) {
-    // TODO 已签到过滤
-    
     SigninResponse res = new SigninResponse();
     if (user == null) {
       res.setCode(APIConstant.RETURN_CODE_OPERATE_PERMISSION_INVAILD);
+      return res;
+    }
+    // TODO 已签到过滤
+    Object o = cache.get(SystemConstant.SIGNIN_CACHE_KEY+user.getId());
+    if (o != null) {
+      res.setCode(APIConstant.RETURN_CODE_OPERATE_PERMISSION_INVAILD);
+      res.setScore(user.getScore());
       return res;
     }
     Map<String,Object> map = new HashMap<String, Object>(2);
@@ -115,7 +123,12 @@ public class UserService {
     map.put("score", DataConstant.SIGNIN_SCORE);
     int count = dao.update("inscreaseUserScore", map);
     if (count == 1) {
-      res.setScore(user.getScore() + DataConstant.SIGNIN_SCORE);
+      int score = user.getScore() + DataConstant.SIGNIN_SCORE;
+      res.setScore(score);
+      user.setScore(score);
+      authService.resetSession(user);
+      // 设置当天 已签到 标志
+      cache.setToday(SystemConstant.SIGNIN_CACHE_KEY+user.getId(),'1');
     }
     return res;
   }
@@ -187,6 +200,10 @@ public class UserService {
 
   public void setScheduleService(ScheduleService scheduleService) {
     this.scheduleService = scheduleService;
+  }
+
+  public void setCache(Cache cache) {
+    this.cache = cache;
   }
   
 }
