@@ -13,8 +13,8 @@ import com.dwk.constant.DataConstant;
 import com.dwk.constant.SystemConstant;
 import com.dwk.dao.MongodbDao;
 import com.dwk.model.BasicResponse;
-import com.dwk.model.comment.CommentInfo;
-import com.dwk.model.comment.CommentListResponse;
+import com.dwk.model.comment.UserCommentInfo;
+import com.dwk.model.comment.UserCommentListResponse;
 import com.dwk.model.user.AttentionListResponse;
 import com.dwk.model.user.BasicUserInfo;
 import com.dwk.model.user.LoginUser;
@@ -145,19 +145,6 @@ public class UserService {
         dao.selectList("getUserAttentionProduct", user.getId(),  rowNum, (pageNum - 1) * rowNum);
     // search product and schedule
     res.setGame(scheduleService.getScheduleInfo(productList));
-    return res;
-  }
-  
-  public CommentListResponse getUserComment(LoginUser user, int pageNum, int rowNum) {
-    CommentListResponse res = new CommentListResponse();
-    if (user == null) {
-      res.setCode(APIConstant.RETURN_CODE_OPERATE_PERMISSION_INVAILD);
-      return res;
-    }
-    Map<String, Object> param = new HashMap<String, Object>(1);
-    param.put("user_id", user.getId());
-    List<CommentInfo> result = dao.selectList("getUserComment", param, rowNum, (pageNum - 1) * rowNum);
-    res.setComment(result);
     return res;
   }
 

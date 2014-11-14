@@ -15,6 +15,8 @@ import com.dwk.model.comment.Comment;
 import com.dwk.model.comment.CommentInfo;
 import com.dwk.model.comment.CommentListResponse;
 import com.dwk.model.comment.CommentResponse;
+import com.dwk.model.comment.UserCommentInfo;
+import com.dwk.model.comment.UserCommentListResponse;
 import com.dwk.model.user.LoginUser;
 import com.dwk.service.product.ScheduleService;
 
@@ -51,27 +53,50 @@ public class CommentService {
     return dao.selectList("getHotComment", subjectID, DataConstant.HOT_COMMENT_COUNT, 0);
   }
   
-  public CommentResponse create(LoginUser user, String subjectType, String subjectID, String content, Long cluster) {
+  public CommentResponse create(LoginUser user, String subjectType, String subjectID, String content, String p_id) {
     CommentResponse res = new CommentResponse();
+    if (user == null) {
+      res.setCode(APIConstant.RETURN_CODE_OPERATE_PERMISSION_INVAILD);
+      return res;
+    }
     if (StringUtils.isBlank(subjectType) || !SubjectType.valid(subjectType) || StringUtils.isBlank(subjectID) || StringUtils.isBlank(content)) {
       res.setCode(APIConstant.RETURN_CODE_PARAMETER_INVAILD);
       return res;
     }
-    Comment comment = Comment.create(user, subjectID, subjectType, content, cluster);
+    String p_uid = null;
+    String p_content = null;
+    if (p_id != null) {
+      Comment parent = getCommentByID(p_id);
+      if (parent != null) {
+        p_uid = parent.getUser_id();
+        p_content = parent.getContent();
+      }
+    }
+    Comment comment = Comment.create(user, subjectID, subjectType, content, p_id, p_uid, p_content);
     String commentID = dao.insert("createComment", comment);
     if (StringUtils.isBlank(commentID)) {
       res.setCode(APIConstant.RETURN_CODE_ERROR);
     } else {
       res.setId(commentID);
-      res.setCluster(comment.getCluster());
       // TODO 增加评论数/热度
       updateCommentCount(subjectType, subjectID, 1);
+      if (StringUtils.isBlank(p_id)) {
+        // 更新 p_uid 为自己,方便检索"我参与的回复"
+        Map<String,Object> map = new HashMap<String, Object>(2);
+        map.put("id", commentID);
+        map.put("p_uid", user.getId());
+        dao.update("updateCommentAfterCreate", map);
+      }
     }
     return res;
   }
   
   public BasicResponse update(LoginUser user, String commentID, String content) {
     BasicResponse res = new BasicResponse();
+    if (user == null) {
+      res.setCode(APIConstant.RETURN_CODE_OPERATE_PERMISSION_INVAILD);
+      return res;
+    }
     if (StringUtils.isBlank(commentID) || StringUtils.isBlank(content)) {
       res.setCode(APIConstant.RETURN_CODE_PARAMETER_INVAILD);
       return res;
@@ -79,6 +104,7 @@ public class CommentService {
     Map<String, Object> param = new HashMap<String, Object>(3);
     param.put("id", commentID);
     param.put("content", content);
+    param.put("user_id", user.getId());
     param.put("create_time", System.currentTimeMillis());
     int count = dao.update("updateComment", param);
     if (count <= 0 ) {
@@ -89,13 +115,17 @@ public class CommentService {
 
   public BasicResponse delete(LoginUser user, String commentID) {
     BasicResponse res = new BasicResponse();
+    if (user == null) {
+      res.setCode(APIConstant.RETURN_CODE_OPERATE_PERMISSION_INVAILD);
+      return res;
+    }
     if (StringUtils.isBlank(commentID)) {
       res.setCode(APIConstant.RETURN_CODE_PARAMETER_INVAILD);
       return res;
     }
     Map<String , Object> param = new HashMap<String, Object>(1);
     param.put("id", commentID);
-    param.put("userID", user.getId());
+    param.put("user_id", user.getId());
     int count = dao.update("deleteComment", param);
     if (count <= 0 ) {
       res.setCode(APIConstant.RETURN_CODE_ERROR);
@@ -139,6 +169,24 @@ public class CommentService {
      }
     }
     return;
+  }
+  
+  // TODO 短期缓存
+  public UserCommentListResponse getUserComment(LoginUser user, int pageNum, int rowNum) {
+    UserCommentListResponse res = new UserCommentListResponse();
+    if (user == null) {
+      res.setCode(APIConstant.RETURN_CODE_OPERATE_PERMISSION_INVAILD);
+      return res;
+    }
+    List<UserCommentInfo> result = dao.selectList("getUserComment", user.getId(), rowNum, (pageNum - 1) * rowNum);
+    // 加工列表 xx回复了我 / 我评论了...
+    
+    res.setComment(result);
+    return res;
+  }
+  
+  public Comment getCommentByID(String commentID) {
+    return dao.selectOne("getCommentByID", commentID);
   }
   
   public void setDao(MongodbDao dao) {

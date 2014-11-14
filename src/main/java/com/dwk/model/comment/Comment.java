@@ -16,9 +16,11 @@ public class Comment {
   private Integer comment_count ;
   private Integer hot ;
   private Long create_time ;
-  private Long cluster ;
+  private String p_id;
+  private String p_uid;
+  private String p_content;
   
-  public static Comment create(LoginUser user, String subjectID, String subjectType, String content, Long cluster) {
+  public static Comment create(LoginUser user, String subjectID, String subjectType, String content, String p_id, String p_uid, String p_content) {
     long now = System.currentTimeMillis();
     Comment c = new Comment();
     c.subject_id = subjectID;
@@ -32,11 +34,9 @@ public class Comment {
     c.user_id = user.getId();
     c.nickname = user.getNickName();
     c.logo_url = user.getLogoUrl();
-    if (cluster != null && cluster > 0) {
-      c.cluster = cluster;
-    } else {
-      c.cluster = now;
-    }
+    c.p_id = p_id;
+    c.p_uid = p_uid;
+    c.p_content = p_content;
     return c;
   }
   
@@ -120,14 +120,6 @@ public class Comment {
     this.create_time = create_time;
   }
 
-  public Long getCluster() {
-    return cluster;
-  }
-
-  public void setCluster(Long cluster) {
-    this.cluster = cluster;
-  }
-
   public Integer getHot() {
     return hot;
   }
@@ -143,5 +135,30 @@ public class Comment {
   public void setComment_count(Integer comment_count) {
     this.comment_count = comment_count;
   }
+
+  public String getP_id() {
+    return p_id;
+  }
+
+  public void setP_id(String p_id) {
+    this.p_id = p_id;
+  }
+
+  public String getP_uid() {
+    return p_uid;
+  }
+
+  public void setP_uid(String p_uid) {
+    this.p_uid = p_uid;
+  }
+
+  public String getP_content() {
+    return p_content;
+  }
+
+  public void setP_content(String p_content) {
+    this.p_content = p_content;
+  }
+
   
 }

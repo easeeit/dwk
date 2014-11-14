@@ -8,8 +8,8 @@ var cur = db.x_product.find();
 while(cur.hasNext()){
 	var p = cur.next();
 	db.x_schedule.save({product_id:p._id.str,version:'1',timetomarket:1401552000000+(30000000000*((i+1)%2)),status:''+(i%2+1),delay_status:'1',create_time:1415612521948+i});
-	for(i=1;i<=10;i++) {
-		db.x_article.save({product_id:p._id.str,title:'title'+i,summary:'summary'+i,content:'ccccontent'+i,type:"1",style:"1",res:"resource/"+i,url:'baidu.com/'+i,status:'1',create_time:1415601222870+i});
+	for(i=1;i<=40;i++) {
+		db.x_article.save({product_id:p._id.str,title:'title'+i,summary:'summary'+i,content:'ccccontent'+i,type:''+(i%2+1),style:"1",res:"resource/"+i,url:'baidu.com/'+i,status:'1',create_time:1415601222870+i});
 	}
 	i++;
 }
@@ -20,3 +20,8 @@ db.x_article.update({product_id:{$gt:'productid11',$lt:'productid30'}},{$set:{pr
 for(i=1;i<=400;i++) {
 	db.x_trade.save({product_name:'产品'+i,status:'1',platform:'1',version:'2',language:'英文',integrity:"1",price:100.0+i,haggle:'1',exchange:'2',description:'描述'+i,remark:'备注'+i,user_id:'userid'+i,contact:'13888888888',area:'上海',photo_url:"http://cyxh.oss-cn-hangzhou.aliyuncs.com/Chrysanthemum.jpg;;http://cyxh.oss-cn-hangzhou.aliyuncs.com/Chrysanthemum.jpg;;http://cyxh.oss-cn-hangzhou.aliyuncs.com/Chrysanthemum.jpg;;http://cyxh.oss-cn-hangzhou.aliyuncs.com/Chrysanthemum.jpg;;http://cyxh.oss-cn-hangzhou.aliyuncs.com/Chrysanthemum.jpg",comment_count:0,create_time:1415612521948-i})
 }
+
+db.x_comment.ensureIndex({user_id:1})
+db.x_comment.ensureIndex({cluster:1})
+
+

@@ -73,10 +73,10 @@ public class CommentController extends BaseController {
   @ResponseBody
   public String create(HttpServletRequest request, @RequestParam(required = false) String subject_type, 
           @RequestParam(required = false) String subject_id, @RequestParam(required = false) String content, 
-          @RequestParam(required = false) Long cluster) throws Exception {
+          @RequestParam(required = false) String p_id) throws Exception {
     try {
       LoginUser user = getUser();
-      return outResponse(commentService.create(user, subject_type, subject_id, content, cluster));
+      return outResponse(commentService.create(user, subject_type, subject_id, content, p_id));
     } catch (ServiceException sex) {
       return outResponse("comment create", sex);
     } catch (DaoException dex) {

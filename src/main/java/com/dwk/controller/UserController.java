@@ -1,7 +1,10 @@
 package com.dwk.controller;
 
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -9,12 +12,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.HandlerMapping;
 
 import com.dwk.constant.APIConstant;
 import com.dwk.constant.DataConstant;
 import com.dwk.exception.DaoException;
 import com.dwk.exception.ServiceException;
 import com.dwk.model.user.LoginUser;
+import com.dwk.service.comment.CommentService;
 import com.dwk.service.trade.TradeService;
 import com.dwk.service.user.UserService;
 
@@ -27,12 +32,15 @@ import com.dwk.service.user.UserService;
  */
 @Controller
 @RequestMapping("/user")
+@SuppressWarnings("rawtypes")
 public class UserController extends BaseController {
 
   @Autowired
   private UserService userService;
   @Autowired
   private TradeService tradeService;
+  @Autowired
+  private CommentService commentService;
   
   @RequestMapping(value = "/getUserInfo", produces = APIConstant.CONTENT_TYPE_JSON)
   @ResponseBody
@@ -96,15 +104,22 @@ public class UserController extends BaseController {
     }
   }
 
-  @RequestMapping(value = "/game/{pageNum}/{rowNum}", produces = APIConstant.CONTENT_TYPE_JSON)
+  @RequestMapping(value = {"/game/{pageNum}/{rowNum}", "/game/{pageNum}", "/game"}, produces = APIConstant.CONTENT_TYPE_JSON)
   @ResponseBody
-  public String game(HttpServletRequest request, @PathVariable Integer pageNum, @PathVariable Integer rowNum) throws Exception {
+  public String game(HttpServletRequest request) throws Exception {
     try {
-      if (pageNum <= 0) {
-        pageNum = DataConstant.PN;
-      }
-      if (rowNum <= 0) {
-        rowNum = DataConstant.RN;
+      Integer pageNum = DataConstant.PN;
+      Integer rowNum = DataConstant.RN;
+      Map pathVariables = (Map) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
+      if (pathVariables != null) {
+        if (pathVariables.containsKey("pageNum")) {
+          pageNum = NumberUtils.toInt("" + pathVariables.get("pageNum"), pageNum);
+          pageNum = pageNum > 0 ? pageNum : DataConstant.PN;
+        }
+        if (pathVariables.containsKey("rowNum")) {
+          rowNum = NumberUtils.toInt("" + pathVariables.get("rowNum"), rowNum);
+          rowNum = rowNum > 0 ? rowNum : DataConstant.RN;
+        }
       }
       LoginUser user = getUser();
       return outResponse(userService.getUserAttention(user, pageNum, rowNum));
@@ -117,18 +132,25 @@ public class UserController extends BaseController {
     }
   }
   
-  @RequestMapping(value = "/comment/{pageNum}/{rowNum}", produces = APIConstant.CONTENT_TYPE_JSON)
+  @RequestMapping(value = {"/comment/{pageNum}/{rowNum}","/comment/{pageNum}","/comment" }, produces = APIConstant.CONTENT_TYPE_JSON)
   @ResponseBody
-  public String comment(HttpServletRequest request, @PathVariable Integer pageNum, @PathVariable Integer rowNum) throws Exception {
+  public String comment(HttpServletRequest request) throws Exception {
     try {
-      if (pageNum <= 0) {
-        pageNum = DataConstant.PN;
-      }
-      if (rowNum <= 0) {
-        rowNum = DataConstant.RN;
+      Integer pageNum = DataConstant.PN;
+      Integer rowNum = DataConstant.RN;
+      Map pathVariables = (Map) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
+      if (pathVariables != null) {
+        if (pathVariables.containsKey("pageNum")) {
+          pageNum = NumberUtils.toInt("" + pathVariables.get("pageNum"), pageNum);
+          pageNum = pageNum > 0 ? pageNum : DataConstant.PN;
+        }
+        if (pathVariables.containsKey("rowNum")) {
+          rowNum = NumberUtils.toInt("" + pathVariables.get("rowNum"), rowNum);
+          rowNum = rowNum > 0 ? rowNum : DataConstant.RN;
+        }
       }
       LoginUser user = getUser();
-      return outResponse(userService.getUserComment(user, pageNum, rowNum));
+      return outResponse(commentService.getUserComment(user, pageNum, rowNum));
     } catch (ServiceException sex) {
       return outResponse("trade list", sex);
     } catch (DaoException dex) {

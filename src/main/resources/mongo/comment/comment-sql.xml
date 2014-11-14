@@ -14,9 +14,12 @@
 		<property column="laud_count"  		name="laud_count" type="int" />
 		<property column="hot"  			name="hot" type="int" />
 		<property column="create_time"   	name="create_time" type="long" />
-		<property column="cluster" 			name="cluster" type="long" />
+		<property column="p_id"				name="p_id" />
+		<property column="p_uid"			name="p_uid" />
+		<property column="p_content"		name="p_content" />
 	</mapping>
 	<mapping id="commentInfo" class="com.dwk.model.comment.CommentInfo">
+		<property column="parent_content"	name="parent_content" />
 		<property column="_id"    			name="id"/>
 		<property column="content"    		name="content"/>
 		<property column="user_id"    		name="user_id"/>
@@ -24,7 +27,17 @@
 		<property column="logo_url" 		name="logo_url" />
 		<property column="laud_count"  		name="laud_count" type="int" />
 		<property column="create_time"   	name="create_time" type="long" />
-		<property column="cluster" 			name="cluster" type="long" />
+	</mapping>
+	<mapping id="userCommentInfo" class="com.dwk.model.comment.UserCommentInfo">
+		<property column="_id"    			name="id"/>
+		<property column="subject_type"    	name="subject_type"/>
+		<property column="subject_id"    	name="subject_id"/>
+		<property column="content"    		name="content"/>
+		<property column="user_id"    		name="user_id"/>
+		<property column="nickname"    		name="nickname" />
+		<property column="logo_url" 		name="logo_url" />
+		<property column="create_time"   	name="create_time" type="long" />
+		<property column="p_content"		name="p_content" />
 	</mapping>
 	
 	<select id="getCommentList" collection="x_comment">
@@ -38,13 +51,31 @@
 		</property>
 	</select>
 	
+	<select id="getCommentByID" collection="x_comment">
+		<property name="param" class="java.lang.String">
+			<value column="_id" name="${value}" type="objectid" />
+			<value column="status" value="1" />
+		</property>
+		<property name="result" mapping="comment"/>
+	</select>
+	
 	<insert id="createComment" collection="x_comment">
 		<property name="param"  mapping="comment" />
 	</insert>
 	
+	<update id="updateCommentAfterCreate" collection="x_comment">
+	    <property name="param" class="java.util.Map">
+	        <value column="_id" name="id" type="objectid"/>
+	    </property>
+	    <property name="action" class="java.util.Map">
+	        <value column="p_uid" operate="$set" name="p_uid"/>
+	    </property>
+	</update>
+	
 	<update id="updateComment" collection="x_comment">
 	    <property name="param" class="java.util.Map">
 	        <value column="_id" name="id" type="objectid"/>
+	        <value column="user_id" name="user_id" value="not exists"/>
 	    </property>
 	    <property name="action" class="java.util.Map">
 	        <value column="content" operate="$set" name="content"/>
@@ -55,7 +86,7 @@
 	<update id="deleteComment" collection="x_comment">
 	    <property name="param" class="java.util.Map">
 	        <value column="_id" name="id" type="objectid" value="not exists"/>
-	        <value column="user_id" name="userID" value="not exists"/>
+	        <value column="user_id" name="user_id" value="not exists"/>
 	    </property>
 	    <property name="action" class="java.util.Map">
 	        <value column="status" operate="$set" value="2"/>
@@ -100,6 +131,7 @@
 	        <value column="hot" operate="$inc" name="count" type="int"/>
 	    </property>
 	</update>
+	
 	<update id="updateCommentCommentCount" collection="x_comment">
 	    <property name="param" class="java.util.Map">
 	        <value column="_id" name="subjectID" type="objectid" />
@@ -110,12 +142,13 @@
 	    </property>
 	</update>
 	
+	<!-- 获得评论的回复 -->
 	<select id="getUserComment" collection="x_comment">
-		<property name="param" class="java.util.Map">
-			<value column="user_id" name="user_id" />
+		<property name="param" class="java.lang.String">
+			<value column="p_uid" name="${value}" value="not exists" />
 			<value column="status" value="1" />
 		</property>
-		<property name="result" mapping="commentInfo"/>
+		<property name="result" mapping="userCommentInfo"/>
 		<property name="order">
 			<value key="create_time"  value="-1"/>
 		</property>

@@ -46,6 +46,10 @@ public class AttentionService {
   
   public BasicResponse create(LoginUser user, String productID) {
     BasicResponse res = new BasicResponse();
+    if (checkUserProductAttention(user.getId(), productID)) {
+      res.setCode(APIConstant.RETURN_CODE_OK);
+      return res;
+    }
     Attention att = new Attention();
     att.setCreate_time(System.currentTimeMillis());
     att.setUser_id(user.getId());
@@ -73,6 +77,13 @@ public class AttentionService {
       scheduleService.updateScheduleHot(productID);
     }
     return res;
+  }
+  
+  private boolean checkUserProductAttention(String userID, String productID) {
+    Map<String, Object> map = new HashMap<String, Object>(3);
+    map.put("userID", userID);
+    map.put("productID", productID);
+    return dao.count("checkUserProductAttention", map) > 0;
   }
   
   private void updateProductAttentionCount(String productID, int count) {

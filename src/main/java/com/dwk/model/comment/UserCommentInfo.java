@@ -1,14 +1,16 @@
 package com.dwk.model.comment;
 
 
-public class CommentInfo {
+public class UserCommentInfo {
   private String id ;
+  private String subject_type;
+  private String subject_id;
   private String content;
   private String user_id ;
   private String nickname ;
   private String logo_url ;
-  private Integer laud_count ;
   private Long create_time ;
+  private String p_content ;
   
   public String getId() {
     return id;
@@ -50,14 +52,6 @@ public class CommentInfo {
     this.logo_url = logo_url;
   }
 
-  public Integer getLaud_count() {
-    return laud_count;
-  }
-
-  public void setLaud_count(Integer laud_count) {
-    this.laud_count = laud_count;
-  }
-
   public Long getCreate_time() {
     return create_time;
   }
@@ -65,5 +59,30 @@ public class CommentInfo {
   public void setCreate_time(Long create_time) {
     this.create_time = create_time;
   }
+
+  public String getP_content() {
+    return p_content;
+  }
+
+  public void setP_content(String p_content) {
+    this.p_content = p_content;
+  }
+
+  public String getSubject_type() {
+    return subject_type;
+  }
+
+  public void setSubject_type(String subject_type) {
+    this.subject_type = subject_type;
+  }
+
+  public String getSubject_id() {
+    return subject_id;
+  }
+
+  public void setSubject_id(String subject_id) {
+    this.subject_id = subject_id;
+  }
+
   
 }
