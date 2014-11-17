@@ -58,6 +58,27 @@ public class ArticleController extends BaseController {
       return outResponse("accountMobileAuth", ex);
     }
   }
+  
+  @RequestMapping(value = {"/info/{articleID}", "/info"}, produces = APIConstant.CONTENT_TYPE_JSON)
+  @ResponseBody
+  public String info(HttpServletRequest request) throws Exception {
+    try {
+      String articleID = null;
+      Map pathVariables = (Map) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
+      if (pathVariables != null) {
+        if (pathVariables.containsKey("articleID")) {
+          articleID = "" + pathVariables.get("articleID") ;
+        }
+      }
+      return outResponse(articleService.info(articleID));
+    } catch (ServiceException sex) {
+      return outResponse("accountMobileAuth", sex);
+    } catch (DaoException dex) {
+      return outResponse("accountMobileAuth", dex);
+    } catch (Exception ex) {
+      return outResponse("accountMobileAuth", ex);
+    }
+  }
 
 
 }

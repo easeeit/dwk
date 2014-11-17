@@ -1,9 +1,8 @@
-package com.dwk.model;
+package com.dwk.model.article;
 
 import com.dwk.constant.APIConstant;
 
-public class BasicResponse {
-
+public class ArticleInfoResponse extends Article {
   private Integer code = APIConstant.RETURN_CODE_OK;
 
   public Integer getCode() {
@@ -13,5 +12,4 @@ public class BasicResponse {
   public void setCode(Integer code) {
     this.code = code;
   }
-
 }

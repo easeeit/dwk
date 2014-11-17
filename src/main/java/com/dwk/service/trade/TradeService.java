@@ -105,7 +105,11 @@ public class TradeService {
     }
     List<TradeInfo> result = dao.selectList("getUserTrade", user.getId(), rowNum, (pageNum - 1) * rowNum);
     for (TradeInfo t : result) {
-      t.setNickname(userService.getUserByID(t.getUser_id()).getNickname());
+      User u= userService.getUserByID(t.getUser_id());
+      if (u != null) {
+        t.setNickname(u.getNickname());
+      }
+      t.beautifyData();
     }
     res.setTrade(result);
     return res;

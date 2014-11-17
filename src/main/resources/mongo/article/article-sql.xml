@@ -21,6 +21,26 @@
 		<property column="create_time" 		name="create_time" type="long" />
 	</mapping>
 	
+	<mapping id="articleInfo" class="com.dwk.model.article.ArticleInfoResponse">
+		<property column="_id"    			name="id"/>
+		<property column="product_id"    	name="product_id"/>
+		<property column="title"    		name="title"/>
+		<property column="summary"    		name="summary"/>
+		<property column="content"    		name="content"/>
+		<property column="type"    			name="type"/>
+		<property column="style"    		name="style"/>
+		<property column="res"    			name="res"/>
+		<property column="url"    			name="url"/>
+		<property column="comment_count"    name="comment_count" type="int" />
+		<property column="laud_count"    	name="laud_count" type="int" />
+		<property column="hot"    			name="hot" type="int" />
+		<property column="author"  			name="author"/>
+		<property column="source"   		name="source"/>
+		<property column="status" 			name="status"/>
+		<property column="original_url" 	name="original_url"/>
+		<property column="create_time" 		name="create_time" type="long" />
+	</mapping>
+	
 	<select id="getArticlelist" collection="x_article">
 		<property name="param" class="java.util.Map">
 			<value column="status" value="1" /> <!-- 资讯类 -->
@@ -29,6 +49,13 @@
 		<property name="order">
 			<value key="create_time"  value="-1"/>
 		</property>
+	</select>
+	
+	<select id="getArticleByID" collection="x_article">
+		<property name="param" class="java.lang.String">
+			<value column="_id" name="${value}" type="objectid" value="not exists" />
+		</property>
+		<property name="result" mapping="articleInfo"/>
 	</select>
 	
 	<select id="getArticleListByProductID" collection="x_article">

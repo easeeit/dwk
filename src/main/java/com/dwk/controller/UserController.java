@@ -7,7 +7,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -160,15 +159,22 @@ public class UserController extends BaseController {
     }
   }
   
-  @RequestMapping(value = "/trade/{pageNum}/{rowNum}", produces = APIConstant.CONTENT_TYPE_JSON)
+  @RequestMapping(value = {"/trade/{pageNum}/{rowNum}", "/trade/{pageNum}", "/trade"}, produces = APIConstant.CONTENT_TYPE_JSON)
   @ResponseBody
-  public String trade(HttpServletRequest request, @PathVariable Integer pageNum, @PathVariable Integer rowNum) throws Exception {
+  public String trade(HttpServletRequest request) throws Exception {
     try {
-      if (pageNum <= 0) {
-        pageNum = DataConstant.PN;
-      }
-      if (rowNum <= 0) {
-        rowNum = DataConstant.RN;
+      Integer pageNum = DataConstant.PN;
+      Integer rowNum = DataConstant.RN;
+      Map pathVariables = (Map) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
+      if (pathVariables != null) {
+        if (pathVariables.containsKey("pageNum")) {
+          pageNum = NumberUtils.toInt("" + pathVariables.get("pageNum"), pageNum);
+          pageNum = pageNum > 0 ? pageNum : DataConstant.PN;
+        }
+        if (pathVariables.containsKey("rowNum")) {
+          rowNum = NumberUtils.toInt("" + pathVariables.get("rowNum"), rowNum);
+          rowNum = rowNum > 0 ? rowNum : DataConstant.RN;
+        }
       }
       LoginUser user = getUser();
       return outResponse(tradeService.getUserTrade(user, pageNum, rowNum));
@@ -183,8 +189,9 @@ public class UserController extends BaseController {
 
   @RequestMapping(value = "/update", produces = APIConstant.CONTENT_TYPE_JSON)
   @ResponseBody
-  public String update(HttpServletRequest request, @RequestParam String nickname, @RequestParam String logo_url,
-      @RequestParam String phone, @RequestParam String email, @RequestParam String signature) throws Exception {
+  public String update(HttpServletRequest request, @RequestParam(required=false) String nickname, 
+      @RequestParam(required=false) String logo_url,@RequestParam(required=false) String phone, 
+      @RequestParam(required=false) String email, @RequestParam(required=false) String signature) throws Exception {
     try {
       LoginUser user = getUser();
       return outResponse(userService.update(user, nickname, phone, email, signature, logo_url));

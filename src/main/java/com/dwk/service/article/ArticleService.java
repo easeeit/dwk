@@ -6,9 +6,11 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.dwk.constant.APIConstant;
 import com.dwk.constant.ArticleType;
 import com.dwk.dao.MongodbDao;
 import com.dwk.model.article.Article;
+import com.dwk.model.article.ArticleInfoResponse;
 import com.dwk.model.article.ArticleListResponse;
 import com.dwk.service.comment.CommentService;
 
@@ -40,6 +42,22 @@ public class ArticleService {
 
     result.setArticle(articles);
     return result;
+  }
+  
+  public ArticleInfoResponse info(String articleID) {
+    ArticleInfoResponse res = null;
+    if (StringUtils.isBlank(articleID)) {
+      res = new ArticleInfoResponse();
+      res.setCode(APIConstant.RETURN_CODE_PARAMETER_INVAILD);
+      return res;
+    }
+    res = dao.selectOne("getArticleByID", articleID);
+    if (res == null) {
+      res = new ArticleInfoResponse();
+      res.setCode(APIConstant.RETURN_CODE_DATA_NOT_FOUND);
+      return res;
+    }
+    return res;
   }
   
   // TODO cache
