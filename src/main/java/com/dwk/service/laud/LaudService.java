@@ -41,6 +41,8 @@ public class LaudService {
       p.setSubject_id(subjectID);
       p.setSubject_type(subjectType);
       p.setUser_id(user.getId());
+      
+      //TODO 需校验是否已经赞过
     }
     int laudCount = 0;
     switch (status) {
