@@ -5,13 +5,13 @@ import java.util.List;
 import com.dwk.model.BasicResponse;
 
 public class ArticleListResponse extends BasicResponse {
-  private List<Article> article;
+  private List<ArticleList> article;
 
-  public List<Article> getArticle() {
+  public List<ArticleList> getArticle() {
     return article;
   }
 
-  public void setArticle(List<Article> article) {
+  public void setArticle(List<ArticleList> article) {
     this.article = article;
   }
 

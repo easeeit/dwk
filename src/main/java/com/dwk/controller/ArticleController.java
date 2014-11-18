@@ -8,6 +8,7 @@ import org.apache.commons.lang.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.HandlerMapping;
 
@@ -34,7 +35,7 @@ public class ArticleController extends BaseController {
 
   @RequestMapping(value = {"/list/{pageNum}/{rowNum}", "/list/{pageNum}", "/list"}, produces = APIConstant.CONTENT_TYPE_JSON)
   @ResponseBody
-  public String list(HttpServletRequest request) throws Exception {
+  public String list(HttpServletRequest request, @RequestParam(required=false) Long ts) throws Exception {
     try {
       Integer pageNum = DataConstant.PN;
       Integer rowNum = DataConstant.RN;

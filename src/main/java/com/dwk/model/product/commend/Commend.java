@@ -9,6 +9,7 @@ public class Commend {
   private String id;
   private String product_id;
   private Long create_time;
+  private Integer week;
   public String getId() {
     return id;
   }
@@ -26,6 +27,12 @@ public class Commend {
   }
   public void setCreate_time(Long create_time) {
     this.create_time = create_time;
+  }
+  public Integer getWeek() {
+    return week;
+  }
+  public void setWeek(Integer week) {
+    this.week = week;
   }
   
 }

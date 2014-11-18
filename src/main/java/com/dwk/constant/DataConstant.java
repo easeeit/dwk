@@ -20,4 +20,8 @@ public class DataConstant {
   // 签到积分
   public static final int SIGNIN_SCORE = 5;
   
+  // 评论级别
+  public static final int COMMENT_LEVEL_1 = 1;
+  public static final int COMMENT_LEVEL_2 = 2;
+  
 }

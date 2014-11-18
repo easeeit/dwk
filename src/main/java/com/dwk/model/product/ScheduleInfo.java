@@ -4,10 +4,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import com.dwk.constant.DataConstant;
-import com.dwk.constant.DelayStatus;
-import com.dwk.constant.Platform;
-import com.dwk.constant.ScheduleStatus;
-import com.dwk.constant.Version;
 
 public class ScheduleInfo extends Schedule {
   private String name;
@@ -21,11 +17,12 @@ public class ScheduleInfo extends Schedule {
   
   public void copyInfo(Product p) {
     this.name = p.getName_cn();
-    this.platform = Platform.valueToName(p.getPlatform());
-    setStatus(ScheduleStatus.valueToName(getStatus()));
-    setDelay_status(DelayStatus.valueToName(getDelay_status()));
+//    this.platform = Platform.valueToName(p.getPlatform());
+    this.platform = p.getPlatform();
+//    setStatus(ScheduleStatus.valueToName(getStatus()));
+//    setDelay_status(DelayStatus.valueToName(getDelay_status()));
     this.sellTime = new SimpleDateFormat(DataConstant.DATE_FORMAT).format(new Date(getTimetomarket()));
-    setVersion(Version.valueToName(getVersion()));
+//    setVersion(Version.valueToName(getVersion()));
     this.surl = p.getSurl();
     this.score = p.getScore();
     this.attention_count = p.getAttention_count();

@@ -7,7 +7,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -19,6 +18,7 @@ import com.dwk.constant.OrderBy;
 import com.dwk.exception.DaoException;
 import com.dwk.exception.ServiceException;
 import com.dwk.model.product.ScheduleTopResponse;
+import com.dwk.service.product.ProductService;
 import com.dwk.service.product.ScheduleService;
 
 /**
@@ -35,6 +35,8 @@ public class ScheduleController extends BaseController {
 
   @Autowired
   private ScheduleService scheduleService;
+  @Autowired
+  private ProductService productService;
 
   @RequestMapping(value = {"/will/{pageNum}/{rowNum}", "/will/{pageNum}", "/will"}, produces = APIConstant.CONTENT_TYPE_JSON)
   @ResponseBody
@@ -107,6 +109,8 @@ public class ScheduleController extends BaseController {
         }
       }
       ScheduleTopResponse res = new ScheduleTopResponse();
+      res.setWeek_best(productService.getWeekCommend());
+      res.setHot(productService.getHotTopN(DataConstant.HOT_COMMENT_COUNT));
       res.setWill(scheduleService.willList(1, topNum, OrderBy.time).getWill());
       res.setDone(scheduleService.doneList(1, topNum, OrderBy.time).getDone());
       return outResponse(res);

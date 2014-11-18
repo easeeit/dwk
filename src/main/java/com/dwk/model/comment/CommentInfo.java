@@ -3,12 +3,17 @@ package com.dwk.model.comment;
 
 public class CommentInfo {
   private String id ;
+  private Integer level;
+  private String parent;
   private String content;
   private String user_id ;
   private String nickname ;
   private String logo_url ;
   private Integer laud_count ;
   private Long create_time ;
+  private Long cluster ;
+  private String p_uid ;
+  private String p_nickname ;
   
   public String getId() {
     return id;
@@ -64,6 +69,46 @@ public class CommentInfo {
 
   public void setCreate_time(Long create_time) {
     this.create_time = create_time;
+  }
+
+  public Integer getLevel() {
+    return level;
+  }
+
+  public void setLevel(Integer level) {
+    this.level = level;
+  }
+
+  public String getParent() {
+    return parent;
+  }
+
+  public void setParent(String parent) {
+    this.parent = parent;
+  }
+
+  public Long getCluster() {
+    return cluster;
+  }
+
+  public void setCluster(Long cluster) {
+    this.cluster = cluster;
+  }
+
+  public String getP_uid() {
+    return p_uid;
+  }
+
+  public void setP_uid(String p_uid) {
+    this.p_uid = p_uid;
+  }
+
+  public String getP_nickname() {
+    return p_nickname;
+  }
+
+  public void setP_nickname(String p_nickname) {
+    this.p_nickname = p_nickname;
   }
   
 }

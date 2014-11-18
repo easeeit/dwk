@@ -19,6 +19,7 @@
 	<bean id="articleService" class="com.dwk.service.article.ArticleService">
 		<property name="dao" ref="dao"/>
 		<property name="commentService" ref="commentService"/>
+		<property name="productService" ref="productService"/>
 	</bean>
 	
 </beans>

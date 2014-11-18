@@ -1,33 +1,32 @@
-package com.dwk.model.product.commend;
+package com.dwk.model.product;
 
-import com.dwk.model.product.Product;
 
 /**
  * api:推荐产品
  * @author xp
  *
  */
-public class CommendProduct {
+public class ProductOverview {
   private String id;
   private String name;
   private String surl;
   private Double score ;
-  private Integer attention_count;
   private Integer laud_count;
   private Integer comment_count;
+  private Integer hot;
   
-  public static CommendProduct parse(Product p) {
+  public static ProductOverview parse(Product p) {
     if (p == null) {
       return null;
     }
-    CommendProduct cp = new CommendProduct();
-    cp.setAttention_count(p.getAttention_count());
-    cp.setComment_count(p.getComment_count());
-    cp.setId(p.getId());
-    cp.setLaud_count(p.getLaud_count());
-    cp.setName(p.getName_cn());
-    cp.setScore(p.getScore());
-    cp.setSurl(p.getSurl());
+    ProductOverview cp = new ProductOverview();
+    cp.comment_count = p.getComment_count();
+    cp.id = p.getId();
+    cp.laud_count = p.getLaud_count();
+    cp.name = p.getName_cn();
+    cp.score = p.getScore();
+    cp.surl = p.getSurl();
+    cp.hot = p.getHot();
     return cp;
   }
   public String getId() {
@@ -54,12 +53,6 @@ public class CommendProduct {
   public void setScore(Double score) {
     this.score = score;
   }
-  public Integer getAttention_count() {
-    return attention_count;
-  }
-  public void setAttention_count(Integer attention_count) {
-    this.attention_count = attention_count;
-  }
   public Integer getLaud_count() {
     return laud_count;
   }
@@ -71,5 +64,11 @@ public class CommendProduct {
   }
   public void setComment_count(Integer comment_count) {
     this.comment_count = comment_count;
+  }
+  public Integer getHot() {
+    return hot;
+  }
+  public void setHot(Integer hot) {
+    this.hot = hot;
   }
 }

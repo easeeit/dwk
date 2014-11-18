@@ -262,6 +262,8 @@ public class AuthService {
 
     LoginUser login = new LoginUser();
     login.setId(user.getId());
+    login.setNickName(user.getNickname());
+    login.setLogoUrl(user.getLogo_url());
     login.setUserPhone(user.getPhone());
     login.setAuthToken(token);
     login.setScore(user.getScore());

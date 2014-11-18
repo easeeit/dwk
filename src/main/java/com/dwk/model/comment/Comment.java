@@ -13,14 +13,17 @@ public class Comment {
   private String nickname ;
   private String logo_url ;
   private Integer laud_count ;
-  private Integer comment_count ;
   private Integer hot ;
   private Long create_time ;
   private String p_id;
   private String p_uid;
+  private String p_nickname;
   private String p_content;
+  private Long cluster ;
+  private Integer level ;
   
-  public static Comment create(LoginUser user, String subjectID, String subjectType, String content, String p_id, String p_uid, String p_content) {
+  public static Comment create(LoginUser user, String subjectID, String subjectType, 
+          String content, String p_id, String p_uid, String p_content, Long cluster, String p_nickname) {
     long now = System.currentTimeMillis();
     Comment c = new Comment();
     c.subject_id = subjectID;
@@ -28,7 +31,6 @@ public class Comment {
     c.content = content;
     c.status = DataConstant.STATUS_ENABLE;
     c.laud_count = 0;
-    c.comment_count = 0;
     c.hot = 0;
     c.create_time = now;
     c.user_id = user.getId();
@@ -37,6 +39,9 @@ public class Comment {
     c.p_id = p_id;
     c.p_uid = p_uid;
     c.p_content = p_content;
+    c.cluster = cluster == null ? now : cluster;
+    c.level = p_id == null ? DataConstant.COMMENT_LEVEL_1 : DataConstant.COMMENT_LEVEL_2;
+    c.p_nickname = p_nickname;
     return c;
   }
   
@@ -128,14 +133,6 @@ public class Comment {
     this.hot = hot;
   }
 
-  public Integer getComment_count() {
-    return comment_count;
-  }
-
-  public void setComment_count(Integer comment_count) {
-    this.comment_count = comment_count;
-  }
-
   public String getP_id() {
     return p_id;
   }
@@ -158,6 +155,30 @@ public class Comment {
 
   public void setP_content(String p_content) {
     this.p_content = p_content;
+  }
+
+  public Long getCluster() {
+    return cluster;
+  }
+
+  public void setCluster(Long cluster) {
+    this.cluster = cluster;
+  }
+
+  public Integer getLevel() {
+    return level;
+  }
+
+  public void setLevel(Integer level) {
+    this.level = level;
+  }
+
+  public String getP_nickname() {
+    return p_nickname;
+  }
+
+  public void setP_nickname(String p_nickname) {
+    this.p_nickname = p_nickname;
   }
 
   

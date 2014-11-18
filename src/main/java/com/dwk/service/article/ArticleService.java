@@ -11,8 +11,11 @@ import com.dwk.constant.ArticleType;
 import com.dwk.dao.MongodbDao;
 import com.dwk.model.article.Article;
 import com.dwk.model.article.ArticleInfoResponse;
+import com.dwk.model.article.ArticleList;
 import com.dwk.model.article.ArticleListResponse;
+import com.dwk.model.product.ProductInfo;
 import com.dwk.service.comment.CommentService;
+import com.dwk.service.product.ProductService;
 
 /**
  * Article service.
@@ -25,6 +28,7 @@ public class ArticleService {
 
   private MongodbDao dao;
   private CommentService commentService;
+  private ProductService productService;
 
   /**
    * @param pn
@@ -34,11 +38,7 @@ public class ArticleService {
   // TODO cache
   public ArticleListResponse list(int pn, int rn) {
     ArticleListResponse result = new ArticleListResponse();
-    List<Article> articles = dao.selectList("getArticleList", null, rn, (pn - 1) * rn);
-    // hot comment
-    for (Article art : articles) {
-      art.setComment(commentService.getHotComment(art.getId()));
-    }
+    List<ArticleList> articles = dao.selectList("getArticleList", null, rn, (pn - 1) * rn);
 
     result.setArticle(articles);
     return result;
@@ -57,18 +57,23 @@ public class ArticleService {
       res.setCode(APIConstant.RETURN_CODE_DATA_NOT_FOUND);
       return res;
     }
+    ProductInfo pInfo = productService.getProduct(res.getProduct_id());
+    if (pInfo != null) {
+      res.setProduct_name(pInfo.getName_cn() + "("+pInfo.getName_en()+")");
+    }
+    res.setComment(commentService.getHotComment(res.getId()));
     return res;
   }
   
   // TODO cache
-  public List<Article> getListByProductID(String productID, ArticleType type, int pn, int rn) {
+  public List<ArticleList> getListByProductID(String productID, ArticleType type, int pn, int rn) {
     if (StringUtils.isBlank(productID) || type == null) {
       return null;
     }
     Map<String, Object> map = new HashMap<String, Object>(2);
     map.put("productID", productID);
     map.put("type", type.getValue());
-    List<Article> articles = dao.selectList("getArticleListByProductID", map, rn, (pn - 1) * rn);
+    List<ArticleList> articles = dao.selectList("getArticleListByProductID", map, rn, (pn - 1) * rn);
     return articles;
   }
 
@@ -78,6 +83,10 @@ public class ArticleService {
 
   public void setCommentService(CommentService commentService) {
     this.commentService = commentService;
+  }
+
+  public void setProductService(ProductService productService) {
+    this.productService = productService;
   }
 
 }

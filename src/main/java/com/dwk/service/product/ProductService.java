@@ -1,6 +1,7 @@
 package com.dwk.service.product;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -13,9 +14,8 @@ import com.dwk.dao.MongodbDao;
 import com.dwk.model.article.ArticleListResponse;
 import com.dwk.model.product.Product;
 import com.dwk.model.product.ProductInfo;
+import com.dwk.model.product.ProductOverview;
 import com.dwk.model.product.commend.Commend;
-import com.dwk.model.product.commend.CommendListResponse;
-import com.dwk.model.product.commend.CommendProduct;
 import com.dwk.service.article.ArticleService;
 import com.dwk.service.comment.CommentService;
 
@@ -66,35 +66,31 @@ public class ProductService {
    * 周推荐
    * @return
    */
-  public CommendListResponse getCommend() {
-    CommendListResponse res = new CommendListResponse();
-    List<Commend> list = dao.selectList("getCommendProduct", null, 1, 0);
-    if (!CollectionUtils.isEmpty(list)) {
-      List<CommendProduct> info = new ArrayList<CommendProduct>(list.size());
-      for (Commend commend : list) {
-        if (commend != null) {
-          ProductInfo p = getProduct(commend.getProduct_id());
-          info.add(CommendProduct.parse(p));
-        }
-      }
-      res.setProduct(info);
+  // TODO cache
+  public ProductOverview getWeekCommend() {
+    ProductOverview pView = null;
+    System.out.println(Calendar.getInstance().get(Calendar.WEEK_OF_YEAR));
+    Commend list = dao.selectOne("getWeekCommendProduct", Calendar.getInstance().get(Calendar.WEEK_OF_YEAR));
+    if (list != null) {
+      ProductInfo p = getProduct(list.getProduct_id());
+      pView = ProductOverview.parse(p);
     }
-    return res;
+    return pView;
   }
   
-  public CommendListResponse getHotTopN(int n) {
-    CommendListResponse res = new CommendListResponse();
+  // cache
+  public List<ProductOverview> getHotTopN(int n) {
+    List<ProductOverview> topList = null;
     List<Product> list = dao.selectList("getHotTopProduct", new HashMap<String,Object>(0), n, 0);
     if (!CollectionUtils.isEmpty(list)) {
-      List<CommendProduct> info = new ArrayList<CommendProduct>(list.size());
+      topList = new ArrayList<ProductOverview>(list.size());
       for (Product p : list) {
         if (p != null) {
-          info.add(CommendProduct.parse(p));
+          topList.add(ProductOverview.parse(p));
         }
       }
-      res.setProduct(info);
     }
-    return res;
+    return topList;
   }
   
   public void setDao(MongodbDao dao) {

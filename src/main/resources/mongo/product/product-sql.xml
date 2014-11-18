@@ -35,12 +35,13 @@
 		<property column="status"    		name="status" />
 		<property column="delay_status" 	name="delay_status" />
 		<property column="create_time"    	name="create_time"  	type="long"/>
-		<property column="hot"		    	name="hot"  	type="int"/>
+		<property column="hot"		    	name="hot"  			type="int"/>
 	</mapping>	
 	
 	<mapping id="commend" class="com.dwk.model.product.commend.Commend">
 		<property column="_id"    			name="id"/>
 		<property column="product_id"    	name="product_id"/>
+		<property column="week"    			name="week"  			type="int"/>
 		<property column="create_time"    	name="create_time"  	type="long"/>
 	</mapping>	
 	
@@ -110,8 +111,9 @@
 		<property name="result" mapping="product"/>
 	</select>
 	
-	<select id="getCommendProduct" collection="x_commend">
-		<property name="param" class="java.util.Map">
+	<select id="getWeekCommendProduct" collection="x_commend">
+		<property name="param" class="java.lang.Integer">
+			<value column="week" name="${value}" type="int" />
 		</property>
 		<property name="result" mapping="commend"/>
 		<property name="order">

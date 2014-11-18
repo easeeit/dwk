@@ -1,8 +1,5 @@
 package com.dwk.model.article;
 
-import java.util.List;
-
-import com.dwk.model.comment.CommentInfo;
 
 public class Article {
   private String id;
@@ -10,20 +7,16 @@ public class Article {
   private String title;
   private String summary;
   private String content;
-  private String source;
   private String type;
   private String style;
   private String res;
-  private String author;
   private String status;
   private Integer laud_count;
   private Integer comment_count;
   private Integer hot;
   private String url;
-  private String original_url;
   private Long create_time;
   
-  private List<CommentInfo> comment;
   
   public String getId() {
     return id;
@@ -43,23 +36,11 @@ public class Article {
   public void setContent(String content) {
     this.content = content;
   }
-  public String getSource() {
-    return source;
-  }
-  public void setSource(String source) {
-    this.source = source;
-  }
   public String getType() {
     return type;
   }
   public void setType(String type) {
     this.type = type;
-  }
-  public String getAuthor() {
-    return author;
-  }
-  public void setAuthor(String author) {
-    this.author = author;
   }
   public String getStatus() {
     return status;
@@ -79,23 +60,11 @@ public class Article {
   public void setUrl(String url) {
     this.url = url;
   }
-  public String getOriginal_url() {
-    return original_url;
-  }
-  public void setOriginal_url(String original_url) {
-    this.original_url = original_url;
-  }
   public Long getCreate_time() {
     return create_time;
   }
   public void setCreate_time(Long create_time) {
     this.create_time = create_time;
-  }
-  public List<CommentInfo> getComment() {
-    return comment;
-  }
-  public void setComment(List<CommentInfo> comment) {
-    this.comment = comment;
   }
   public String getProduct_id() {
     return product_id;
