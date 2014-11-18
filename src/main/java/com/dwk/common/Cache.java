@@ -3,13 +3,14 @@ package com.dwk.common;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 
-import com.schooner.MemCached.SchoonerSockIOPool;
 import com.whalin.MemCached.MemCachedClient;
+import com.whalin.MemCached.SockIOPool;
 
 public class Cache implements InitializingBean {
 	private static final Logger log = LoggerFactory.getLogger(Cache.class);
@@ -30,7 +31,7 @@ public class Cache implements InitializingBean {
 		String[] serverlist = nodeList.split(",");
 
 		// Integer[] weights = { 3 };
-		SchoonerSockIOPool pool = SchoonerSockIOPool.getInstance(weightList);
+		SockIOPool  pool = SockIOPool.getInstance(name);
 		pool.setServers(serverlist);
 		// 开始时每个cache服务器的可用连接数
 		pool.setInitConn(initConn);
@@ -55,8 +56,8 @@ public class Cache implements InitializingBean {
 	/**
 	 * 得到缓存连接
 	 */
-	public MemCachedClient getMemCachedClient() {
-		return new MemCachedClient(weightList);
+	private MemCachedClient getMemCachedClient() {
+		return new MemCachedClient(name);
 	}
 	
 	/**
@@ -77,11 +78,11 @@ public class Cache implements InitializingBean {
 	}
 	
 	public static Date getEndTime(){  
-    Calendar todayEnd = Calendar.getInstance();  
-    todayEnd.set(Calendar.HOUR, 23);  
-    todayEnd.set(Calendar.MINUTE, 59);  
-    todayEnd.set(Calendar.SECOND, 59);  
-    todayEnd.set(Calendar.MILLISECOND, 999);  
+    Calendar todayEnd = Calendar.getInstance(Locale.CHINA);  
+    todayEnd.set(Calendar.HOUR, 24);  
+    todayEnd.set(Calendar.MINUTE, 0);  
+    todayEnd.set(Calendar.SECOND, 0);  
+    todayEnd.set(Calendar.MILLISECOND, 0);  
     return todayEnd.getTime();  
 }  
 	
@@ -100,12 +101,13 @@ public class Cache implements InitializingBean {
 		return getMemCachedClient().set(k, v, new Date(time));
 	}
 	
-	public boolean setToday(String k, Serializable v) {
-	  return getMemCachedClient().set(k, v, getEndTime());
+	public boolean setToday(String k, Object v) {
+	  boolean b = getMemCachedClient().set(k, v, getEndTime());
+	  return b;
 	}
 	
-	public Serializable get(String k) {
-		return (Serializable)getMemCachedClient().get(k);
+	public Object get(String k) {
+		return getMemCachedClient().get(k);
 	}
 
 	public boolean delete(String key) {

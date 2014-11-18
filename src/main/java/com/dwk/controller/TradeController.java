@@ -14,6 +14,7 @@ import org.springframework.web.servlet.HandlerMapping;
 
 import com.dwk.constant.APIConstant;
 import com.dwk.constant.DataConstant;
+import com.dwk.constant.TradeStatus;
 import com.dwk.exception.DaoException;
 import com.dwk.exception.ServiceException;
 import com.dwk.model.user.LoginUser;
@@ -28,13 +29,13 @@ import com.dwk.service.trade.TradeService;
  */
 @Controller
 @RequestMapping("/trade")
-@SuppressWarnings("rawtypes")
+@SuppressWarnings({"rawtypes", "unchecked" })
 public class TradeController extends BaseController {
 
   @Autowired
   private TradeService tradeService;
 
-  @RequestMapping(value = { "/list/{pageNum}/{rowNum}", "/list/{pageNum}", "/list" }, produces = APIConstant.CONTENT_TYPE_JSON)
+  @RequestMapping(value = {"/list/{pageNum}/{rowNum}", "/list/{pageNum}", "/list"}, produces = APIConstant.CONTENT_TYPE_JSON)
   @ResponseBody
   public String list(HttpServletRequest request) throws Exception {
     try {
@@ -91,19 +92,48 @@ public class TradeController extends BaseController {
     }
   }
 
-  @RequestMapping(value = "/update_status", produces = APIConstant.CONTENT_TYPE_JSON)
+  @RequestMapping(value = "/close", produces = APIConstant.CONTENT_TYPE_JSON)
   @ResponseBody
-  public String updateStatus(HttpServletRequest request, @RequestParam(required=false) String id, @RequestParam(required=false) String status)
-      throws Exception {
+  public String close(HttpServletRequest request, @RequestParam(required = false) String id) throws Exception {
     try {
       LoginUser user = getUser();
-      return outResponse(tradeService.updateTradeStatus(user, id, status));
+      return outResponse(tradeService.updateTradeStatus(user, id, TradeStatus.close.getValue()));
     } catch (ServiceException sex) {
-      return outResponse("trade update status", sex);
+      return outResponse("trade close", sex);
     } catch (DaoException dex) {
-      return outResponse("trade update status", dex);
+      return outResponse("trade close", dex);
     } catch (Exception ex) {
-      return outResponse("trade update status", ex);
+      return outResponse("trade close", ex);
+    }
+  }
+
+  @RequestMapping(value = "/delete", produces = APIConstant.CONTENT_TYPE_JSON)
+  @ResponseBody
+  public String delete(HttpServletRequest request, @RequestParam(required = false) String id) throws Exception {
+    try {
+      LoginUser user = getUser();
+      return outResponse(tradeService.updateTradeStatus(user, id, TradeStatus.delete.getValue()));
+    } catch (ServiceException sex) {
+      return outResponse("trade delete", sex);
+    } catch (DaoException dex) {
+      return outResponse("trade delete", dex);
+    } catch (Exception ex) {
+      return outResponse("trade delete", ex);
+    }
+  }
+  
+  @RequestMapping(value = "/refresh", produces = APIConstant.CONTENT_TYPE_JSON)
+  @ResponseBody
+  public String refresh(HttpServletRequest request, @RequestParam(required = false) String id) throws Exception {
+    try {
+      LoginUser user = getUser();
+      return outResponse(tradeService.refresh(user, id));
+    } catch (ServiceException sex) {
+      return outResponse("trade delete", sex);
+    } catch (DaoException dex) {
+      return outResponse("trade delete", dex);
+    } catch (Exception ex) {
+      return outResponse("trade delete", ex);
     }
   }
 

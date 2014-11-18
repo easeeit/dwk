@@ -2,7 +2,8 @@ package com.dwk.constant;
 
 public enum TradeStatus {
   open("1"),
-  close("2");
+  close("2"),
+  delete("3");
   
   private String v;
   

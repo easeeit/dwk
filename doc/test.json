@@ -1,6 +1,6 @@
 
 for(i=1;i<=100;i++) {
-	db.x_product.save({status:'1',name_cn:'中文名'+i,name_en:'English Name'+i,producer:'Producer Company'+i,publisher:'xx pub'+i, platform:'1',type:"1",kinect:"1",player_number:'1-2人 '+i,introduction:i+'简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介',website:'http:\/\/baidu.com',screenshot_list:"http://cyxh.oss-cn-hangzhou.aliyuncs.com/Chrysanthemum.jpg;;http://cyxh.oss-cn-hangzhou.aliyuncs.com/Chrysanthemum.jpg;;http://cyxh.oss-cn-hangzhou.aliyuncs.com/Chrysanthemum.jpg;;http://cyxh.oss-cn-hangzhou.aliyuncs.com/Chrysanthemum.jpg;;http://cyxh.oss-cn-hangzhou.aliyuncs.com/Chrysanthemum.jpg",video_list:"http://cyxh.oss-cn-hangzhou.aliyuncs.com/Chrysanthemum.jpg;;http://cyxh.oss-cn-hangzhou.aliyuncs.com/Chrysanthemum.jpg;;http://cyxh.oss-cn-hangzhou.aliyuncs.com/Chrysanthemum.jpg;;http://cyxh.oss-cn-hangzhou.aliyuncs.com/Chrysanthemum.jpg;;http://cyxh.oss-cn-hangzhou.aliyuncs.com/Chrysanthemum.jpg;;http://cyxh.oss-cn-hangzhou.aliyuncs.com/Chrysanthemum.jpg;;http://cyxh.oss-cn-hangzhou.aliyuncs.com/Chrysanthemum.jpg",gurl:"http://cyxh.oss-cn-hangzhou.aliyuncs.com/Chrysanthemum.jpg",surl:"http://cyxh.oss-cn-hangzhou.aliyuncs.com/Chrysanthemum.jpg",create_time:1415611365855+i});
+	db.x_product.save({status:'1',name_cn:'中文名'+i,name_en:'English Name'+i,producer:'Producer Company'+i, platform:'1',type:"1",kinect:"1",player_number:'1-2人 '+i,introduction:i+'简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介',website:'http:\/\/baidu.com',screenshot_list:"http://cyxh.oss-cn-hangzhou.aliyuncs.com/Chrysanthemum.jpg;;http://cyxh.oss-cn-hangzhou.aliyuncs.com/Chrysanthemum.jpg;;http://cyxh.oss-cn-hangzhou.aliyuncs.com/Chrysanthemum.jpg;;http://cyxh.oss-cn-hangzhou.aliyuncs.com/Chrysanthemum.jpg;;http://cyxh.oss-cn-hangzhou.aliyuncs.com/Chrysanthemum.jpg",video_list:"http://cyxh.oss-cn-hangzhou.aliyuncs.com/Chrysanthemum.jpg;;http://cyxh.oss-cn-hangzhou.aliyuncs.com/Chrysanthemum.jpg;;http://cyxh.oss-cn-hangzhou.aliyuncs.com/Chrysanthemum.jpg;;http://cyxh.oss-cn-hangzhou.aliyuncs.com/Chrysanthemum.jpg;;http://cyxh.oss-cn-hangzhou.aliyuncs.com/Chrysanthemum.jpg;;http://cyxh.oss-cn-hangzhou.aliyuncs.com/Chrysanthemum.jpg;;http://cyxh.oss-cn-hangzhou.aliyuncs.com/Chrysanthemum.jpg",gurl:"http://cyxh.oss-cn-hangzhou.aliyuncs.com/Chrysanthemum.jpg",surl:"http://cyxh.oss-cn-hangzhou.aliyuncs.com/Chrysanthemum.jpg",create_time:1415611365855+i});
 }
 
 i=0;
@@ -14,8 +14,6 @@ while(cur.hasNext()){
 	i++;
 }
 
-
-db.x_article.update({product_id:{$gt:'productid11',$lt:'productid30'}},{$set:{product_id:'546368cbccfa1234b826e316'}},false,true)
 
 for(i=1;i<=400;i++) {
 	db.x_trade.save({product_name:'产品'+i,status:'1',platform:'1',version:'2',language:'英文',integrity:"1",price:100.0+i,haggle:'1',exchange:'2',description:'描述'+i,remark:'备注'+i,user_id:'userid'+i,contact:'13888888888',area:'上海',photo_url:"http://cyxh.oss-cn-hangzhou.aliyuncs.com/Chrysanthemum.jpg;;http://cyxh.oss-cn-hangzhou.aliyuncs.com/Chrysanthemum.jpg;;http://cyxh.oss-cn-hangzhou.aliyuncs.com/Chrysanthemum.jpg;;http://cyxh.oss-cn-hangzhou.aliyuncs.com/Chrysanthemum.jpg;;http://cyxh.oss-cn-hangzhou.aliyuncs.com/Chrysanthemum.jpg",comment_count:0,create_time:1415612521948-i})

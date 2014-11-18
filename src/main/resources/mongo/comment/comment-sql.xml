@@ -165,6 +165,7 @@
 	<select id="getUserComment" collection="x_comment">
 		<property name="param" class="java.lang.String">
 			<value column="p_uid" name="${value}" value="not exists" />
+			<value column="user_id" name="${value}" operate="$ne"  />
 			<value column="status" value="1" />
 		</property>
 		<property name="result" mapping="userCommentInfo"/>

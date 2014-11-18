@@ -9,9 +9,9 @@ import org.apache.commons.lang.StringUtils;
 
 import com.dwk.constant.OrderBy;
 import com.dwk.dao.MongodbDao;
-import com.dwk.model.product.ScheduleDoneResponse;
-import com.dwk.model.product.ScheduleInfo;
-import com.dwk.model.product.ScheduleWillResponse;
+import com.dwk.model.schedule.ScheduleDoneResponse;
+import com.dwk.model.schedule.ScheduleInfo;
+import com.dwk.model.schedule.ScheduleWillResponse;
 
 /**
  * Schedule service.

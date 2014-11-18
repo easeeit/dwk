@@ -6,13 +6,13 @@
 		<property column="name_cn"    		name="name_cn"/>
 		<property column="name_en"    		name="name_en"/>
 		<property column="producer"    		name="producer"	/>
-		<property column="publisher"    	name="publisher"/>
 		<property column="platform"    		name="platform"/>
 		<property column="type"    			name="type"/>
 		<property column="kinect"    		name="kinect"/>
 		<property column="attention_count" 	name="attention_count"	type="int" />
 		<property column="comment_count" 	name="comment_count"	type="int" />
 		<property column="score"   			name="score"	  		type="double"/>
+		<property column="score_4"   		name="score_4"	  		type="double"/>
 		<property column="score_time"   	name="score_time"	  	type="int"/>
 		<property column="laud_count"   	name="laud_count"		type="int"/>
 		<property column="hot"   			name="hot"				type="int"/>
@@ -27,7 +27,7 @@
 		<property column="status" 			name="status"/>
 	</mapping>
 	
-	<mapping id="schedule" class="com.dwk.model.product.ScheduleInfo">
+	<mapping id="schedule" class="com.dwk.model.schedule.ScheduleInfo">
 		<property column="_id"    			name="id"/>
 		<property column="product_id"    	name="product_id"/>
 		<property column="version"    		name="version"/>
@@ -143,6 +143,18 @@
 	    </property>
 	    <property name="action" class="java.util.Map">
 	        <value column="hot" operate="$set" name="hot" type="int"/>
+	    </property>
+	</update>
+	
+	<update id="updateProductScore" collection="x_product">
+	    <property name="param" class="java.util.Map">
+	        <value column="_id" name="productID" type="objectid" value="not exists" />
+	    </property>
+	    <property name="action" class="java.util.Map">
+	        <value column="hot" operate="$inc" value="1" type="int"/>
+	        <value column="score_time" operate="$inc" value="1" type="int"/>
+	        <value column="score" operate="$set" name="score" type="double"/>
+	        <value column="score_4" operate="$set" name="score_4" type="double"/>
 	    </property>
 	</update>
 </sqls>

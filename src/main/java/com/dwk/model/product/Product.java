@@ -5,13 +5,13 @@ public class Product {
   private String name_cn;
   private String name_en;
   private String producer;
-  private String publisher;
   private String platform;
   private String type;
   private String kinect;
   private Integer attention_count;
   private Integer comment_count;
   private Double score;
+  private Double score_4;
   private Integer score_time;
   private Integer laud_count;
   private Integer hot;
@@ -47,12 +47,6 @@ public class Product {
   }
   public void setProducer(String producer) {
     this.producer = producer;
-  }
-  public String getPublisher() {
-    return publisher;
-  }
-  public void setPublisher(String publisher) {
-    this.publisher = publisher;
   }
   public String getPlatform() {
     return platform;
@@ -161,6 +155,12 @@ public class Product {
   }
   public void setStatus(String status) {
     this.status = status;
+  }
+  public Double gScore_4() {
+    return score_4;
+  }
+  public void setScore_4(Double score_4) {
+    this.score_4 = score_4;
   }
   
 }

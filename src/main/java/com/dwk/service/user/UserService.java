@@ -111,7 +111,7 @@ public class UserService {
       res.setCode(APIConstant.RETURN_CODE_OPERATE_PERMISSION_INVAILD);
       return res;
     }
-    // TODO 已签到过滤
+    //  已签到过滤
     Object o = cache.get(SystemConstant.SIGNIN_CACHE_KEY+user.getId());
     if (o != null) {
       res.setCode(APIConstant.RETURN_CODE_OPERATE_PERMISSION_INVAILD);

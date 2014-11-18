@@ -1,4 +1,4 @@
-package com.dwk.model.product;
+package com.dwk.model.schedule;
 
 import java.util.List;
 

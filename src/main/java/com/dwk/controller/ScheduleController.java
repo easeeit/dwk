@@ -17,7 +17,7 @@ import com.dwk.constant.DataConstant;
 import com.dwk.constant.OrderBy;
 import com.dwk.exception.DaoException;
 import com.dwk.exception.ServiceException;
-import com.dwk.model.product.ScheduleTopResponse;
+import com.dwk.model.schedule.ScheduleTopResponse;
 import com.dwk.service.product.ProductService;
 import com.dwk.service.product.ScheduleService;
 
@@ -38,14 +38,14 @@ public class ScheduleController extends BaseController {
   @Autowired
   private ProductService productService;
 
-  @RequestMapping(value = {"/will/{pageNum}/{rowNum}", "/will/{pageNum}", "/will"}, produces = APIConstant.CONTENT_TYPE_JSON)
+  @RequestMapping(value = {"/will"}, produces = APIConstant.CONTENT_TYPE_JSON)
   @ResponseBody
   public String will(HttpServletRequest request, @RequestParam(required=false) String order) throws Exception {
     try {
       OrderBy ob = OrderBy.parse(order);
 
       Integer pageNum = DataConstant.PN;
-      Integer rowNum = DataConstant.RN;
+      Integer rowNum = DataConstant.RN_UNLIMIT;
       Map pathVariables = (Map) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
       if (pathVariables != null) {
         if (pathVariables.containsKey("pageNum")) {
@@ -54,7 +54,7 @@ public class ScheduleController extends BaseController {
         }
         if (pathVariables.containsKey("rowNum")) {
           rowNum = NumberUtils.toInt("" + pathVariables.get("rowNum"), rowNum);
-          rowNum = rowNum > 0 ? rowNum : DataConstant.RN;
+          rowNum = rowNum > 0 ? rowNum : DataConstant.RN_UNLIMIT;
         }
       }
       return outResponse(scheduleService.willList(pageNum, rowNum, ob)); 
@@ -67,14 +67,14 @@ public class ScheduleController extends BaseController {
     }
   }
   
-  @RequestMapping(value = {"/done/{pageNum}/{rowNum}", "/done/{pageNum}", "/done"}, produces = APIConstant.CONTENT_TYPE_JSON)
+  @RequestMapping(value = {"/done"}, produces = APIConstant.CONTENT_TYPE_JSON)
   @ResponseBody
   public String done(HttpServletRequest request, @RequestParam(required=false) String order) throws Exception {
     try {
       OrderBy ob = OrderBy.parse(order);
 
       Integer pageNum = DataConstant.PN;
-      Integer rowNum = DataConstant.RN;
+      Integer rowNum = DataConstant.RN_UNLIMIT;
       Map pathVariables = (Map) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
       if (pathVariables != null) {
         if (pathVariables.containsKey("pageNum")) {
@@ -83,7 +83,7 @@ public class ScheduleController extends BaseController {
         }
         if (pathVariables.containsKey("rowNum")) {
           rowNum = NumberUtils.toInt("" + pathVariables.get("rowNum"), rowNum);
-          rowNum = rowNum > 0 ? rowNum : DataConstant.RN;
+          rowNum = rowNum > 0 ? rowNum : DataConstant.RN_UNLIMIT;
         }
       }
       return outResponse(scheduleService.doneList(pageNum, rowNum, ob)); 

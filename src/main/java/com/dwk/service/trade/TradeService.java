@@ -6,7 +6,9 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.dwk.common.Cache;
 import com.dwk.constant.APIConstant;
+import com.dwk.constant.SystemConstant;
 import com.dwk.constant.TradeStatus;
 import com.dwk.dao.MongodbDao;
 import com.dwk.model.BasicResponse;
@@ -20,6 +22,7 @@ import com.dwk.service.user.UserService;
 
 public class TradeService {
 
+  private Cache cache;
   private MongodbDao dao;
   private UserService userService;
   
@@ -32,7 +35,6 @@ public class TradeService {
       if (u != null) {
         t.setNickname(u.getNickname());
       }
-      t.beautifyData();
     }
     res.setTrade(result);
     return res;
@@ -91,7 +93,37 @@ public class TradeService {
     map.put("update_time", System.currentTimeMillis());
     int count = dao.update("updateTradeStatus", map);
     if (count <= 0 ) {
-      res.setCode(APIConstant.RETURN_CODE_ERROR);
+      res.setCode(APIConstant.RETURN_CODE_DATA_NOT_FOUND);
+    }
+    return res;
+  }
+  
+  public BasicResponse refresh(LoginUser user, String tradeID) {
+    BasicResponse res = new BasicResponse();
+    if (user == null) {
+      res.setCode(APIConstant.RETURN_CODE_OPERATE_PERMISSION_INVAILD);
+      return res;
+    }
+    if (StringUtils.isBlank(tradeID)){
+      res.setCode(APIConstant.RETURN_CODE_PARAMETER_INVAILD);
+      return res;
+    }
+    //  已签到过滤
+    Object o = (Object)cache.get(SystemConstant.REFRESH_TRADE_CACHE_KEY+tradeID);
+    if (o != null) {
+      res.setCode(APIConstant.RETURN_CODE_OPERATE_PERMISSION_INVAILD);
+      return res;
+    }
+    Map<String, Object> map = new HashMap<String, Object>(3);
+    map.put("user_id", user.getId());
+    map.put("tradeID", tradeID);
+    map.put("update_time", System.currentTimeMillis());
+    int count = dao.update("refreshTrade", map);
+    if (count == 1 ) {
+      // 设置当天 已签到 标志
+      cache.setToday(SystemConstant.REFRESH_TRADE_CACHE_KEY+tradeID,"1");
+    } else {
+      res.setCode(APIConstant.RETURN_CODE_DATA_NOT_FOUND);
     }
     return res;
   }
@@ -109,7 +141,6 @@ public class TradeService {
       if (u != null) {
         t.setNickname(u.getNickname());
       }
-      t.beautifyData();
     }
     res.setTrade(result);
     return res;
@@ -120,6 +151,9 @@ public class TradeService {
   }
   public void setUserService(UserService userService) {
     this.userService = userService;
+  }
+  public void setCache(Cache cache) {
+    this.cache = cache;
   }
 
 }

@@ -58,7 +58,7 @@
 			<value column="type" name="type" value="1" />
 			<value column="product_id" name="productID" value="not exists" />
 		</property>
-		<property name="result" mapping="article"/>
+		<property name="result" mapping="articleList"/>
 		<property name="order">
 			<value key="create_time"  value="-1"/>
 		</property>

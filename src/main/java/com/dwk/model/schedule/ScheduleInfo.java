@@ -1,9 +1,10 @@
-package com.dwk.model.product;
+package com.dwk.model.schedule;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import com.dwk.constant.DataConstant;
+import com.dwk.model.product.Product;
 
 public class ScheduleInfo extends Schedule {
   private String name;

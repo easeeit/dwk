@@ -23,6 +23,7 @@ public class SystemConstant {
   
   public static final String VERIFICATION_CODE_CACHE_KEY = SYSTEM_CACHE_ROOT_KEY + "verification.";
   public static final String SIGNIN_CACHE_KEY = SYSTEM_CACHE_ROOT_KEY + "signin.";
+  public static final String REFRESH_TRADE_CACHE_KEY = SYSTEM_CACHE_ROOT_KEY + "trade.refresh.";
   
   /**
    * resend time 1 min

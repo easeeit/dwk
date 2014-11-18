@@ -8,6 +8,7 @@ import org.apache.commons.lang.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.HandlerMapping;
 
@@ -106,6 +107,20 @@ public class ProductController extends BaseController {
         }
       }
       return outResponse(productService.getTipList(productID, pageNum, rowNum)); 
+    } catch (ServiceException sex) {
+      return outResponse("product news list", sex);
+    } catch (DaoException dex) {
+      return outResponse("product news list", dex);
+    } catch (Exception ex) {
+      return outResponse("product news list", ex);
+    }
+  }
+  
+  @RequestMapping(value = "/score", produces = APIConstant.CONTENT_TYPE_JSON)
+  @ResponseBody
+  public String score(HttpServletRequest request, @RequestParam(required=false) String id, @RequestParam(required=false) Double score) throws Exception {
+    try {
+      return outResponse(productService.score(id, score)); 
     } catch (ServiceException sex) {
       return outResponse("product news list", sex);
     } catch (DaoException dex) {

@@ -1,8 +1,9 @@
-package com.dwk.model.product;
+package com.dwk.model.schedule;
 
 import java.util.List;
 
 import com.dwk.model.BasicResponse;
+import com.dwk.model.product.ProductOverview;
 
 public class ScheduleTopResponse extends BasicResponse {
   private ProductOverview week_best;

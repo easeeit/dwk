@@ -1,4 +1,4 @@
-package com.dwk.model.product;
+package com.dwk.model.schedule;
 
 public class Schedule {
   private String id;
